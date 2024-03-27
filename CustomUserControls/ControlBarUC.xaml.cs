@@ -1,5 +1,4 @@
-﻿using Exchange_App.Model;
-using Exchange_App.ViewModel;
+﻿using Exchange_App.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,17 +14,18 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Exchange_App
+namespace Exchange_App.CustomUserControls
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for ControlBarUC.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class ControlBarUC : UserControl
     {
-        public MainWindow(User user)
+        public ControlBarViewModel ViewModel { get; set; }
+        public ControlBarUC()
         {
             InitializeComponent();
-            this.DataContext = new MainViewModel(user);
+            this.DataContext = ViewModel = new ControlBarViewModel();
         }
     }
 }
