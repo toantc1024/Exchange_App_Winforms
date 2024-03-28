@@ -43,6 +43,9 @@ namespace Exchange_App.ViewModel
                         if (w.WindowState != WindowState.Maximized)
                         {
                             w.WindowState = WindowState.Maximized;
+                        } else
+                        {
+                            w.WindowState = WindowState.Normal;
                         }
                     }
                 }

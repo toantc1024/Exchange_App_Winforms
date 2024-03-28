@@ -35,7 +35,7 @@ namespace Exchange_App.ViewModel
         public MainViewModel(User user)
         {
             CurrentUser = user;
-            //SelectedViewModel = new HomeViewModel(CurrentUser, SetCount);
+            SelectedViewModel = new HomeViewModel(CurrentUser);
 
             LogoutCommand = new RelayCommand<object>(o =>
             {
@@ -43,10 +43,6 @@ namespace Exchange_App.ViewModel
             }, o =>
             {
                 CurrentUser = null;
-                // close the window
-
-                // show Login window
-
                 var authWindow = new AuthWindow();
                 authWindow.Show();
                 Application.Current.MainWindow.Close();
@@ -57,26 +53,6 @@ namespace Exchange_App.ViewModel
                 (p) => { return true; },
                 (p) =>
                 {
-                    //if(p == null)
-                    //    return;
-                    //p.Hide();
-                    //LoginWindow loginWindow = new LoginWindow();
-                    //loginWindow.ShowDialog();
-
-                    //if(loginWindow.DataContext == null)
-                    //    return;
-
-                    //var loginVM = loginWindow.DataContext as LoginViewModel;    
-
-                    //if(loginVM.IsLogin)
-                    //{
-                    //    CurrentUser = user;
-                    //    p.Show();
-                    //}
-                    //else
-                    //{ 
-                    //    p.Close();
-                    //}
                 }
             );
 
@@ -90,33 +66,19 @@ namespace Exchange_App.ViewModel
             });
 
 
-
             UpdateViewCommand = new RelayCommand<object>(o =>
             {
                 return true;
             },
                 o =>
                 {
-                    //if ((string)o == "Home")
-                    //{
-                    //    SelectedViewModel = new HomeViewModel(CurrentUser, SetCount);
-                    //}
-                    //else if ((string)o == "Cart")
-                    //{
-                    //    SelectedViewModel = new CheckoutViewModel(CurrentUser);
-                    //}
-                    //else if ((string)o == "User")
-                    //{
-                    //    SelectedViewModel = new UserViewModel(CurrentUser);
-                    //}
-                    //else if ((string)o == "ProductManager")
-                    //{
-                    //    SelectedViewModel = new ProductManagerViewModel(CurrentUser);
-                    //}
-                    //else if ((string)o == "OrderManager")
-                    //{
-                    //    SelectedViewModel = new OrderViewModel(CurrentUser);
-                    //}
+                    if ((string)o == "Home")
+                    {
+                        SelectedViewModel = new HomeViewModel(CurrentUser);
+                    } else if ((string)o == "MyProducts")
+                    {
+                        
+                    }
                 }
 
             );

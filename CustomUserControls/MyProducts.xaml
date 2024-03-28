@@ -1,0 +1,195 @@
+﻿<UserControl
+    x:Class="Exchange_App.CustomUserControls.MyProducts"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Exchange_App.CustomUserControls"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="4*" />
+        </Grid.RowDefinitions>
+        <Grid Background="DarkOrange">
+            <StackPanel
+                Grid.Row="0"
+                Margin="10"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Orientation="Horizontal">
+                <materialDesign:PackIcon
+                    Width="20"
+                    Height="20"
+                    Margin="0,0,10,0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Foreground="White"
+                    Kind="AppBadge" />
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="20"
+                    FontWeight="Bold"
+                    Foreground="White"
+                    Text="My Products" />
+                <TextBlock />
+            </StackPanel>
+        </Grid>
+
+
+        <StackPanel
+            Grid.Row="1"
+            HorizontalAlignment="Right"
+            Orientation="Horizontal">
+            <Button
+                Margin="10"
+                HorizontalAlignment="Right"
+                Command="{Binding ChangeViewCommand}"
+                CommandParameter="AddProduct">
+                <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center" Foreground="White">
+                        Add product
+                    </TextBlock>
+                    <materialDesign:PackIcon
+                        VerticalAlignment="Center"
+                        Foreground="White"
+                        Kind="Add" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
+
+
+
+
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <StackPanel Orientation="Horizontal">
+                <Grid Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="31*" />
+                        <ColumnDefinition Width="743*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Button Command="{Binding GetProductList}" Style="{StaticResource MaterialDesignToolButton}">
+                        <materialDesign:PackIcon
+                            Width="18"
+                            Height="16"
+                            VerticalAlignment="Center"
+                            Kind="Search"
+                            Opacity=".56" />
+                    </Button>
+
+                    <TextBox
+                        x:Name="searchBar"
+                        Grid.Column="1"
+                        Grid.ColumnSpan="2"
+                        MinWidth="200"
+                        Margin="8,0,0,0"
+                        VerticalAlignment="Center"
+                        materialDesign:HintAssist.Hint="Find products"
+                        materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                        BorderThickness="0">
+                        <TextBox.InputBindings>
+                            <KeyBinding
+                                Key="Return"
+                                Command="{Binding GetProductListCommand}"
+                                CommandParameter="{Binding ElementName=searchBar}" />
+                        </TextBox.InputBindings>
+                    </TextBox>
+                </Grid>
+            </StackPanel>
+
+            <ScrollViewer Grid.Row="2" Background="White">
+                <ItemsControl Grid.IsSharedSizeScope="True" ItemsSource="{Binding Products}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border
+                                x:Name="Border"
+                                Padding="8"
+                                BorderBrush="{DynamicResource MaterialDesignDivider}"
+                                BorderThickness="0,0,0,1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Margin="8,0,0,0">
+                                        <TextBlock FontWeight="Bold" Text="{Binding ProductName}" />
+                                        <TextBlock Text="{Binding UploadedDate}" />
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                        <Button
+                                            Background="Green"
+                                            BorderBrush="Green"
+                                            Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MyProducts}}, Path=DataContext.ShowPreviewCommand}"
+                                            CommandParameter="{Binding}"
+                                            Foreground="White">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock VerticalAlignment="Center">
+                                                    Preview
+                                                </TextBlock>
+                                                <Separator Width="5" Visibility="Hidden" />
+                                                <materialDesign:PackIcon VerticalAlignment="Center" Kind="Eye" />
+                                            </StackPanel>
+                                        </Button>
+
+                                        <Button
+                                            Background="DodgerBlue"
+                                            BorderBrush="DodgerBlue"
+                                            Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MyProducts}}, Path=DataContext.ShowEditProductCommand}"
+                                            CommandParameter="{Binding}"
+                                            Foreground="White">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock VerticalAlignment="Center">
+                                                    Edit
+                                                </TextBlock>
+                                                <Separator Width="5" Visibility="Hidden" />
+                                                <materialDesign:PackIcon VerticalAlignment="Center" Kind="Eye" />
+                                            </StackPanel>
+                                        </Button>
+                                        <Button
+                                            Background="OrangeRed"
+                                            BorderBrush="OrangeRed"
+                                            Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MyProducts}}, Path=DataContext.DeleteProductCommand}"
+                                            CommandParameter="{Binding}"
+                                            Foreground="White">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock VerticalAlignment="Center">
+                                                    Delete
+                                                </TextBlock>
+                                                <Separator Width="5" Visibility="Hidden" />
+                                                <materialDesign:PackIcon VerticalAlignment="Center" Kind="Delete" />
+                                            </StackPanel>
+                                        </Button>
+                                    </StackPanel>
+
+
+                                </Grid>
+                            </Border>
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                    <Setter TargetName="Border" Property="Background" Value="{DynamicResource MaterialDesignSelection}" />
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+
+        </Grid>
+
+
+    </Grid>
+</UserControl>
