@@ -29,5 +29,6 @@ namespace Exchange_App.Tools
             }
             return hash.ToString();
         }
+
     }
 }

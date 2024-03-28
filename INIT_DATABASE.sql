@@ -71,3 +71,9 @@ Create Table WishItem (
 	UserID int FOREIGN KEY REFERENCES Users(UserId)
 )
 
+INSERT INTO Role(Rolename) VALUES ('Admin');
+INSERT INTO Role(Rolename) VALUES ('User');
+
+
+
+SELECT * FROM Users;

@@ -47,8 +47,8 @@ namespace Exchange_App.ViewModel
 
                 // show Login window
 
-                var loginWindow = new LoginWindow();
-                loginWindow.Show();
+                var authWindow = new AuthWindow();
+                authWindow.Show();
                 Application.Current.MainWindow.Close();
 
             });

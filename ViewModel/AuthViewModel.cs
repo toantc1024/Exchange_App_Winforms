@@ -11,7 +11,7 @@ using System.Windows.Input;
 
 namespace Exchange_App.ViewModel
 {
-    public class LoginViewModel : BaseViewModel
+    public class AuthViewModel : BaseViewModel
     {
         public bool IsLogin { get; set; }
         private User _currentUser;
@@ -34,10 +34,11 @@ namespace Exchange_App.ViewModel
         }
 
         public ICommand LoginCommand { get; set; }
+        public ICommand RegisterOpenComamnd { get; set; }
         public ICommand PasswordBoxChanged { get; set; }
         public User CurrentUser { get => _currentUser; set => _currentUser=value; }
 
-        public LoginViewModel()
+        public AuthViewModel()
         {
             PasswordBoxChanged = new RelayCommand<PasswordBox>(
                 (p) =>
@@ -57,10 +58,34 @@ namespace Exchange_App.ViewModel
                 }
                 return false;
             }, (p) => { Login(); });
+
+            RegisterOpenComamnd = new RelayCommand<Window>((p) =>
+            {
+                if (p != null)
+                {
+                    return true;
+                }
+                return false;
+            }, (p) => { 
+
+                // open register window
+                RegisterWindow registerWindow = new RegisterWindow();
+                registerWindow.Show();
+                p.Close();
+
+                // close curent window and open signup ưindow
+                
+            });
         }
 
         public void Login()
         {
+
+            if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password))
+            {
+                MessageBox.Show("Please enter Username and Password");
+                return;
+            }
 
             string passEncode = PasswordEncryption.MD5Hash(PasswordEncryption.Base64Encode(Password));
 
@@ -75,7 +100,6 @@ namespace Exchange_App.ViewModel
                 mainWindow.Show();
                 App.Current.MainWindow = mainWindow;
                 App.Current.Windows[0].Close();
-
             }
             else
             {
