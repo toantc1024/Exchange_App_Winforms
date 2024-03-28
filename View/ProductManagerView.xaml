@@ -4,9 +4,338 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Exchange_App.View"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:uc="clr-namespace:Exchange_App.CustomUserControls"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <Grid />
+    <Grid>
+        <Grid>
+            <uc:MyProducts ShowAddProductCommand="{Binding ShowAddProductCommand}" />
+        </Grid>
+
+        <Grid Visibility="{Binding ShowAddProduct}">
+            <Grid Background="White">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="4*" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <Grid Background="DarkOrange" Visibility="{Binding IsShowEditProduct}">
+                    <StackPanel
+                        Grid.Row="0"
+                        Margin="10"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal">
+                        <materialDesign:PackIcon
+                            Width="20"
+                            Height="20"
+                            Margin="0,0,10,0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Foreground="White"
+                            Kind="Add" />
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="20"
+                            FontWeight="Bold"
+                            Foreground="White"
+                            Text="Edit product" />
+                        <TextBlock />
+                    </StackPanel>
+                </Grid>
+                <Grid Background="DarkOrange" Visibility="{Binding IsShowAddNewProduct}">
+                    <StackPanel
+                        Grid.Row="0"
+                        Margin="10"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal">
+                        <materialDesign:PackIcon
+                            Width="20"
+                            Height="20"
+                            Margin="0,0,10,0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Foreground="White"
+                            Kind="Add" />
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="20"
+                            FontWeight="Bold"
+                            Foreground="White"
+                            Text="Add new product" />
+                        <TextBlock />
+                    </StackPanel>
+                </Grid>
+
+                <ScrollViewer Grid.Row="1">
+                    <StackPanel
+                        MinWidth="600"
+                        Margin="0,40,0,0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Top">
+
+                        <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+
+                            <Label VerticalAlignment="Center" FontWeight="Bold">Product name:</Label>
+                            <TextBox
+                                x:Name="tbProductName"
+                                materialDesign:HintAssist.Hint="Enter your product name"
+                                Text="{Binding ProductName, UpdateSourceTrigger=PropertyChanged}" />
+
+                        </StackPanel>
+
+
+                        <Separator Height="10" Visibility="Hidden" />
+
+                        <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+
+                            <Label VerticalAlignment="Center" FontWeight="Bold">Quantity:</Label>
+                            <TextBox
+                                x:Name="tbProductQuantity"
+                                materialDesign:HintAssist.Hint="How many items do you have?"
+                                Text="{Binding Quantity, UpdateSourceTrigger=PropertyChanged}" />
+
+                        </StackPanel>
+
+                        <Separator Height="10" Visibility="Hidden" />
+
+                        <StackPanel>
+                            <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+
+                                <Label VerticalAlignment="Center" FontWeight="Bold">Original price:</Label>
+                                <TextBox
+                                    x:Name="tbOriginalPrice"
+                                    materialDesign:HintAssist.Hint="Price"
+                                    Text="{Binding Original_price, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                            <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+
+                                <Label VerticalAlignment="Center" FontWeight="Bold">Sell price:</Label>
+                                <TextBox
+                                    x:Name="tbSellPrice"
+                                    materialDesign:HintAssist.Hint="Price"
+                                    Text="{Binding Sell_price, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                        </StackPanel>
+
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Grid>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label VerticalAlignment="Center" FontWeight="Bold">Images</Label>
+                                </StackPanel>
+                                <Button
+                                    Margin="4"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
+                                    Command="{Binding OpenFileDialog}"
+                                    Foreground="White">
+                                    Upload images
+                                </Button>
+                            </Grid>
+
+
+                            <ScrollViewer
+                                Grid.Row="1"
+                                CanContentScroll="True"
+                                VerticalScrollBarVisibility="Auto">
+                                <ItemsControl Grid.IsSharedSizeScope="True" ItemsSource="{Binding Pathes}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border
+                                                Width="100"
+                                                Height="100"
+                                                Padding="3,0,3,0"
+                                                BorderBrush="Gray"
+                                                BorderThickness="1.6"
+                                                CornerRadius="10">
+                                                <Border.Background>
+                                                    <ImageBrush ImageSource="{Binding}" Stretch="None" />
+                                                </Border.Background>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal" />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                </ItemsControl>
+
+                            </ScrollViewer>
+
+                        </Grid>
+
+                        <Separator Height="10" Visibility="Hidden" />
+                        <StackPanel>
+                            <Label FontWeight="Bold">Category:</Label>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="auto" />
+                                </Grid.ColumnDefinitions>
+                                <ComboBox
+                                    x:Name="OutlinedComboBox"
+                                    Grid.Column="0"
+                                    Margin="0,0,10,0"
+                                    materialDesign:HintAssist.Hint="Select category"
+                                    ItemsSource="{Binding Categories}"
+                                    SelectedItem="{Binding SelectedCategory}"
+                                    Style="{StaticResource MaterialDesignOutlinedComboBox}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Foreground="Black" Text="{Binding CatName}" />
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                                <Button
+                                    Grid.Column="1"
+                                    Command="{Binding ShowAddCategory}"
+                                    Foreground="White">
+                                    Add category
+                                </Button>
+                            </Grid>
+                        </StackPanel>
+
+                        <Separator Height="10" Visibility="Hidden" />
+
+                        <Border
+                            BorderBrush="Gray"
+                            BorderThickness="1"
+                            CornerRadius="5">
+                            <StackPanel>
+
+                                <Label FontWeight="Bold">Product description:</Label>
+                                <Separator Height="10" Visibility="Hidden" />
+                                <TextBox
+                                    Height="100"
+                                    VerticalAlignment="Top"
+                                    materialDesign:HintAssist.Hint="What is your product status now?"
+                                    AcceptsReturn="True"
+                                    IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignOutlinedTextBoxEnabledComboBox}"
+                                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                    Text="{Binding Status_des}"
+                                    TextWrapping="Wrap"
+                                    VerticalScrollBarVisibility="Auto" />
+                            </StackPanel>
+
+
+                        </Border>
+
+                        <Separator Height="10" Visibility="Hidden" />
+
+                        <Border
+                            BorderBrush="Gray"
+                            BorderThickness="1"
+                            CornerRadius="5">
+                            <StackPanel>
+
+                                <Label FontWeight="Bold">Product information:</Label>
+                                <Separator Height="10" Visibility="Hidden" />
+                                <TextBox
+                                    Height="100"
+                                    VerticalAlignment="Top"
+                                    materialDesign:HintAssist.Hint="Tell other about brands, color or how do you buy it"
+                                    AcceptsReturn="True"
+                                    IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignOutlinedTextBoxEnabledComboBox}"
+                                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                    Text="{Binding Info_des}"
+                                    TextWrapping="Wrap"
+                                    VerticalScrollBarVisibility="Auto" />
+                            </StackPanel>
+
+
+                        </Border>
+
+
+                    </StackPanel>
+                </ScrollViewer>
+
+                <Border Grid.Row="2" Visibility="{Binding IsShowAddNewProduct}">
+                    <StackPanel
+                        Margin="5"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal">
+                        <Button
+                            Background="Green"
+                            BorderBrush="Green"
+                            Foreground="White">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock VerticalAlignment="Center">
+                                    Preview
+                                </TextBlock>
+                                <Separator Width="5" />
+                                <materialDesign:PackIcon VerticalAlignment="Center" Kind="Eye" />
+                            </StackPanel>
+                        </Button>
+                        <Separator Width="5" Visibility="Hidden" />
+                        <Button
+                            Background="Orange"
+                            BorderBrush="Orange"
+                            Command="{Binding AddProductCommand}"
+                            Foreground="White">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock VerticalAlignment="Center">
+                                    Add
+                                </TextBlock>
+                                <Separator Width="5" />
+                                <materialDesign:PackIcon VerticalAlignment="Center" Kind="Add" />
+                            </StackPanel>
+                        </Button>
+
+
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Row="2" Visibility="{Binding IsShowEditProduct}">
+                    <StackPanel
+                        Margin="5"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal">
+                        <Button
+                            Background="Green"
+                            BorderBrush="Green"
+                            Foreground="White">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock VerticalAlignment="Center">
+                                    Preview
+                                </TextBlock>
+                                <Separator Width="5" />
+                                <materialDesign:PackIcon VerticalAlignment="Center" Kind="Eye" />
+                            </StackPanel>
+                        </Button>
+                        <Separator Width="5" Visibility="Hidden" />
+                        <Button
+                            Background="Orange"
+                            BorderBrush="Orange"
+                            Command="{Binding UpdateProductCommand}"
+                            Foreground="White">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock VerticalAlignment="Center">
+                                    Update
+                                </TextBlock>
+                                <Separator Width="5" />
+                                <materialDesign:PackIcon VerticalAlignment="Center" Kind="Update" />
+                            </StackPanel>
+                        </Button>
+
+
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Grid>
+
+    </Grid>
 </UserControl>

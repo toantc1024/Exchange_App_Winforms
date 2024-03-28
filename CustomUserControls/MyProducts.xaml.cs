@@ -30,12 +30,12 @@ namespace Exchange_App.CustomUserControls
 
         // ChangeView ICommand Dependency Property
 
-        public static readonly DependencyProperty ChangeViewCommandProperty =
-                DependencyProperty.Register("ChangeViewCommand", typeof(ICommand), typeof(MyProducts), new PropertyMetadata(null));
-        public ICommand ChangeViewCommand
+        public static readonly DependencyProperty ShowAddProductCommandProperty =
+                DependencyProperty.Register("ShowAddProductCommand", typeof(ICommand), typeof(MyProducts), new PropertyMetadata(null));
+        public ICommand ShowAddProductCommand
         {
-            get { return (ICommand)GetValue(ChangeViewCommandProperty); }
-            set { SetValue(ChangeViewCommandProperty, value); }
+            get { return (ICommand)GetValue(ShowAddProductCommandProperty); }
+            set { SetValue(ShowAddProductCommandProperty, value); }
         }
 
 

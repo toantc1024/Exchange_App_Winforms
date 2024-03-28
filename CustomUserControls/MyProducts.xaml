@@ -50,7 +50,7 @@
             <Button
                 Margin="10"
                 HorizontalAlignment="Right"
-                Command="{Binding ChangeViewCommand}"
+                Command="{Binding ShowAddProductCommand}"
                 CommandParameter="AddProduct">
                 <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
                     <TextBlock VerticalAlignment="Center" Foreground="White">

@@ -75,3 +75,10 @@ INSERT INTO Role(Rolename) VALUES ('Admin');
 INSERT INTO Role(Rolename) VALUES ('User');
 
 
+Insert into Category(CatName) VALUES('Book')
+SELECT * FROM CATEGORY
+
+
+
+SELECT * FROM Product;
+SELECT * FROM IMages;   

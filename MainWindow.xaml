@@ -67,7 +67,7 @@
                     Background="Orange"
                     BorderBrush="Transparent"
                     Command="{Binding UpdateViewCommand}"
-                    CommandParameter="ProductManagerView"
+                    CommandParameter="ProductManager"
                     Foreground="White">
                     <materialDesign:PackIcon Kind="AppBadge" />
                 </Button>

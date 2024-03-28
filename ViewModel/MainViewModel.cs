@@ -1,5 +1,7 @@
 ﻿//using Exchange_App.Commands;
 using Exchange_App.Model;
+using Exchange_App.View;
+
 //using Exchange_App.View;
 using Exchange_App.ViewModel;
 using System;
@@ -23,7 +25,7 @@ namespace Exchange_App.ViewModel
         }
 
         private User _currentUser;
-
+    
         public int count = 0;
 
 
@@ -75,9 +77,9 @@ namespace Exchange_App.ViewModel
                     if ((string)o == "Home")
                     {
                         SelectedViewModel = new HomeViewModel(CurrentUser);
-                    } else if ((string)o == "MyProducts")
+                    } else if ((string)o == "ProductManager")
                     {
-                        
+                        SelectedViewModel = new ProductManagerViewModel(CurrentUser);
                     }
                 }
 
