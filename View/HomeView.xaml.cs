@@ -24,5 +24,32 @@ namespace Exchange_App.View
         {
             InitializeComponent();
         }
+
+
+        #region Dependency Properties
+
+        // ShowProductDetailCommand Dependency Property
+        public static readonly DependencyProperty ShowProductDetailCommandProperty =
+                DependencyProperty.Register("ShowProductDetailCommand", typeof(ICommand), typeof(HomeView), new PropertyMetadata(null));
+
+        public ICommand ShowProductDetailCommand
+        {
+            get { return (ICommand)GetValue(ShowProductDetailCommandProperty); }
+            set { SetValue(ShowProductDetailCommandProperty, value); }
+        }
+
+        #endregion
+
+        private void StackPanel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            MessageBox.Show("StackPanel_MouseLeftButtonDown");
+        }
+
+        private void TextBlock_GiveFeedback(object sender, GiveFeedbackEventArgs e)
+        {
+
+        }
+
+        
     }
 }

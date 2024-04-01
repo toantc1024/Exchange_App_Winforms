@@ -314,6 +314,7 @@ namespace Exchange_App.ViewModel
             IsShowAddProduct = "Hidden";
             IsShowEditProduct = "Hidden";
             ShowAddProduct = "Hidden";
+            GetProducts();
             Categories = DataProvider.Ins.DB.Categories.ToList();
             #endregion
 
@@ -417,7 +418,9 @@ namespace Exchange_App.ViewModel
 
         public void GetProducts()
         {
-            Products = DataProvider.Ins.DB.Products.ToList();
+            // get all products by user
+            Products = DataProvider.Ins.DB.Products.Where(x => x.UserID == CurrentUser.UserID).ToList();
+
         }
         public void ShowView(string view)
         {

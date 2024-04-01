@@ -24,7 +24,6 @@ namespace Exchange_App.ViewModel
             set { _selectedViewModel = value; OnPropertyChanged(nameof(SelectedViewModel)); }
         }
 
-        private User _currentUser;
     
         public int count = 0;
 

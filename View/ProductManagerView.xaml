@@ -12,7 +12,7 @@
     mc:Ignorable="d">
     <Grid>
         <Grid>
-            <uc:MyProducts ShowAddProductCommand="{Binding ShowAddProductCommand}" />
+            <uc:MyProducts Products="{Binding Products}" ShowAddProductCommand="{Binding ShowAddProductCommand}" />
         </Grid>
 
         <Grid Visibility="{Binding ShowAddProduct}">
@@ -191,6 +191,7 @@
                                     materialDesign:HintAssist.Hint="Select category"
                                     ItemsSource="{Binding Categories}"
                                     SelectedItem="{Binding SelectedCategory}"
+                                    SelectionChanged="OutlinedComboBox_SelectionChanged"
                                     Style="{StaticResource MaterialDesignOutlinedComboBox}">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>

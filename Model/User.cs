@@ -21,51 +21,6 @@ namespace Exchange_App.Model
             this.User_Order = new HashSet<User_Order>();
             this.WishItems = new HashSet<WishItem>();
         }
-
-        public void Validate()
-        {
-            // loop through all the properties in the class
-            foreach (var prop in this.GetType().GetProperties())
-            {
-                if (prop.Name == "UserID" || prop.Name == "Address")
-                {
-                    continue;
-                }
-                // check if the property is a string
-                if (prop.PropertyType == typeof(string))
-                {
-                    // get the value of the property
-                    var value = prop.GetValue(this) as string;
-                    // check if the value is null or empty
-                    if (string.IsNullOrEmpty(value))
-                    {
-                        // throw an exception
-                        throw new Exception($"{prop.Name} is required");
-                    }
-                }
-            }
-
-            // check if the password is less than 6 characters
-            if (Password.Length < 6)
-            {
-                // throw an exception
-                throw new Exception("Password must be at least 6 characters long");
-            }
-
-            // check if the phone number is less than 10 characters
-            if (Phone.Length < 10)
-            {
-                // throw an exception
-                throw new Exception("Phone number must be at least 10 characters long");
-            }
-
-
-            // phone validate with format xxx-xxxx-xxx use RegEx
-            if (!System.Text.RegularExpressions.Regex.IsMatch(Phone, @"^\d{3}-\d{4}-\d{3}$"))
-            {
-                throw new Exception("Phone number must be in the format xxx-xxxx-xxx");
-            }
-        }
     
         public int UserID { get; set; }
         public string Name { get; set; }
@@ -84,5 +39,10 @@ namespace Exchange_App.Model
         public virtual ICollection<User_Order> User_Order { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<WishItem> WishItems { get; set; }
+
+        internal void Validate()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

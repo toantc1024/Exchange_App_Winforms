@@ -16,18 +16,13 @@ using System.Windows.Shapes;
 namespace Exchange_App.View
 {
     /// <summary>
-    /// Interaction logic for ProductManagerView.xaml
+    /// Interaction logic for ProductDetailView.xaml
     /// </summary>
-    public partial class ProductManagerView : UserControl
+    public partial class ProductDetailView : UserControl
     {
-        public ProductManagerView()
+        public ProductDetailView()
         {
             InitializeComponent();
-        }
-
-        private void OutlinedComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
         }
     }
 }

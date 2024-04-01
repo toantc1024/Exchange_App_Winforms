@@ -40,9 +40,10 @@ create table Product(
     UserID int references Users(UserID),
     constraint CK_Original_price check (Original_price > 0),
     constraint CK_Sell_price check (Sell_price > 0),
-    constraint CK_Quantity check (Quantity > 0),
+    constraint CK_Quantity check (Quantity >= 0),
     constraint CK_UploadedDate check (UploadedDate <= getdate())
 );
+
 
 
 CREATE TABLE Images(

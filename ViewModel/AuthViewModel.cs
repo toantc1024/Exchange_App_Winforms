@@ -94,6 +94,11 @@ namespace Exchange_App.ViewModel
 
             if (user != null)
             {
+                // clear password
+                Password = "";
+                // clear username
+                Username = "";
+
                 CurrentUser = user;
                 IsLogin = true;
                 MainWindow mainWindow = new MainWindow(user);

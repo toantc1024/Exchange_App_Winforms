@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Exchange_App.Model;
+using Exchange_App.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,24 +12,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace Exchange_App.View
 {
     /// <summary>
-    /// Interaction logic for ProductManagerView.xaml
+    /// Interaction logic for CheckoutView.xaml
     /// </summary>
-    public partial class ProductManagerView : UserControl
+    public partial class CheckoutView : Window
     {
-        public ProductManagerView()
+        public CheckoutView(User currentUser, Product product)
         {
             InitializeComponent();
-        }
-
-        private void OutlinedComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
+            this.DataContext = new CheckoutViewModel(currentUser, product);
         }
     }
 }

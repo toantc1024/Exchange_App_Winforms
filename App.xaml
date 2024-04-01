@@ -20,6 +20,11 @@
                 <view:ProductManagerView />
             </DataTemplate>
 
+            <DataTemplate DataType="{x:Type viewmodel:ProductDetailsViewModel}">
+                <view:ProductDetailView />
+            </DataTemplate>
+
+
             <ResourceDictionary.MergedDictionaries>
                 <materialDesign:BundledTheme
                     BaseTheme="Light"
@@ -29,7 +34,7 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml" />
                 <ResourceDictionary Source="/ResourceXAML/MainResource.xaml" />
-				<ResourceDictionary Source="/ResourceXAML/MainResource.xaml"/>
+                <ResourceDictionary Source="/ResourceXAML/MainResource.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
