@@ -65,6 +65,33 @@ namespace Exchange_App.Model
             }
         }
 
+
+        public string ShowQuantityColor
+        {
+            get
+            {
+                if (Quantity > 0)
+                {
+                    return "Green";
+                }
+                return "Red";
+            }
+        }
+
+        public string ShowQuantity
+        {
+            get
+            {
+                if (Quantity > 0)
+                {
+                    return Quantity + " items";
+                }
+
+                return "Out of stock";
+
+            }
+        }
+
         public string ShowUploadedDate
         {
             get

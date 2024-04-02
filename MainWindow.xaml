@@ -79,7 +79,7 @@
                     Background="Orange"
                     BorderBrush="Transparent"
                     Command="{Binding UpdateViewCommand}"
-                    CommandParameter="User"
+                    CommandParameter="Order"
                     Foreground="White">
                     <materialDesign:PackIcon Kind="Truck" />
                 </Button>

@@ -45,6 +45,13 @@ namespace Exchange_App.ViewModel
 
         #region Commands
 
+        public ICommand DeleteProductCommand
+        {
+            get;
+            set;
+
+        }
+
         public ICommand ShowAddCategory
         {
             set;
@@ -395,6 +402,44 @@ namespace Exchange_App.ViewModel
               }
             );
 
+            DeleteProductCommand = new RelayCommand<Product>((p) =>
+            {
+                return true;
+            }, (p) =>
+            {
+                try
+                {
+                    MessageBoxResult result = MessageBox.Show("Are you sure you want to delete this product?", "Delete Product", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        // delete product
+                        DataProvider.Ins.DB.Images.RemoveRange(DataProvider.Ins.DB.Images.Where(x => x.ProductID == p.ProductID));
+
+                        // set null for all order details
+                        foreach (var od in DataProvider.Ins.DB.OrderDetails.Where(x => x.ProductID == p.ProductID))
+                        {
+                            od.ProductID = null;
+                        }
+
+                        // delete product
+
+                        DataProvider.Ins.DB.Products.Remove(p);
+                        // casecade forgein key
+                        
+
+                        DataProvider.Ins.DB.SaveChanges();
+                        MessageBox.Show("Delete product successfully!");
+                        GetProducts();
+                    }
+                    
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            });
+
             ShowAddProductCommand = new RelayCommand<object>(
               (p) => {
                   return true;
@@ -412,6 +457,7 @@ namespace Exchange_App.ViewModel
                   ShowView("Edit");
               }
             );
+
         }
 
         #region Methods

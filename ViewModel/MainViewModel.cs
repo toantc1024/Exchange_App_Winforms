@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace Exchange_App.ViewModel
@@ -30,6 +31,7 @@ namespace Exchange_App.ViewModel
 
         public User CurrentUser { get; set; }
         public ICommand UpdateViewCommand { get; set; }
+
         public ICommand LoadedWindowCommand { get; set; }
         public ICommand SetCount { get; set; }
         public ICommand LogoutCommand { get; set; }
@@ -66,6 +68,7 @@ namespace Exchange_App.ViewModel
                 MessageBox.Show(count.ToString());
             });
 
+         
 
             UpdateViewCommand = new RelayCommand<object>(o =>
             {
@@ -79,7 +82,13 @@ namespace Exchange_App.ViewModel
                     } else if ((string)o == "ProductManager")
                     {
                         SelectedViewModel = new ProductManagerViewModel(CurrentUser);
-                    }
+                    } else if ((string)o == "Order")
+                    {
+                        SelectedViewModel = new OrderViewModel(CurrentUser);
+                    } else if ((string)o == "User")
+                    {
+                        SelectedViewModel = new UserInfoViewModel(CurrentUser);
+                    } 
                 }
 
             );

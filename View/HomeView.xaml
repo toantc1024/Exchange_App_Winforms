@@ -49,7 +49,10 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <Button Command="{Binding GetProductList}" Style="{StaticResource MaterialDesignToolButton}">
+                            <Button
+                                Command="{Binding OnSearchCommand}"
+                                CommandParameter="{Binding ElementName=searchBar}"
+                                Style="{StaticResource MaterialDesignToolButton}">
                                 <materialDesign:PackIcon
                                     Width="18"
                                     Height="16"
@@ -59,6 +62,7 @@
                             </Button>
 
                             <TextBox
+                                x:Name="searchBar"
                                 Grid.Column="1"
                                 MinWidth="200"
                                 Margin="8,0,0,0"
@@ -67,8 +71,17 @@
                                 materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
                                 BorderThickness="0">
                                 <TextBox.InputBindings>
-                                    <KeyBinding Key="Enter" Command="{Binding LoadProducts}" />
+                                    <KeyBinding
+                                        Key="Enter"
+                                        Command="{Binding OnSearchCommand}"
+                                        CommandParameter="{Binding ElementName=searchBar}" />
                                 </TextBox.InputBindings>
+
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="TextChanged">
+                                        <i:InvokeCommandAction Command="{Binding OnSearchCommand}" CommandParameter="{Binding ElementName=searchBar}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
                             </TextBox>
 
                         </Grid>
@@ -86,10 +99,36 @@
                 <RowDefinition Height="auto" />
                 <RowDefinition />
             </Grid.RowDefinitions>
-            <StackPanel Orientation="Horizontal">
-                <Button Command="{Binding HideProductDetailCommand}">Back</Button>
-                <TextBlock Text="{Binding SelectedProduct.ProductName}" />
+            <StackPanel Background="White" Orientation="Horizontal">
+                <Button
+                    Width="20"
+                    Height="20"
+                    Margin="5"
+                    Padding="0"
+                    HorizontalAlignment="Left"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    materialDesign:ButtonAssist.CornerRadius="50"
+                    materialDesign:ElevationAssist.Elevation="Dp0"
+                    Background="DarkOrange"
+                    BorderThickness="0"
+                    Command="{Binding HideProductDetailCommand}">
+
+                    <materialDesign:PackIcon
+                        Width="15"
+                        Height="15"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Foreground="White"
+                        Kind="ArrowLeft" />
+                </Button>
+                <TextBlock
+                    VerticalAlignment="Center"
+                    Foreground="Gray"
+                    Text="{Binding SelectedProduct.ProductName}" />
             </StackPanel>
+
+
             <ContentControl
                 Grid.Row="1"
                 Panel.ZIndex="999"
@@ -306,8 +345,16 @@
                                                     Text="{Binding ShowOriginalPrice}"
                                                     TextDecorations="Strikethrough" />
 
-                                            </StackPanel>
 
+                                            </StackPanel>
+                                            <StackPanel Orientation="Vertical">
+                                                <TextBlock
+                                                    VerticalAlignment="Center"
+                                                    FontSize="15"
+                                                    FontWeight="Bold"
+                                                    Foreground="{Binding ShowQuantityColor}"
+                                                    Text="{Binding ShowQuantity}" />
+                                            </StackPanel>
 
                                         </StackPanel>
 

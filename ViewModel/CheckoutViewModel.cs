@@ -15,7 +15,7 @@ namespace Exchange_App.ViewModel
         #region Variables
         private User _currentUser;
         private Product _selectedProduct;
-
+        private int _orderQuantity = 0;
         #endregion
 
         #region Properties
@@ -54,6 +54,14 @@ namespace Exchange_App.ViewModel
             get;
             set;
         }
+        public int OrderQuantity { get => _orderQuantity; set
+            {
+                _orderQuantity=value;
+                OnPropertyChanged();
+            }
+        }
+
+
 
         #endregion
         public CheckoutViewModel(User currentUser, Product selectedProduct)
@@ -66,8 +74,10 @@ namespace Exchange_App.ViewModel
 
             #region Implement Commands
 
-            PlaceOrder = new RelayCommand<object>(
+            PlaceOrder = new RelayCommand<Window>(
               (p) => {
+                  if (p == null)
+                      return false;
                   return true;
               },
               (p) => {
@@ -97,6 +107,8 @@ namespace Exchange_App.ViewModel
                   DataProvider.Ins.DB.SaveChanges();
 
                   MessageBox.Show("Order placed successfully");
+
+                  p.Close();
 
               }
 

@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     xmlns:local="clr-namespace:Exchange_App.CustomUserControls"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -128,6 +129,11 @@
                                 Padding="8"
                                 BorderBrush="{DynamicResource MaterialDesignDivider}"
                                 BorderThickness="0,0,0,1">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="MouseLeftButtonDown">
+                                        <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MyProducts}}, Path=DataContext.ShowOrderDetailsCommand}" CommandParameter="{Binding}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
@@ -139,52 +145,7 @@
                                     </StackPanel>
 
                                     <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                        <Button
-                                            Width="25                                             "
-                                            Height="25"
-                                            Padding="0"
-                                            HorizontalAlignment="Center"
-                                            HorizontalContentAlignment="Center"
-                                            VerticalContentAlignment="Center"
-                                            materialDesign:ButtonAssist.CornerRadius="50"
-                                            materialDesign:ElevationAssist.Elevation="Dp0"
-                                            Background="Green"
-                                            BorderThickness="0"
-                                            Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MyProducts}}, Path=DataContext.DeleteProductCommand}"
-                                            CommandParameter="{Binding}">
 
-                                            <materialDesign:PackIcon
-                                                Width="20"
-                                                Height="20"
-                                                HorizontalAlignment="Center"
-                                                VerticalAlignment="Center"
-                                                Foreground="White"
-                                                Kind="Eye" />
-                                        </Button>
-                                        <Separator Width="5" Visibility="Hidden" />
-                                        <Button
-                                            Width="25                                             "
-                                            Height="25"
-                                            Padding="0"
-                                            HorizontalAlignment="Center"
-                                            HorizontalContentAlignment="Center"
-                                            VerticalContentAlignment="Center"
-                                            materialDesign:ButtonAssist.CornerRadius="50"
-                                            materialDesign:ElevationAssist.Elevation="Dp0"
-                                            Background="DodgerBlue"
-                                            BorderThickness="0"
-                                            Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MyProducts}}, Path=DataContext.DeleteProductCommand}"
-                                            CommandParameter="{Binding}">
-
-                                            <materialDesign:PackIcon
-                                                Width="20"
-                                                Height="20"
-                                                HorizontalAlignment="Center"
-                                                VerticalAlignment="Center"
-                                                Foreground="White"
-                                                Kind="Edit" />
-                                        </Button>
-                                        <Separator Width="5" Visibility="Hidden" />
                                         <Button
                                             Width="25                                             "
                                             Height="25"

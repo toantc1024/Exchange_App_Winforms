@@ -42,7 +42,7 @@ namespace Exchange_App.Model
 
         internal void Validate()
         {
-            throw new NotImplementedException();
+            
         }
     }
 }

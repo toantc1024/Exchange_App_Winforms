@@ -12,7 +12,10 @@
     mc:Ignorable="d">
     <Grid>
         <Grid>
-            <uc:MyProducts Products="{Binding Products}" ShowAddProductCommand="{Binding ShowAddProductCommand}" />
+            <uc:MyProducts
+                DeleteProductCommand="{Binding DeleteProductCommand}"
+                Products="{Binding Products}"
+                ShowAddProductCommand="{Binding ShowAddProductCommand}" />
         </Grid>
 
         <Grid Visibility="{Binding ShowAddProduct}">

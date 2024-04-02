@@ -35,16 +35,83 @@
 
         <Grid Grid.Row="1" Background="Orange">
             <materialDesign:Card Margin="5">
-                <StackPanel>
-                    <TextBlock>
-                        Checkout Details
-                    </TextBlock>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
 
-                    <Button Command="{Binding PlaceOrder}">
-                        Order
-                    </Button>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
 
-                </StackPanel>
+                        <Border
+                            Grid.Column="0"
+                            Width="200"
+                            Height="200"
+                            Margin="0,0,0,5"
+                            BorderBrush="LightGray"
+                            BorderThickness="0.5"
+                            CornerRadius="5">
+
+                            <Border.Background>
+                                <ImageBrush ImageSource="{Binding SelectedProduct.GetPreviewImage}" />
+                            </Border.Background>
+
+                        </Border>
+                    </Grid>
+
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Margin="10" Orientation="Vertical">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock>Name:</TextBlock>
+                                <Separator Width="5" Visibility="Hidden" />
+                                <TextBlock Text="{Binding CurrentUser.Name}" />
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock>Addess:</TextBlock>
+                                <Separator Width="5" Visibility="Hidden" />
+                                <TextBlock Text="{Binding CurrentUser.Address}" />
+                            </StackPanel>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="1">
+
+
+                            <!--<StackPanel Orientation="Horizontal">
+                                <TextBlock>Ship fee:</TextBlock>
+                                <Separator Width="5" Visibility="Hidden" />
+                                <TextBlock Text="{Binding CurrentUser.Address}" />
+                            </StackPanel>-->
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock>Total:</TextBlock>
+                                <Separator Width="5" Visibility="Hidden" />
+                                <TextBlock Text="{Binding CurrentUser.Address}" />
+                            </StackPanel>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="2">
+                            <Button
+                                Margin="10"
+                                materialDesign:ButtonAssist.CornerRadius="10"
+                                materialDesign:ElevationAssist.Elevation="Dp0"
+                                Command="{Binding PlaceOrder}"
+                                CommandParameter="{Binding ElementName=window}"
+                                Foreground="White">
+                                Order
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
             </materialDesign:Card>
         </Grid>
     </Grid>

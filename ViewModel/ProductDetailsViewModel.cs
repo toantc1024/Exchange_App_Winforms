@@ -59,6 +59,11 @@ namespace Exchange_App.ViewModel
             {
                 return _selectedProduct.Quantity;
             }
+            set
+            {
+                _selectedProduct.Quantity = value;
+                OnPropertyChanged();
+            }
         }
 
         public string ShowOriginalPrice
@@ -202,6 +207,11 @@ namespace Exchange_App.ViewModel
                   CheckoutView checkoutView = new CheckoutView(CurrentUser, SelectedProduct);
                   //hide current window
                   checkoutView.ShowDialog();
+
+                  // Update Product quantity from database
+                  SelectedProduct = DataProvider.Ins.DB.Products.Where(x => x.ProductID == SelectedProduct.ProductID).FirstOrDefault();
+
+                  Quantity = SelectedProduct.Quantity;
               }
             );
 
