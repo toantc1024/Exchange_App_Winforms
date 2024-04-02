@@ -128,10 +128,11 @@
                                 x:Name="Border"
                                 Padding="8"
                                 BorderBrush="{DynamicResource MaterialDesignDivider}"
-                                BorderThickness="0,0,0,1">
+                                BorderThickness="0,0,0,1"
+                                Cursor="Hand">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="MouseLeftButtonDown">
-                                        <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MyProducts}}, Path=DataContext.ShowOrderDetailsCommand}" CommandParameter="{Binding}" />
+                                        <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MyProducts}}, Path=DataContext.ShowEditProductCommand}" CommandParameter="{Binding}" />
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                                 <Grid>

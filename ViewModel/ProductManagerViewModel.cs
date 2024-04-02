@@ -45,6 +45,12 @@ namespace Exchange_App.ViewModel
 
         #region Commands
 
+        public ICommand UpdateProductCommand
+        {
+            get;
+            set;
+        }
+
         public ICommand DeleteProductCommand
         {
             get;
@@ -449,11 +455,69 @@ namespace Exchange_App.ViewModel
               }
             );
 
-            ShowEditProductCommand = new RelayCommand<object>(
+            UpdateProductCommand = new RelayCommand<object>(
+              (p) =>
+              {
+                  return true;
+              },
+              (p) =>
+              {
+                  var product = DataProvider.Ins.DB.Products.SingleOrDefault(b =>  b.ProductID == ProductID);
+
+
+                  product.ProductName = ProductName;
+                  product.CatID = CatID;
+                  product.Info_des = Info_des;
+                  product.Status_des = Status_des;
+                  product.Sell_price = Sell_price;
+                  product.Original_price = Original_price;
+                  product.Quantity = Quantity;
+
+
+                  // remove all images from ProductID in Images
+                  DataProvider.Ins.DB.Images.RemoveRange(DataProvider.Ins.DB.Images.Where(x => x.ProductID == ProductID));
+
+                  // add new images
+                  foreach (var path in Pathes)
+                  {
+                      DataProvider.Ins.DB.Images.Add(new Image
+                      {
+                          ProductID = ProductID,
+                          ImageURL = path,
+                      });
+                  }
+
+                  // save changes
+                  DataProvider.Ins.DB.SaveChanges();
+                  MessageBox.Show("Added successfully!");
+
+
+              }
+              );
+
+            ShowEditProductCommand = new RelayCommand<Product>(
               (p) => {
                   return true;
               },
               (p) => {
+
+                  ProductName = p.ProductName;
+                  Sell_price = p.Sell_price;
+                  Original_price = p.Original_price;
+
+                  Pathes = new ObservableCollection<string>();
+              foreach (var image in p.Images.ToList())
+                  {
+                      Pathes.Add(image.ImageURL);
+                  }
+
+                  Quantity = p.Quantity;
+                  Status_des = p.Status_des;
+                  Info_des = p.Info_des;
+                  SelectedCategory = Categories.Where(x => x.CatID == p.CatID).FirstOrDefault();
+                  ProductID = p.ProductID;
+
+
                   ShowView("Edit");
               }
             );

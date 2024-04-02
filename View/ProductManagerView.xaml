@@ -265,7 +265,10 @@
                     </StackPanel>
                 </ScrollViewer>
 
-                <Border Grid.Row="2" Visibility="{Binding IsShowAddNewProduct}">
+                <Border
+                    Grid.Row="2"
+                    Background="White"
+                    Visibility="{Binding IsShowAddNewProduct}">
                     <StackPanel
                         Margin="5"
                         HorizontalAlignment="Right"
@@ -302,7 +305,10 @@
                     </StackPanel>
                 </Border>
 
-                <Border Grid.Row="2" Visibility="{Binding IsShowEditProduct}">
+                <Border
+                    Grid.Row="2"
+                    Background="White"
+                    Visibility="{Binding IsShowEditProduct}">
                     <StackPanel
                         Margin="5"
                         HorizontalAlignment="Right"
@@ -316,7 +322,7 @@
                                 <TextBlock VerticalAlignment="Center">
                                     Preview
                                 </TextBlock>
-                                <Separator Width="5" />
+                                <Separator Width="5" Visibility="Hidden" />
                                 <materialDesign:PackIcon VerticalAlignment="Center" Kind="Eye" />
                             </StackPanel>
                         </Button>
