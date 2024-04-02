@@ -10,21 +10,22 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Exchange_App
+namespace Exchange_App.View
 {
     /// <summary>
-    /// Interaction logic for RegisterWindow.xaml
+    /// Interaction logic for ProductManagerView.xaml
     /// </summary>
-    public partial class RegisterWindow : Window
+    public partial class ProductManagerView : UserControl
     {
-        public RegisterWindow()
+        public ProductManagerView()
         {
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void OutlinedComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
         }

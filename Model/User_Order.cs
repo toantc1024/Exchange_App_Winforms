@@ -24,6 +24,50 @@ namespace Exchange_App.Model
         public Nullable<int> UserID { get; set; }
         public string Status { get; set; }
         public System.DateTime OrderDate { get; set; }
+
+        public string OrderName
+        {
+            get
+            {
+                // crate a string to hold the order name by product name
+                string orderName = "";
+                // loop through the order details
+                foreach (var item in OrderDetails)
+                {
+                    // add the product name to the order name
+                    orderName += item.Product.ProductName + ", ";
+                }
+                return orderName;
+            }
+            set
+            {
+                ;
+            }
+        }
+
+        public double Total
+        {
+            get
+            {
+                var total = 0.0;
+                foreach (var item in OrderDetails)
+                {
+                    total += item.Product.Sell_price * item.Quantity;
+                }
+
+                return total;
+            }
+            set {; }
+        }
+
+        public string ShowTotal
+        {
+            get
+            {
+                return Total.ToString("C3", System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"));
+            }
+            set {; }
+        }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Exchange_App.Model;
+using Exchange_App.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,21 +14,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace Exchange_App
+namespace Exchange_App.View
 {
     /// <summary>
-    /// Interaction logic for RegisterWindow.xaml
+    /// Interaction logic for CheckoutView.xaml
     /// </summary>
-    public partial class RegisterWindow : Window
+    public partial class CheckoutView : Window
     {
-        public RegisterWindow()
+        public CheckoutView(User currentUser, Product product)
         {
             InitializeComponent();
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
+            this.DataContext = new CheckoutViewModel(currentUser, product);
         }
     }
 }

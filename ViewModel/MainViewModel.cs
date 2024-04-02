@@ -1,5 +1,7 @@
 ﻿//using Exchange_App.Commands;
 using Exchange_App.Model;
+using Exchange_App.View;
+
 //using Exchange_App.View;
 using Exchange_App.ViewModel;
 using System;
@@ -8,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace Exchange_App.ViewModel
@@ -22,20 +25,20 @@ namespace Exchange_App.ViewModel
             set { _selectedViewModel = value; OnPropertyChanged(nameof(SelectedViewModel)); }
         }
 
-        private User _currentUser;
-
+    
         public int count = 0;
 
 
         public User CurrentUser { get; set; }
         public ICommand UpdateViewCommand { get; set; }
+
         public ICommand LoadedWindowCommand { get; set; }
         public ICommand SetCount { get; set; }
         public ICommand LogoutCommand { get; set; }
         public MainViewModel(User user)
         {
             CurrentUser = user;
-            //SelectedViewModel = new HomeViewModel(CurrentUser, SetCount);
+            SelectedViewModel = new HomeViewModel(CurrentUser);
 
             LogoutCommand = new RelayCommand<object>(o =>
             {
@@ -43,10 +46,6 @@ namespace Exchange_App.ViewModel
             }, o =>
             {
                 CurrentUser = null;
-                // close the window
-
-                // show Login window
-
                 var authWindow = new AuthWindow();
                 authWindow.Show();
                 Application.Current.MainWindow.Close();
@@ -57,26 +56,6 @@ namespace Exchange_App.ViewModel
                 (p) => { return true; },
                 (p) =>
                 {
-                    //if(p == null)
-                    //    return;
-                    //p.Hide();
-                    //LoginWindow loginWindow = new LoginWindow();
-                    //loginWindow.ShowDialog();
-
-                    //if(loginWindow.DataContext == null)
-                    //    return;
-
-                    //var loginVM = loginWindow.DataContext as LoginViewModel;    
-
-                    //if(loginVM.IsLogin)
-                    //{
-                    //    CurrentUser = user;
-                    //    p.Show();
-                    //}
-                    //else
-                    //{ 
-                    //    p.Close();
-                    //}
                 }
             );
 
@@ -89,7 +68,7 @@ namespace Exchange_App.ViewModel
                 MessageBox.Show(count.ToString());
             });
 
-
+         
 
             UpdateViewCommand = new RelayCommand<object>(o =>
             {
@@ -97,26 +76,19 @@ namespace Exchange_App.ViewModel
             },
                 o =>
                 {
-                    //if ((string)o == "Home")
-                    //{
-                    //    SelectedViewModel = new HomeViewModel(CurrentUser, SetCount);
-                    //}
-                    //else if ((string)o == "Cart")
-                    //{
-                    //    SelectedViewModel = new CheckoutViewModel(CurrentUser);
-                    //}
-                    //else if ((string)o == "User")
-                    //{
-                    //    SelectedViewModel = new UserViewModel(CurrentUser);
-                    //}
-                    //else if ((string)o == "ProductManager")
-                    //{
-                    //    SelectedViewModel = new ProductManagerViewModel(CurrentUser);
-                    //}
-                    //else if ((string)o == "OrderManager")
-                    //{
-                    //    SelectedViewModel = new OrderViewModel(CurrentUser);
-                    //}
+                    if ((string)o == "Home")
+                    {
+                        SelectedViewModel = new HomeViewModel(CurrentUser);
+                    } else if ((string)o == "ProductManager")
+                    {
+                        SelectedViewModel = new ProductManagerViewModel(CurrentUser);
+                    } else if ((string)o == "Order")
+                    {
+                        SelectedViewModel = new OrderViewModel(CurrentUser);
+                    } else if ((string)o == "User")
+                    {
+                        SelectedViewModel = new UserInfoViewModel(CurrentUser);
+                    } 
                 }
 
             );

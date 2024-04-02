@@ -16,44 +16,79 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <Grid>
-        <materialDesign:ColorZone Background="Orange">
+        <materialDesign:ColorZone Padding="5" Background="White">
             <DockPanel>
                 <StackPanel
                     Background="Transparent"
                     DockPanel.Dock="Right"
                     Orientation="Horizontal">
-                    <StackPanel.Resources>
-                        <Style TargetType="Button">
-                            <Setter Property="Margin" Value="2,4,2,4" />
-                            <Setter Property="Width" Value="40" />
-                        </Style>
-                    </StackPanel.Resources>
                     <Button
+                        Width="20"
+                        Height="20"
+                        Padding="0"
+                        HorizontalAlignment="Center"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        materialDesign:ButtonAssist.CornerRadius="50"
+                        materialDesign:ElevationAssist.Elevation="Dp0"
                         Background="Orange"
+                        BorderThickness="0"
                         Command="{Binding MinimizeWindowCommand}"
-                        CommandParameter="{Binding ElementName=ucControlBar}"
-                        Foreground="White"
-                        ToolBar.OverflowMode="AsNeeded"
-                        ToolTip="Đóng">
-                        <materialDesign:PackIcon Kind="WindowMinimize" />
+                        CommandParameter="{Binding ElementName=ucControlBar}">
+
+                        <materialDesign:PackIcon
+                            Width="15"
+                            Height="15"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Foreground="White"
+                            Kind="WindowMinimize" />
                     </Button>
+                    <Separator Width="5" Visibility="Hidden" />
                     <Button
-                        Background="DarkOrange"
+                        Width="20"
+                        Height="20"
+                        Padding="0"
+                        HorizontalAlignment="Center"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        materialDesign:ButtonAssist.CornerRadius="50"
+                        materialDesign:ElevationAssist.Elevation="Dp0"
+                        Background="DodgerBlue"
+                        BorderThickness="0"
                         Command="{Binding MaximizeWindowCommand}"
-                        CommandParameter="{Binding ElementName=ucControlBar}"
-                        Foreground="White"
-                        ToolBar.OverflowMode="AsNeeded"
-                        ToolTip="Đóng">
-                        <materialDesign:PackIcon Kind="WindowMaximize" />
+                        CommandParameter="{Binding ElementName=ucControlBar}">
+
+                        <materialDesign:PackIcon
+                            Width="15"
+                            Height="15"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Foreground="White"
+                            Kind="WindowMaximize" />
                     </Button>
+                    <Separator Width="5" Visibility="Hidden" />
                     <Button
-                        Background="OrangeRed"
+                        Width="20"
+                        Height="20"
+                        Padding="0"
+                        HorizontalAlignment="Center"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        materialDesign:ButtonAssist.CornerRadius="50"
+                        materialDesign:ElevationAssist.Elevation="Dp0"
+                        Background="Red"
+                        BorderThickness="0"
                         Command="{Binding CloseWindowCommand}"
-                        CommandParameter="{Binding ElementName=ucControlBar}"
-                        Foreground="White"
-                        ToolBar.OverflowMode="AsNeeded"
-                        ToolTip="Đóng">
-                        <materialDesign:PackIcon Kind="WindowClose" />
+                        CommandParameter="{Binding ElementName=ucControlBar}">
+
+                        <materialDesign:PackIcon
+                            Width="15"
+                            Height="15"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Foreground="White"
+                            Kind="Close" />
                     </Button>
                 </StackPanel>
 

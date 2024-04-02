@@ -40,9 +40,10 @@ create table Product(
     UserID int references Users(UserID),
     constraint CK_Original_price check (Original_price > 0),
     constraint CK_Sell_price check (Sell_price > 0),
-    constraint CK_Quantity check (Quantity > 0),
+    constraint CK_Quantity check (Quantity >= 0),
     constraint CK_UploadedDate check (UploadedDate <= getdate())
 );
+
 
 
 CREATE TABLE Images(
@@ -75,5 +76,10 @@ INSERT INTO Role(Rolename) VALUES ('Admin');
 INSERT INTO Role(Rolename) VALUES ('User');
 
 
+Insert into Category(CatName) VALUES('Book')
+SELECT * FROM CATEGORY
 
-SELECT * FROM Users;
+
+
+SELECT * FROM Product;
+SELECT * FROM IMages;   
