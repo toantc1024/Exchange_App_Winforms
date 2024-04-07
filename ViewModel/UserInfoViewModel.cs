@@ -17,6 +17,8 @@ namespace Exchange_App.ViewModel
 
         private User _currentUser;
 
+        private string _isShowCancel = "Hidden";
+
         #endregion
 
         #region Properties
@@ -39,6 +41,13 @@ namespace Exchange_App.ViewModel
         public ICommand DisableEditCommand { get; set; }
         public ICommand EnableEditCommand { get; set; }
         public ICommand SaveCommand { get; set; }
+        public string IsShowCancel { get => _isShowCancel; set
+
+            {
+                _isShowCancel=value;
+                OnPropertyChanged();
+            }
+        }
 
         #endregion
 
@@ -48,11 +57,13 @@ namespace Exchange_App.ViewModel
 
             EnableEditCommand = new RelayCommand<object>((p) => { return true; }, (p) =>
             {
+                IsShowCancel = "Visible";
                 IsEditEnable = "True";
             });
 
             DisableEditCommand = new RelayCommand<object>((p) => { return true; }, (p) =>
             {
+                IsShowCancel = "Hidden";
                 IsEditEnable = "False";
             });
 

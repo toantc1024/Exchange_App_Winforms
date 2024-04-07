@@ -44,6 +44,9 @@ create table Product(
     constraint CK_UploadedDate check (UploadedDate <= getdate())
 );
 
+-- add View_count to Product table
+ALTER TABLE Product
+ADD View_count int not null default 0;
 
 
 CREATE TABLE Images(
@@ -83,3 +86,8 @@ SELECT * FROM CATEGORY
 
 SELECT * FROM Product;
 SELECT * FROM IMages;   
+
+SELECT * FROM Category;
+
+
+-- 

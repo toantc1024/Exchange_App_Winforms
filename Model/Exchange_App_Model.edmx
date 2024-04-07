@@ -43,6 +43,7 @@
           <Property Name="ProductName" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="CatID" Type="int" />
           <Property Name="UserID" Type="int" />
+          <Property Name="View_count" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Role">
           <Key>
@@ -287,6 +288,7 @@
           <NavigationProperty Name="OrderDetails" Relationship="Self.FK__OrderDeta__Produ__619B8048" FromRole="Product" ToRole="OrderDetail" />
           <NavigationProperty Name="User" Relationship="Self.FK__Product__UserID__5441852A" FromRole="Product" ToRole="Users" />
           <NavigationProperty Name="WishItems" Relationship="Self.FK_CartDetail_ProductID" FromRole="Product" ToRole="WishItem" />
+          <Property Name="View_count" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Role">
           <Key>
@@ -525,6 +527,7 @@
           <EntitySetMapping Name="Products">
             <EntityTypeMapping TypeName="ExchangeAppDBModel.Product">
               <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="View_count" ColumnName="View_count" />
                 <ScalarProperty Name="ProductID" ColumnName="ProductID" />
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />
                 <ScalarProperty Name="Info_des" ColumnName="Info_des" />

@@ -40,9 +40,11 @@ namespace Exchange_App.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<WishItem> WishItems { get; set; }
 
+
+
         internal void Validate()
         {
-            
+
         }
     }
 }

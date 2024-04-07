@@ -155,7 +155,7 @@
                 Grid.Row="1"
                 Panel.ZIndex="9999"
                 Background="White"
-                Visibility="Hidden">
+                Visibility="{Binding IsShowOrderDetail}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
                     <RowDefinition />
@@ -184,7 +184,13 @@
                             Foreground="White"
                             Kind="ArrowLeft" />
                     </Button>
-                    <TextBlock Text="{Binding CurrentOrder.OrderName}" />
+                    <Separator Width="5" Visibility="Hidden" />
+                    <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                        <TextBlock>Order</TextBlock>
+                        <Separator Width="5" Visibility="Hidden" />
+
+                        <TextBlock Text="{Binding CurrentOrder.OrderName}" />
+                    </StackPanel>
                 </StackPanel>
 
                 <Grid Grid.Row="1">

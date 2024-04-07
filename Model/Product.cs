@@ -23,8 +23,6 @@ namespace Exchange_App.Model
             this.OrderDetails = new HashSet<OrderDetail>();
             this.WishItems = new HashSet<WishItem>();
         }
-
-
         public string GetPreviewImage
         {
             get
@@ -160,6 +158,7 @@ namespace Exchange_App.Model
         public string ProductName { get; set; }
         public Nullable<int> CatID { get; set; }
         public Nullable<int> UserID { get; set; }
+        public int View_count { get; set; }
     
         public virtual Category Category { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

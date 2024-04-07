@@ -86,7 +86,8 @@
                                 Background="DarkOrange"
                                 BorderBrush="Transparent"
                                 Command="{Binding DisableEditCommand}"
-                                Foreground="White">
+                                Foreground="White"
+                                Visibility="{Binding IsShowCancel}">
                                 Cancel
                             </Button>
                             <Separator Width="5" Visibility="Hidden" />
@@ -113,7 +114,11 @@
                     </Grid>
                 </TabItem>
                 <TabItem Header="Wishlist">
-                    <TextBlock Margin="8" Text="Left placement" />
+                    <ItemsControl>
+                        <DataTemplate>
+                            <TextBlock />
+                        </DataTemplate>
+                    </ItemsControl>
                 </TabItem>
                 <TabItem Header="Settings">
                     <TextBlock Margin="8" Text="Left placement" />
