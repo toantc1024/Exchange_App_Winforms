@@ -23,7 +23,7 @@ namespace Exchange_App.ViewModel
 
         #region Properties
 
-        public string z currentOrderName
+        public string currentOrderName
         {
             get
             {
