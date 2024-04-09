@@ -412,7 +412,7 @@ namespace Exchange_App.ViewModel
                       CatID = SelectedCategory.CatID,
                       ProductID = ProductID
                   };
-                  CurrentContentPreview = new ProductDetailsViewModel(product, CurrentUser);
+                  CurrentContentPreview = new ProductDetailsViewModel(product, CurrentUser, HideProductCommand);
 
               });
 

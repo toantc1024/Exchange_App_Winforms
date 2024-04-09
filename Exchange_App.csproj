@@ -84,6 +84,9 @@
     <Compile Include="AuthWindow.xaml.cs">
       <DependentUpon>AuthWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CustomUserControls\Loading.xaml.cs">
+      <DependentUpon>Loading.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CustomUserControls\MyOrders.xaml.cs">
       <DependentUpon>MyOrders.xaml</DependentUpon>
     </Compile>
@@ -95,6 +98,27 @@
     </Compile>
     <Compile Include="CustomUserControls\SearchBarUC.xaml.cs">
       <DependentUpon>SearchBarUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Model\FindProductByKeyWord_Result.cs">
+      <DependentUpon>Exchange_App_Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\GetProductByCategory_Result.cs">
+      <DependentUpon>Exchange_App_Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\GetProductByUser_Result.cs">
+      <DependentUpon>Exchange_App_Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\LoginAccount_Result.cs">
+      <DependentUpon>Exchange_App_Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\View_Categories.cs">
+      <DependentUpon>Exchange_App_Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\View_Products.cs">
+      <DependentUpon>Exchange_App_Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\View_Users.cs">
+      <DependentUpon>Exchange_App_Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Tools\CurrencyConverter.cs" />
     <Compile Include="ValidationRules\NotEmptyRule.cs" />
@@ -181,6 +205,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CustomUserControls\ControlBarUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomUserControls\Loading.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

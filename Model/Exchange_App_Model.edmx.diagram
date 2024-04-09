@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="95b59cf6bead49c18a02a69fe80c13b1" Name="Diagram1" ZoomLevel="71">
+      <Diagram DiagramId="95b59cf6bead49c18a02a69fe80c13b1" Name="Diagram1" ZoomLevel="61">
         <EntityTypeShape EntityType="ExchangeAppDBModel.Category" Width="1.5" PointX="8.875" PointY="1.75" IsExpanded="true" />
         <EntityTypeShape EntityType="ExchangeAppDBModel.Image" Width="1.5" PointX="7.5" PointY="5.625" IsExpanded="true" />
         <EntityTypeShape EntityType="ExchangeAppDBModel.OrderDetail" Width="1.5" PointX="8.25" PointY="10.375" IsExpanded="true" />
@@ -22,6 +22,9 @@
         <AssociationConnector Association="ExchangeAppDBModel.FK__Users__RoleID__4CA06362" ManuallyRouted="false" />
         <AssociationConnector Association="ExchangeAppDBModel.FK__User_Orde__UserI__5DCAEF64" ManuallyRouted="false" />
         <AssociationConnector Association="ExchangeAppDBModel.FK__WishItem__UserID__66603565" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="ExchangeAppDBModel.View_Categories" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="ExchangeAppDBModel.View_Products" Width="1.5" PointX="2.75" PointY="9.75" />
+        <EntityTypeShape EntityType="ExchangeAppDBModel.View_Users" Width="1.5" PointX="10.625" PointY="9.375" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

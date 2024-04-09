@@ -12,6 +12,8 @@ namespace Exchange_App.Model
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class ExchangeAppDBEntities : DbContext
     {
@@ -33,5 +35,52 @@ namespace Exchange_App.Model
         public virtual DbSet<User_Order> User_Order { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<WishItem> WishItems { get; set; }
+        public virtual DbSet<View_Categories> View_Categories { get; set; }
+        public virtual DbSet<View_Products> View_Products { get; set; }
+        public virtual DbSet<View_Users> View_Users { get; set; }
+    
+        [DbFunction("ExchangeAppDBEntities", "FindProductByKeyWord")]
+        public virtual IQueryable<Product> FindProductByKeyWord(string keyword)
+        {
+            var keywordParameter = keyword != null ?
+                new ObjectParameter("Keyword", keyword) :
+                new ObjectParameter("Keyword", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<Product>("[ExchangeAppDBEntities].[FindProductByKeyWord](@Keyword)", keywordParameter);
+        }
+    
+        [DbFunction("ExchangeAppDBEntities", "GetProductByCategory")]
+        public virtual IQueryable<Product> GetProductByCategory(Nullable<int> catID)
+        {
+            var catIDParameter = catID.HasValue ?
+                new ObjectParameter("CatID", catID) :
+                new ObjectParameter("CatID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<Product>("[ExchangeAppDBEntities].[GetProductByCategory](@CatID)", catIDParameter);
+        }
+    
+        [DbFunction("ExchangeAppDBEntities", "GetProductByUser")]
+        public virtual IQueryable<Product> GetProductByUser(Nullable<int> userID)
+        {
+            var userIDParameter = userID.HasValue ?
+                new ObjectParameter("UserID", userID) :
+                new ObjectParameter("UserID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<Product>("[ExchangeAppDBEntities].[GetProductByUser](@UserID)", userIDParameter);
+        }
+    
+        [DbFunction("ExchangeAppDBEntities", "LoginAccount")]
+        public virtual IQueryable<User> LoginAccount(string username, string password)
+        {
+            var usernameParameter = username != null ?
+                new ObjectParameter("Username", username) :
+                new ObjectParameter("Username", typeof(string));
+    
+            var passwordParameter = password != null ?
+                new ObjectParameter("Password", password) :
+                new ObjectParameter("Password", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<User>("[ExchangeAppDBEntities].[LoginAccount](@Username, @Password)", usernameParameter, passwordParameter);
+        }
     }
 }

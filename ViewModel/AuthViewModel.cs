@@ -1,21 +1,19 @@
-﻿    using Exchange_App.Model;
+﻿using Exchange_App.Model;
 using Exchange_App.Tools;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 
 namespace Exchange_App.ViewModel
 {
     public class AuthViewModel : BaseViewModel
     {
+        #region Properties
         public bool IsLogin { get; set; }
         private User _currentUser;
 
+        private string _isLoading = "Hidden";
 
         private string _Username;
 
@@ -33,84 +31,121 @@ namespace Exchange_App.ViewModel
             set { _Password = value; OnPropertyChanged(); }
         }
 
-        public ICommand LoginCommand { get; set; }
-        public ICommand RegisterOpenComamnd { get; set; }
-        public ICommand PasswordBoxChanged { get; set; }
+
         public User CurrentUser { get => _currentUser; set => _currentUser=value; }
-
-        public AuthViewModel()
+        public string IsLoading
         {
-            PasswordBoxChanged = new RelayCommand<PasswordBox>(
-                (p) =>
-                {
-                    return true;
-                },
-                (p) =>
-                {
-                    Password = p.Password;
-                }
-            );
-
-            LoginCommand = new RelayCommand<Window>((p) => {
-                if (p != null)
-                {
-                    return true;
-                }
-                return false;
-            }, (p) => { Login(); });
-
-            RegisterOpenComamnd = new RelayCommand<Window>((p) =>
+            get => _isLoading; set
             {
-                if (p != null)
-                {
-                    return true;
-                }
-                return false;
-            }, (p) => { 
-
-                // open register window
-                RegisterWindow registerWindow = new RegisterWindow();
-                registerWindow.Show();
-                p.Close();
-
-                // close curent window and open signup ưindow
-                
-            });
+                _isLoading=value;
+                OnPropertyChanged();
+            }
         }
+
+        #endregion
+
+        #region Commands
+
+        private readonly ClickCommand _loginCommand;
+        public ClickCommand LoginCommand
+        {
+            get
+            {
+                return _loginCommand ?? (new ClickCommand(obj =>
+                {
+                    IsLoading = "Visible";
+                    Login();
+                }));
+            }
+        }
+
+        private readonly ClickCommand _registerOpenComamnd;
+        public ClickCommand RegisterOpenComamnd
+        {
+            get
+            {
+                return _registerOpenComamnd ?? (new ClickCommand(obj =>
+                {
+                    RegisterWindow registerWindow = new RegisterWindow();
+                    registerWindow.Show();
+                    (obj as Window).Close();
+                }));
+            }
+        }
+
+
+        private readonly ClickCommand _passwordBoxChanged;
+        public ClickCommand PasswordBoxChanged
+        {
+            get
+            {
+                return _passwordBoxChanged ?? (new ClickCommand(obj =>
+                {
+                    PasswordBox p = obj as PasswordBox;
+                    Password = p.Password;
+                }));
+            }
+        }
+
+
+        #endregion
+
+        #region Methods
 
         public void Login()
         {
-
-            if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password))
+            try
             {
-                MessageBox.Show("Please enter Username and Password");
-                return;
+                IsLoading = "Visible";
+                if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password))
+                {
+                    throw new Exception("Username or Password is empty");
+                }
+
+                string passEncode = PasswordEncryption.MD5Hash(PasswordEncryption.Base64Encode(Password));
+                User user = DataProvider.Ins.DB.LoginAccount(Username, passEncode).SingleOrDefault();
+
+                if (user != null)
+                {
+                    // clear password
+                    Password = "";
+                    // clear username
+                    Username = "";
+                    CurrentUser = user;
+                    IsLogin = true;
+                    MainWindow mainWindow = new MainWindow(user);
+                    mainWindow.Show();
+                    App.Current.MainWindow = mainWindow;
+                    App.Current.Windows[0].Close();
+                }
+                else
+                {
+                    throw new Exception("Username or Password is incorrect");
+                }
             }
-
-            string passEncode = PasswordEncryption.MD5Hash(PasswordEncryption.Base64Encode(Password));
-
-
-            var user = DataProvider.Ins.DB.Users.Where(x => x.Username == Username && x.Password == passEncode).SingleOrDefault();
-
-            if (user != null)
-            {
-                // clear password
-                Password = "";
-                // clear username
-                Username = "";
-
-                CurrentUser = user;
-                IsLogin = true;
-                MainWindow mainWindow = new MainWindow(user);
-                mainWindow.Show();
-                App.Current.MainWindow = mainWindow;
-                App.Current.Windows[0].Close();
-            }
-            else
+            catch (Exception ex)
             {
                 IsLogin = false;
-                MessageBox.Show("Wrong Username or Password");
+                IsLoading = "Hidden";
+                MessageBox.Show(ex.Message);
             }
+            finally
+            {
+
+                IsLoading = "Hidden";
+
+            }
+
+
+
+
         }
+
+
+        #endregion
+        public AuthViewModel()
+        {
+        }
+
     }
 }

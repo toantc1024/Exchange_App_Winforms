@@ -153,7 +153,7 @@ namespace Exchange_App.ViewModel
 
         #region Commands
 
-        public ICommand BuyCommand
+        public ICommand ShowCheckoutCommand
         {
             get;
             set;
@@ -177,43 +177,46 @@ namespace Exchange_App.ViewModel
             set;
         }
 
+        public ICommand HideIt
+        {
+            get;
+            set;
+        }
+
         #endregion
 
-        public ProductDetailsViewModel(Model.Product product, Model.User user)
+        public ProductDetailsViewModel(Model.Product product, Model.User user, ICommand showCheckoutCommand)
         {
             #region Initialize
+            ShowCheckoutCommand = showCheckoutCommand;
             SelectedProduct = product;
             CurrentUser = user;
 
-            BuyCommand = new RelayCommand<object>(
-              (p) => {
-                  return true;
-              },
-              (p) => {
-                  if (SelectedProduct.User.UserID == CurrentUser.UserID)
-                  {
-                      MessageBox.Show("You can't buy your own product");
-                      return;
-                  }
+            //BuyCommand = new RelayCommand<object>(
+            //  (p) => {
+            //      return true;
+            //  },
+            //  (p) => {
+            //      if (SelectedProduct.User.UserID == CurrentUser.UserID)
+            //      {
+            //          MessageBox.Show("You can't buy your own product");
+            //          return;
+            //      }
 
-                  // Check if product is out of stock
-                  if (DataProvider.Ins.DB.Products.Where(x => x.ProductID == SelectedProduct.ProductID).FirstOrDefault().Quantity == 0)
-                  {
-                      MessageBox.Show("This product is out of stock");
-                      return;
-                  }
+            //      // Check if product is out of stock
+            //      if (DataProvider.Ins.DB.Products.Where(x => x.ProductID == SelectedProduct.ProductID).FirstOrDefault().Quantity == 0)
+            //      {
+            //          MessageBox.Show("This product is out of stock");
+            //          return;
+            //      }
 
-                  // Create new window for checkout
-                  CheckoutView checkoutView = new CheckoutView(CurrentUser, SelectedProduct);
-                  //hide current window
-                  checkoutView.ShowDialog();
+            //      // Create new window for checkout
+            //      // Update Product quantity from database
+            //      SelectedProduct = DataProvider.Ins.DB.Products.Where(x => x.ProductID == SelectedProduct.ProductID).FirstOrDefault();
 
-                  // Update Product quantity from database
-                  SelectedProduct = DataProvider.Ins.DB.Products.Where(x => x.ProductID == SelectedProduct.ProductID).FirstOrDefault();
-
-                  Quantity = SelectedProduct.Quantity;
-              }
-            );
+            //      Quantity = SelectedProduct.Quantity;
+            //  }
+            //);
 
             AddToWishlistCommand = new RelayCommand<object>(
               (p) => {

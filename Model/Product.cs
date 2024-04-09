@@ -23,6 +23,7 @@ namespace Exchange_App.Model
             this.OrderDetails = new HashSet<OrderDetail>();
             this.WishItems = new HashSet<WishItem>();
         }
+
         public string GetPreviewImage
         {
             get
@@ -148,11 +149,12 @@ namespace Exchange_App.Model
                 ;
             }
         }
+
         public int ProductID { get; set; }
         public int Quantity { get; set; }
         public string Info_des { get; set; }
         public string Status_des { get; set; }
-        public double Original_price { get; set; }
+        public double Original_price { get; set; }  
         public double Sell_price { get; set; }
         public System.DateTime UploadedDate { get; set; }
         public string ProductName { get; set; }
