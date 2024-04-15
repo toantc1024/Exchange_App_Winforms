@@ -24,5 +24,28 @@ namespace Exchange_App.View
         {
             InitializeComponent();
         }
+
+        #region Dependency Properties
+
+        // ShowProductDetailCommand Dependency Property
+        public static readonly DependencyProperty ShowWishItemDetailCommandProperty =
+                DependencyProperty.Register("ShowWishItemDetailCommand", typeof(ICommand), typeof(UserInfoView), new PropertyMetadata(null));
+
+        public ICommand ShowWishItemDetailCommand
+        {
+            get { return (ICommand)GetValue(ShowWishItemDetailCommandProperty); }
+            set { SetValue(ShowWishItemDetailCommandProperty, value); }
+        }
+
+        #endregion
+        private void StackPanel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            MessageBox.Show("StackPanel_MouseLeftButtonDown");
+        }
+
+        private void TextBlock_GiveFeedback(object sender, GiveFeedbackEventArgs e)
+        {
+
+        }
     }
 }

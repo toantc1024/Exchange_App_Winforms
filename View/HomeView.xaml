@@ -18,7 +18,7 @@
         </Grid.RowDefinitions>
 
         <materialDesign:ColorZone Padding="16" Mode="PrimaryMid">
-            <Grid>
+            <Grid>          
 
                 <Grid.Resources>
                     <Style TargetType="materialDesign:PackIcon">
