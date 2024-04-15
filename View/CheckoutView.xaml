@@ -7,11 +7,15 @@
     xmlns:local="clr-namespace:Exchange_App.View"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:tool="clr-namespace:Exchange_App.Tools"
     d:DesignHeight="450"
     d:DesignWidth="800"
     Background="White"
     FontFamily="{StaticResource PoppinsRegular}"
     mc:Ignorable="d">
+    <UserControl.Resources>
+        <tool:CurrencyToStringConverter x:Key="currencyConverter" />
+    </UserControl.Resources>
     <Grid>
 
         <Grid Margin="10">
@@ -34,8 +38,8 @@
 
                     <Border
                         Padding="5"
-                        Background="DarkOrange"
-                        CornerRadius="10">
+                        Background="Orange"
+                        CornerRadius="5">
                         <StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock
@@ -140,7 +144,7 @@
                                             <Run
                                                 FontWeight="Bold"
                                                 Foreground="DarkOrange"
-                                                Text="{Binding OrderPrice}" />
+                                                Text="{Binding OrderPrice, Converter={StaticResource currencyConverter}}" />
                                         </TextBlock>
                                     </Border>
                                 </StackPanel>
@@ -173,43 +177,16 @@
                                         Please choose receiving method
                                     </TextBlock>
                                     <Separator Height="5" Visibility="Hidden" />
-                                    <ComboBox materialDesign:HintAssist.Hint="Receving method" Style="{StaticResource MaterialDesignFilledComboBox}">
+                                    <ComboBox
+                                        materialDesign:HintAssist.Hint="Receving method"
+                                        SelectedIndex="{Binding}"
+                                        Style="{StaticResource MaterialDesignFilledComboBox}">
                                         <ComboBoxItem>Receive at Bee Office</ComboBoxItem>
                                         <ComboBoxItem>To my address</ComboBoxItem>
                                     </ComboBox>
                                 </StackPanel>
 
                                 <Separator Height="5" Visibility="Hidden" />
-                                <StackPanel>
-                                    <TextBlock
-                                        FontSize="12"
-                                        FontWeight="Bold"
-                                        Foreground="DarkOrange">
-                                        Address
-                                    </TextBlock>
-                                    <Separator Height="5" Visibility="Hidden" />
-
-                                    <Border
-                                        Padding="5"
-                                        BorderBrush="White"
-                                        BorderThickness=".1"
-                                        CornerRadius="20">
-                                        <StackPanel Orientation="Horizontal">
-                                            <ListBox x:Name="locationLb" Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineListBox}">
-
-                                                <i:Interaction.Triggers>
-                                                    <i:EventTrigger EventName="SelectionChanged">
-                                                        <i:InvokeCommandAction Command="{Binding LocationItemChangedCommand}" CommandParameter="{Binding ElementName=locationLb}" />
-                                                    </i:EventTrigger>
-                                                </i:Interaction.Triggers>
-                                                <ListBoxItem Content="Current address" IsSelected="True" />
-                                                <ListBoxItem Content="Another" />
-
-                                            </ListBox>
-                                        </StackPanel>
-                                    </Border>
-
-                                </StackPanel>
 
 
                             </StackPanel>
@@ -240,7 +217,7 @@
                                                 </TextBlock>
                                                 <TextBlock
                                                     Grid.Column="1"
-                                                    Text="{Binding OrderPrice}"
+                                                    Text="{Binding OrderPrice, Converter={StaticResource currencyConverter}}"
                                                     TextAlignment="Right" />
                                             </Grid>
                                             <Grid>
@@ -268,7 +245,7 @@
                                                     FontSize="15"
                                                     FontWeight="Bold"
                                                     Foreground="Orange"
-                                                    Text="{Binding Total}"
+                                                    Text="{Binding Total, Converter={StaticResource currencyConverter}}"
                                                     TextAlignment="Right" />
                                             </Grid>
                                         </StackPanel>

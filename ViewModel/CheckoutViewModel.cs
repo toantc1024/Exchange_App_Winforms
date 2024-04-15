@@ -17,6 +17,7 @@ namespace Exchange_App.ViewModel
 
         private double _total = 0;
 
+        private int _receivingMethod = 0;
         private User _currentUser;
         private Product _selectedProduct;
         private int _orderQuantity = 1;
@@ -130,6 +131,12 @@ namespace Exchange_App.ViewModel
             }
         }
 
+        public int ReceivingMethod { get => _receivingMethod; set
+            {
+                _receivingMethod=value;OnPropertyChanged();
+            }
+        }
+
         public void CalculateOrderPrice()
         {
             OrderPrice = OrderQuantity * SelectedProduct.Sell_price;
@@ -160,8 +167,14 @@ namespace Exchange_App.ViewModel
                   return true;
               },
               (p) => {
-                  OrderQuantity += 1;
-                  CalculateOrderPrice();
+                  if(OrderQuantity + 1> SelectedProduct.Quantity)
+                  {
+                      MessageBox.Show("Limit exceed"); 
+                   } else
+                  {
+                      OrderQuantity += 1;
+                      CalculateOrderPrice();
+                  }
               }
             );
 
@@ -170,10 +183,15 @@ namespace Exchange_App.ViewModel
                   return true;
               },
               (p) => {
-                  if (OrderQuantity > 0)
+                  if (OrderQuantity <= 1)
+                  {
+                      MessageBox.Show("Quantity must be at least 1");
+                    }
+                else
                   {
                       OrderQuantity -= 1;
                       CalculateOrderPrice();
+
                   }
               });
 
@@ -189,6 +207,7 @@ namespace Exchange_App.ViewModel
                       return;
                   }
 
+
                   User_Order order =
               DataProvider.Ins.DB.User_Order.Add(new User_Order
                   {
@@ -201,10 +220,13 @@ namespace Exchange_App.ViewModel
                   {
                       OrderID = order.OrderID,
                       ProductID = SelectedProduct.ProductID,
-                      Quantity = 1,
+                      Quantity = OrderQuantity,
                   });
 
-                  DataProvider.Ins.DB.SaveChanges();
+                  SelectedProduct.Quantity -= OrderQuantity;
+                  
+
+                  DataProvider.Ins.DB.SaveChanges() ;
 
                   MessageBox.Show("Order placed successfully");
 

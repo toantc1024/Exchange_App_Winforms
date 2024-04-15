@@ -17,16 +17,19 @@ namespace Exchange_App.ViewModel
         private string _isShowOrderDetail = "Hidden";
         private User _currentUser;
         private User_Order _currentOrder;
+        private OrderDetail _currentOrderDetail;
         private List<User_Order> _orders;
 
         #endregion
 
         #region Properties
+        
 
         public string currentOrderName
         {
             get
             {
+                
                 return CurrentOrder.OrderName;
             }
         }
@@ -40,6 +43,15 @@ namespace Exchange_App.ViewModel
 
         }
 
+        public OrderDetail CurrentOrderDetail
+        {
+            get { return _currentOrderDetail; }
+            set
+            {
+                _currentOrderDetail = value;
+                OnPropertyChanged();
+            }
+        }
         public string IsShowOrderDetail
         {
             get => _isShowOrderDetail;
@@ -47,18 +59,23 @@ namespace Exchange_App.ViewModel
             set
             {
                 _isShowOrderDetail = value;
+                
+
+
                 OnPropertyChanged();
             }
         }
 
         public User_Order CurrentOrder
         {
-            get => _currentOrder; set
+            get { return _currentOrder; }
+            set
             {
                 _currentOrder = value;
                 OnPropertyChanged();
             }
-        }
+        }   
+
         public User CurrentUser
         {
             get { return _currentUser; }
@@ -102,6 +119,7 @@ namespace Exchange_App.ViewModel
 
         #endregion
 
+
         public OrderViewModel(User user)
         {
             CurrentUser = user;
@@ -116,7 +134,9 @@ namespace Exchange_App.ViewModel
                 return true;
             }, p =>
             {
+                
                 CurrentOrder = p;
+                CurrentOrderDetail = p.OrderDetails.FirstOrDefault();
                 IsShowOrderDetail = "Visible";
             });
 

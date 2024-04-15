@@ -99,6 +99,9 @@
     <Compile Include="CustomUserControls\SearchBarUC.xaml.cs">
       <DependentUpon>SearchBarUC.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CustomUserControls\UCOrderDetail.xaml.cs">
+      <DependentUpon>UCOrderDetail.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Model\FindProductByKeyWord_Result.cs">
       <DependentUpon>Exchange_App_Model.tt</DependentUpon>
     </Compile>
@@ -225,6 +228,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CustomUserControls\SearchBarUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomUserControls\UCOrderDetail.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

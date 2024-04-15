@@ -44,7 +44,7 @@ namespace Exchange_App.Model
         {
             get
             {
-                return this.Sell_price.ToString("C3", CultureInfo.CreateSpecificCulture("vi-VN"));
+                return this.Sell_price.ToString("C0", CultureInfo.CreateSpecificCulture("vi-VN"));
             }
             set
             {
@@ -56,7 +56,7 @@ namespace Exchange_App.Model
         {
             get
             {
-                return this.Original_price.ToString("C3", CultureInfo.CreateSpecificCulture("vi-VN"));
+                return this.Original_price.ToString("C0", CultureInfo.CreateSpecificCulture("vi-VN"));
             }
             set
             {

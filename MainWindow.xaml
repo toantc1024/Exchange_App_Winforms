@@ -81,7 +81,13 @@
                     Command="{Binding UpdateViewCommand}"
                     CommandParameter="Order"
                     Foreground="White">
-                    <materialDesign:PackIcon Kind="Truck" />
+                    <StackPanel>
+                        <materialDesign:PackIcon Kind="Truck" />
+
+                        <TextBlock FontSize="4">
+                            My orders
+                        </TextBlock>
+                    </StackPanel>
                 </Button>
 
                 <Button

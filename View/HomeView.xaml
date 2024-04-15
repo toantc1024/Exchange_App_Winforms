@@ -26,13 +26,6 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <uc:Loading
-            Grid.Row="1"
-            Panel.ZIndex="1200"
-            DisplayText="Bee are collecting honey for you!"
-            Visibility="Hidden" />
-
-
 
         <materialDesign:ColorZone Padding="16" Mode="PrimaryMid">
             <Grid>
@@ -312,72 +305,21 @@
                                 Best seller
                             </Button>
 
-                            <ComboBox
-                                x:Name="OutlinedComboBox"
-                                Width="256"
-                                Height="50"
-                                Margin="5"
-                                materialDesign:HintAssist.Hint="Some item"
-                                SelectedIndex="{Binding SelectedOrderType, Mode=TwoWay}"
-                                Style="{StaticResource MaterialDesignOutlinedComboBox}">
-                                <ComboBoxItem Content="Price descending" />
-                                <ComboBoxItem Content="Price ascending" />
-                            </ComboBox>
-                        </StackPanel>
 
-                        <StackPanel
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Center"
-                            Orientation="Horizontal">
-                            <TextBlock Margin="10" VerticalAlignment="Center">1/9</TextBlock>
-                            <StackPanel Orientation="Horizontal">
-                                <Button
-                                    Width="20"
-                                    Height="20"
-                                    Padding="0"
-                                    HorizontalAlignment="Center"
-                                    HorizontalContentAlignment="Center"
-                                    VerticalContentAlignment="Center"
-                                    materialDesign:ButtonAssist.CornerRadius="50"
-                                    materialDesign:ElevationAssist.Elevation="Dp0"
-                                    Background="DarkOrange"
-                                    BorderThickness="0"
-                                    Command="{Binding MinimizeWindowCommand}"
-                                    CommandParameter="{Binding ElementName=ucControlBar}">
+                            <Separator Width="5" Visibility="Hidden" />
+                            <StackPanel>
+                                <ComboBox
+                                    Width="256"
+                                    materialDesign:ComboBoxAssist.ShowSelectedItem="{Binding ElementName=DisplaySelectedItemCheckBox, Path=IsChecked}"
+                                    SelectedIndex="{Binding SelectedOrderType, Mode=TwoWay}">
+                                    <ComboBoxItem Content="Price descending" />
+                                    <ComboBoxItem Content="Price ascending" />
 
-                                    <materialDesign:PackIcon
-                                        Width="15"
-                                        Height="15"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        Foreground="White"
-                                        Kind="ArrowLeft" />
-                                </Button>
-                                <Separator Width="5" Visibility="Hidden" />
-                                <Button
-                                    Width="20"
-                                    Height="20"
-                                    Padding="0"
-                                    HorizontalAlignment="Center"
-                                    HorizontalContentAlignment="Center"
-                                    VerticalContentAlignment="Center"
-                                    materialDesign:ButtonAssist.CornerRadius="50"
-                                    materialDesign:ElevationAssist.Elevation="Dp0"
-                                    Background="DarkOrange"
-                                    BorderThickness="0"
-                                    Command="{Binding MinimizeWindowCommand}"
-                                    CommandParameter="{Binding ElementName=ucControlBar}">
-
-                                    <materialDesign:PackIcon
-                                        Width="15"
-                                        Height="15"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        Foreground="White"
-                                        Kind="ArrowRight" />
-                                </Button>
+                                </ComboBox>
                             </StackPanel>
+
                         </StackPanel>
+
                     </Grid>
 
                     <ItemsControl ItemsSource="{Binding Products}">

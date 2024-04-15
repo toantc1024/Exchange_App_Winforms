@@ -2,6 +2,7 @@
 using Exchange_App.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +23,19 @@ namespace Exchange_App.View
     /// </summary>
     public partial class CheckoutView : UserControl
     {
+        public class CurrencyToStringConverter : IValueConverter
+        {
+            public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+            {
+                return ((decimal)value).ToString("C0", CultureInfo.CreateSpecificCulture("vi-VN"));
+            }
+
+            public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+            {
+                return null;
+            }
+        }
+
         public CheckoutView()
         {
             InitializeComponent();

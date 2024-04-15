@@ -247,10 +247,10 @@ namespace Exchange_App.ViewModel
                     // Sort products 
                     if(SelectedOrderType == 0)
                     {
-                        Products = Products.OrderByDescending(x => x.UploadedDate).ToList();
+                        Products = Products.OrderByDescending(x => x.UploadedDate ).OrderByDescending(x => x.View_count).ToList();
                     } else
                     {
-                        Products = Products.OrderBy(x => x.UploadedDate).ToList();
+                        Products = Products.OrderBy(x => x.UploadedDate).OrderByDescending(x => x.View_count).ToList();
                     }
                 });
 
@@ -265,11 +265,11 @@ namespace Exchange_App.ViewModel
                // Sort products 
                if (SelectedOrderType == 0)
                {
-                   Products = Products.OrderByDescending(x => x.OrderDetails.Count()).ToList();
+                   Products = Products.OrderByDescending(x => x.OrderDetails.Count()).OrderByDescending(x => x.View_count).ToList();
                }
                else
                {
-                   Products = Products.OrderBy(x => x.OrderDetails.Count()).ToList();
+                   Products = Products.OrderBy(x => x.OrderDetails.Count()).OrderByDescending(x => x.View_count).ToList();
                }
                // Sort products 
            });
