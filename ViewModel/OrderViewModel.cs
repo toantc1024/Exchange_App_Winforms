@@ -117,6 +117,15 @@ namespace Exchange_App.ViewModel
             get; set;
         }
 
+        public ICommand SortProductByDateCommand { get; set; }
+
+            public ICommand SortProductByPriceCommand { get; set; }
+
+
+        public ICommand SortAlphabetCommand
+        {
+            get;set;
+        }
         #endregion
 
 
@@ -124,6 +133,39 @@ namespace Exchange_App.ViewModel
         {
             CurrentUser = user;
             Orders = CurrentUser.User_Order.ToList();
+
+            SortAlphabetCommand = new RelayCommand<ListBox>(p =>
+            {
+                return true;
+            }, p =>
+            {
+                var type = p.SelectedIndex;
+                if(type ==0)
+                {
+                    // sort desc
+                    Orders = Orders.OrderByDescending(x => x.OrderName).ToList();
+                } else
+                {
+                    Orders = Orders.OrderBy(x => x.OrderName).ToList();
+                }
+            });
+
+            SortProductByPriceCommand = new RelayCommand<object>(p =>
+            {
+                return true;
+            }, p =>
+            {
+                    Orders = Orders.OrderByDescending(x => x.Total).ToList();
+            });
+
+            SortProductByDateCommand = new RelayCommand<object>(p =>
+            {
+                return true;
+            }, p =>
+            {
+                Orders = Orders.OrderByDescending(x => x.OrderDate).ToList();
+            });
+
 
             ShowOrderDetailsCommand = new RelayCommand<User_Order>(p =>
             {

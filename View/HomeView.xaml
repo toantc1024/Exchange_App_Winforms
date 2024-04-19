@@ -20,6 +20,10 @@
                 <view:CheckoutView />
             </DataTemplate>
         </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="13*" />
+            <ColumnDefinition Width="187*" />
+        </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
@@ -27,7 +31,12 @@
         </Grid.RowDefinitions>
 
 
-        <materialDesign:ColorZone Padding="16" Mode="PrimaryMid">
+        <materialDesign:ColorZone
+            Grid.ColumnSpan="2"
+            Padding="16"
+            VerticalAlignment="Center"
+            Background="Orange"
+            Mode="PrimaryMid">
             <Grid>
 
                 <Grid.Resources>
@@ -102,6 +111,7 @@
         </materialDesign:ColorZone>
         <Grid
             Grid.Row="1"
+            Grid.ColumnSpan="2"
             Panel.ZIndex="999"
             Background="White"
             Visibility="{Binding IsShowContent}">
@@ -176,7 +186,10 @@
 
 
 
-        <Grid Grid.Row="1" Background="White">
+        <Grid
+            Grid.Row="1"
+            Grid.ColumnSpan="2"
+            Background="White">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="250" />
                 <ColumnDefinition Width="auto" />
@@ -359,7 +372,7 @@
                                                 BorderThickness="0.5"
                                                 CornerRadius="5">
                                                 <Border.Background>
-                                                    <ImageBrush ImageSource="{Binding GetPreviewImage, UpdateSourceTrigger=PropertyChanged}" Stretch="None" />
+                                                    <ImageBrush ImageSource="{Binding GetPreviewImage, UpdateSourceTrigger=PropertyChanged}" Stretch="UniformToFill" />
                                                 </Border.Background>
                                             </Border>
                                         </DockPanel>

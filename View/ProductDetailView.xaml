@@ -241,6 +241,12 @@
                             </TabControl>
                         </materialDesign:Card>
 
+                        <Border>
+                            <StackPanel>
+                                <TextBlock>Reviews</TextBlock>
+                            </StackPanel>
+                        </Border>
+
                     </StackPanel>
                 </Grid>
             </Grid>

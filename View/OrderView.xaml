@@ -46,65 +46,74 @@
                     <TextBlock />
                 </StackPanel>
             </Grid>
+
             <Grid Grid.Row="1" Panel.ZIndex="100">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <Grid Background="White">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition Width="auto" />
-                    </Grid.ColumnDefinitions>
-                    <Grid Grid.Column="0" Margin="10">
+                <StackPanel>
+                    <Grid Background="White">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="31*" />
-                            <ColumnDefinition Width="743*" />
-                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="auto" />
                         </Grid.ColumnDefinitions>
-                        <Button
-                            Command="{Binding OnSearchCommand}"
-                            CommandParameter="{Binding ElementName=searchBar}"
-                            Style="{StaticResource MaterialDesignToolButton}">
-                            <materialDesign:PackIcon
-                                Width="18"
-                                Height="16"
+                        <Grid Grid.Column="0" Margin="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="31*" />
+                                <ColumnDefinition Width="743*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Button
+                                Command="{Binding OnSearchCommand}"
+                                CommandParameter="{Binding ElementName=searchBar}"
+                                Style="{StaticResource MaterialDesignToolButton}">
+                                <materialDesign:PackIcon
+                                    Width="18"
+                                    Height="16"
+                                    VerticalAlignment="Center"
+                                    Kind="Search"
+                                    Opacity=".56" />
+                            </Button>
+
+                            <TextBox
+                                x:Name="searchBar"
+                                Grid.Column="1"
+                                Grid.ColumnSpan="3"
+                                MinWidth="200"
+                                Margin="8,0,0,0"
                                 VerticalAlignment="Center"
-                                Kind="Search"
-                                Opacity=".56" />
-                        </Button>
-
-                        <TextBox
-                            x:Name="searchBar"
-                            Grid.Column="1"
-                            Grid.ColumnSpan="3"
-                            MinWidth="200"
-                            Margin="8,0,0,0"
-                            VerticalAlignment="Center"
-                            materialDesign:HintAssist.Hint="Find order"
-                            materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
-                            BorderThickness="0">
-                            <TextBox.InputBindings>
-                                <KeyBinding
-                                    Key="Return"
-                                    Command="{Binding OnSearchCommand}"
-                                    CommandParameter="{Binding ElementName=searchBar}" />
+                                materialDesign:HintAssist.Hint="Find order"
+                                materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                                BorderThickness="0">
+                                <TextBox.InputBindings>
+                                    <KeyBinding
+                                        Key="Return"
+                                        Command="{Binding OnSearchCommand}"
+                                        CommandParameter="{Binding ElementName=searchBar}" />
 
 
-                            </TextBox.InputBindings>
+                                </TextBox.InputBindings>
 
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="TextChanged">
-                                    <i:InvokeCommandAction Command="{Binding OnSearchCommand}" CommandParameter="{Binding ElementName=searchBar}" />
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </TextBox>
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="TextChanged">
+                                        <i:InvokeCommandAction Command="{Binding OnSearchCommand}" CommandParameter="{Binding ElementName=searchBar}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </TextBox>
+                        </Grid>
+
+
                     </Grid>
+                    <uc:UCFilter />
+
+                </StackPanel>
 
 
-                </Grid>
+
+
 
                 <ScrollViewer Grid.Row="2" Background="White">
                     <ItemsControl Grid.IsSharedSizeScope="True" ItemsSource="{Binding Orders}">
@@ -127,14 +136,10 @@
                                             <ColumnDefinition Width="auto" />
                                         </Grid.ColumnDefinitions>
                                         <StackPanel Margin="8,0,0,0">
-
                                             <TextBlock FontWeight="Bold" Text="{Binding OrderName}" />
                                             <TextBlock Text="{Binding OrderDate}" />
                                             <TextBlock Text="{Binding ShowTotal}" />
                                         </StackPanel>
-
-
-
                                     </Grid>
                                 </Border>
                                 <DataTemplate.Triggers>

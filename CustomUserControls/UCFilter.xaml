@@ -1,0 +1,54 @@
+﻿<UserControl
+    x:Class="Exchange_App.CustomUserControls.UCFilter"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:local="clr-namespace:Exchange_App.CustomUserControls"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Background="White"
+    mc:Ignorable="d">
+    <StackPanel
+        Margin="5"
+        VerticalAlignment="Center"
+        Orientation="Horizontal">
+
+
+        <StackPanel Margin="5" Orientation="Horizontal">
+            <TextBlock
+                Margin="5"
+                VerticalAlignment="Center"
+                FontWeight="Bold">
+                Sort by
+            </TextBlock>
+            <materialDesign:Chip
+                Command="{Binding SortProductByPriceCommand}"
+                Content="Price"
+                Style="{StaticResource MaterialDesignOutlineChip}" />
+            <Separator Width="5" Visibility="Hidden" />
+            <materialDesign:Chip
+                Command="{Binding SortProductByDateCommand}"
+                Content="Newest"
+                Style="{StaticResource MaterialDesignOutlineChip}" />
+            <Separator Width="5" Visibility="Hidden" />
+            <!--  the following based on https://material.io/guidelines/components/buttons.html#buttons-toggle-buttons  -->
+            <!--  the following based on https://material.io/guidelines/components/buttons.html#buttons-toggle-buttons  -->
+            <ListBox
+                x:Name="Sort"
+                SelectedIndex="0"
+                Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineListBox}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction Command="{Binding SortAlphabetCommand}" CommandParameter="{Binding ElementName=Sort}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <ListBoxItem Content="{materialDesign:PackIcon Kind=SortAlphabeticalAscending}" Foreground="DarkOrange" />
+                <ListBoxItem Content="{materialDesign:PackIcon Kind=SortAlphabeticalDescending}" Foreground="DarkOrange" />
+            </ListBox>
+        </StackPanel>
+
+
+    </StackPanel>
+
+</UserControl>

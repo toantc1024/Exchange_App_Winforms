@@ -48,7 +48,10 @@
             DeleteProductCommand="{Binding DeleteProductCommand}"
             GetProductListCommand="{Binding GetProductListCommand}"
             Products="{Binding Products}"
-            ShowAddProductCommand="{Binding ShowAddProductCommand}" />
+            ShowAddProductCommand="{Binding ShowAddProductCommand}"
+            SortAlphabetCommand="{Binding SortAlphabetCommand}"
+            SortProductByDateCommand="{Binding SortProductByDateCommand}"
+            SortProductByPriceCommand="{Binding SortProductByPriceCommand}" />
 
 
         <Grid Grid.Row="1" Visibility="{Binding ShowAddProduct}">

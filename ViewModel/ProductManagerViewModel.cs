@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Automation.Peers;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -48,6 +49,29 @@ namespace Exchange_App.ViewModel
         #endregion
 
         #region Commands
+
+        public ICommand SortByAlphabetAscCommand
+        {
+            get;set;
+        }
+        public ICommand SortByAlphabetDescCommand
+        {
+            get;set;
+        }
+        public ICommand SortProductByPriceCommand
+        {
+            get;set;
+        }
+
+        public ICommand SortProductByDateCommand
+        {
+            get;set;
+        }
+
+        public ICommand SortAlphabetCommand
+        {
+            get; set;
+        }
 
         public ICommand HideProductCommand
         {
@@ -380,6 +404,61 @@ namespace Exchange_App.ViewModel
             GetProducts();
             Categories = DataProvider.Ins.DB.Categories.ToList();
             #endregion
+
+            SortAlphabetCommand = new RelayCommand<ListBox>((p) =>
+            {
+                return true;
+            }, (p) =>
+            {
+                int k = p.SelectedIndex;
+                // sort product by name
+                if (k == 0)
+                {
+                    SortByAlphabetAscCommand.Execute(null);
+                } else
+                {
+                    SortByAlphabetDescCommand.Execute(null);
+                }
+            });
+
+
+            SortProductByDateCommand = new RelayCommand<object>((p) =>
+            {
+                return true;
+            }, (p) =>
+            {
+                // sort product by date
+                Products = Products.OrderByDescending(x => x.UploadedDate).ToList();    
+            });
+
+            SortByAlphabetDescCommand = new RelayCommand<object>((p) =>
+            {
+                return true;
+            }, (p) =>
+            {
+                // sort product by name desc
+                Products = Products.OrderByDescending(x => x.ProductName).ToList();
+            });
+
+            SortByAlphabetAscCommand = new RelayCommand<object>((p) =>
+            {
+                return true;
+            }, (p) =>
+            {
+                // sort product by name asc
+                Products = Products.OrderBy(x => x.ProductName).ToList();
+            });
+
+            SortProductByPriceCommand = new RelayCommand<object>((p) =>
+            {
+                return true;
+            }, (p) =>
+            {
+                // sort product by price
+                Products = Products.OrderByDescending(x => x.Sell_price).ToList();
+            });
+
+
 
             ShowAddCategory = new RelayCommand<object>(
 

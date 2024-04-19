@@ -58,6 +58,35 @@ namespace Exchange_App.CustomUserControls
             set { SetValue(GetProductListCommandProperty, value); }
         }
 
+        // ICommand SortAlphabetCommand Dependency Property
+        public static readonly DependencyProperty SortAlphabetCommandProperty =
+                DependencyProperty.Register("SortAlphabetCommand", typeof(ICommand), typeof(MyProducts), new PropertyMetadata(null));
+        public ICommand SortAlphabetCommand
+        {
+            get { return (ICommand)GetValue(SortAlphabetCommandProperty); }
+            set { SetValue(SortAlphabetCommandProperty, value); }
+        }
+
+
+        // ICommand SortProductByPriceCommand Dependency Property
+        public static readonly DependencyProperty SortProductByPriceCommandProperty =
+                DependencyProperty.Register("SortProductByPriceCommand", typeof(ICommand), typeof(MyProducts), new PropertyMetadata(null));
+        public ICommand SortProductByPriceCommand
+        {
+            get { return (ICommand)GetValue(SortProductByPriceCommandProperty); }
+            set { SetValue(SortProductByPriceCommandProperty, value); }
+        }
+
+
+        // ICommand SortProductByDateCommand Dependency Property
+        public static readonly DependencyProperty SortProductByDateCommandProperty =
+                DependencyProperty.Register("SortProductByDateCommand", typeof(ICommand), typeof(MyProducts), new PropertyMetadata(null));
+        public ICommand SortProductByDateCommand
+        {
+            get { return (ICommand)GetValue(SortProductByDateCommandProperty); }
+            set { SetValue(SortProductByDateCommandProperty, value); }
+        }
+
         // ShowPreviewCommand Dependency Property
         public static readonly DependencyProperty ShowPreviewCommandProperty =
                 DependencyProperty.Register("ShowPreviewCommand", typeof(ICommand), typeof(MyProducts), new PropertyMetadata(null));
