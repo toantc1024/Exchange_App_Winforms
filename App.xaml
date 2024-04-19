@@ -32,6 +32,8 @@
                 <view:UserInfoView />
             </DataTemplate>
 
+
+
             <ResourceDictionary.MergedDictionaries>
                 <materialDesign:BundledTheme
                     BaseTheme="Light"

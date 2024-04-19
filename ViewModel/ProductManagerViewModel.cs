@@ -9,6 +9,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Automation.Peers;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace Exchange_App.ViewModel
@@ -17,6 +19,8 @@ namespace Exchange_App.ViewModel
     {
         #region Variables
         private List<Category> _categories;
+
+        private BaseViewModel _currentContentPreview;
 
         private Category _selectedCategory;
 
@@ -38,12 +42,42 @@ namespace Exchange_App.ViewModel
         private string _info_des;
         private ObservableCollection<string> _pathes;
 
+        private bool _isShowPreviewModal;
 
         private List<Product> _products;
 
         #endregion
 
         #region Commands
+
+        public ICommand SortByAlphabetAscCommand
+        {
+            get;set;
+        }
+        public ICommand SortByAlphabetDescCommand
+        {
+            get;set;
+        }
+        public ICommand SortProductByPriceCommand
+        {
+            get;set;
+        }
+
+        public ICommand SortProductByDateCommand
+        {
+            get;set;
+        }
+
+        public ICommand SortAlphabetCommand
+        {
+            get; set;
+        }
+
+        public ICommand HideProductCommand
+        {
+            get;
+            set;
+        }
 
         public ICommand UpdateProductCommand
         {
@@ -76,6 +110,12 @@ namespace Exchange_App.ViewModel
             set;
         }
 
+        public ICommand ShowProductPreview
+        {
+            get;
+            set;
+        }
+
         public ICommand OpenFileDialog
         {
             get;
@@ -83,6 +123,12 @@ namespace Exchange_App.ViewModel
         }
 
         public ICommand ShowEditProductCommand
+        {
+            get;
+            set;
+        }
+
+        public ICommand GetProductListCommand
         {
             get;
             set;
@@ -316,7 +362,35 @@ namespace Exchange_App.ViewModel
             }
         }
 
-        public List<Product> Products { get => _products; set { _products=value;  OnPropertyChanged(); } }
+        public List<Product> Products
+        {
+            get => _products;
+            set
+            {
+                _products = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsShowPreviewModal
+        {
+            get => _isShowPreviewModal;
+            set
+            {
+                _isShowPreviewModal = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public BaseViewModel CurrentContentPreview
+        {
+            get => _currentContentPreview;
+            set
+            {
+                _currentContentPreview = value;
+                OnPropertyChanged();
+            }
+        }
 
         #endregion
 
@@ -331,6 +405,61 @@ namespace Exchange_App.ViewModel
             Categories = DataProvider.Ins.DB.Categories.ToList();
             #endregion
 
+            SortAlphabetCommand = new RelayCommand<ListBox>((p) =>
+            {
+                return true;
+            }, (p) =>
+            {
+                int k = p.SelectedIndex;
+                // sort product by name
+                if (k == 0)
+                {
+                    SortByAlphabetAscCommand.Execute(null);
+                } else
+                {
+                    SortByAlphabetDescCommand.Execute(null);
+                }
+            });
+
+
+            SortProductByDateCommand = new RelayCommand<object>((p) =>
+            {
+                return true;
+            }, (p) =>
+            {
+                // sort product by date
+                Products = Products.OrderByDescending(x => x.UploadedDate).ToList();    
+            });
+
+            SortByAlphabetDescCommand = new RelayCommand<object>((p) =>
+            {
+                return true;
+            }, (p) =>
+            {
+                // sort product by name desc
+                Products = Products.OrderByDescending(x => x.ProductName).ToList();
+            });
+
+            SortByAlphabetAscCommand = new RelayCommand<object>((p) =>
+            {
+                return true;
+            }, (p) =>
+            {
+                // sort product by name asc
+                Products = Products.OrderBy(x => x.ProductName).ToList();
+            });
+
+            SortProductByPriceCommand = new RelayCommand<object>((p) =>
+            {
+                return true;
+            }, (p) =>
+            {
+                // sort product by price
+                Products = Products.OrderByDescending(x => x.Sell_price).ToList();
+            });
+
+
+
             ShowAddCategory = new RelayCommand<object>(
 
               (p) => {
@@ -341,6 +470,39 @@ namespace Exchange_App.ViewModel
                   addCategoryView.ShowDialog();
                   Categories = DataProvider.Ins.DB.Categories.ToList();
               });
+
+            ShowProductPreview = new RelayCommand<object>(
+              (p) => {
+                  return true;
+              },
+              (p) => {
+
+                  IsShowPreviewModal = true;
+                  Product product = new Product
+                  {
+                      ProductName = ProductName,
+                      Sell_price = Sell_price,
+                      Original_price = Original_price,
+                      UploadedDate = DateTime.Now,
+                      Info_des = Info_des,
+                      Quantity = Quantity,
+                      Status_des = Status_des,
+                      UserID = CurrentUser.UserID,
+                      CatID = SelectedCategory.CatID,
+                      ProductID = ProductID
+                  };
+                  CurrentContentPreview = new ProductDetailsViewModel(product, CurrentUser, HideProductCommand);
+
+              });
+
+            HideProductCommand = new RelayCommand<object>(
+              (p) => {
+                  return true;
+              },
+              (p) => {
+                  ShowAddProduct = "Hidden";
+              }
+            );
 
             OpenFileDialog = new RelayCommand<object>(
               (p) => {
@@ -391,7 +553,7 @@ namespace Exchange_App.ViewModel
                       // add product 
                       foreach (var path in Pathes)
                       {
-                          DataProvider.Ins.DB.Images.Add(new Image
+                          DataProvider.Ins.DB.Images.Add(new Model.Image
                           {
                               ProductID =
                         product.ProductID,
@@ -402,17 +564,17 @@ namespace Exchange_App.ViewModel
                       DataProvider.Ins.DB.SaveChanges();
                       MessageBox.Show("Add product successfully!");
 
-                  } catch (Exception ex) { 
-                       MessageBox.Show(ex.Message);
+                  }
+                  catch (Exception ex)
+                  {
+                      MessageBox.Show(ex.Message);
                   }
               }
             );
 
-            DeleteProductCommand = new RelayCommand<Product>((p) =>
-            {
+            DeleteProductCommand = new RelayCommand<Product>((p) => {
                 return true;
-            }, (p) =>
-            {
+            }, (p) => {
                 try
                 {
                     MessageBoxResult result = MessageBox.Show("Are you sure you want to delete this product?", "Delete Product", MessageBoxButton.YesNo, MessageBoxImage.Question);
@@ -432,13 +594,12 @@ namespace Exchange_App.ViewModel
 
                         DataProvider.Ins.DB.Products.Remove(p);
                         // casecade forgein key
-                        
 
                         DataProvider.Ins.DB.SaveChanges();
                         MessageBox.Show("Delete product successfully!");
                         GetProducts();
                     }
-                    
+
                 }
                 catch (Exception ex)
                 {
@@ -451,28 +612,26 @@ namespace Exchange_App.ViewModel
                   return true;
               },
               (p) => {
+
+                  ResetProperty();
                   ShowView("Add");
               }
             );
 
             UpdateProductCommand = new RelayCommand<object>(
-              (p) =>
-              {
+              (p) => {
                   return true;
               },
-              (p) =>
-              {
-                  var product = DataProvider.Ins.DB.Products.SingleOrDefault(b =>  b.ProductID == ProductID);
-
+              (p) => {
+                  var product = DataProvider.Ins.DB.Products.SingleOrDefault(b => b.ProductID == ProductID);
 
                   product.ProductName = ProductName;
-                  product.CatID = CatID;
+                  product.CatID = SelectedCategory.CatID;
                   product.Info_des = Info_des;
                   product.Status_des = Status_des;
                   product.Sell_price = Sell_price;
                   product.Original_price = Original_price;
                   product.Quantity = Quantity;
-
 
                   // remove all images from ProductID in Images
                   DataProvider.Ins.DB.Images.RemoveRange(DataProvider.Ins.DB.Images.Where(x => x.ProductID == ProductID));
@@ -480,7 +639,7 @@ namespace Exchange_App.ViewModel
                   // add new images
                   foreach (var path in Pathes)
                   {
-                      DataProvider.Ins.DB.Images.Add(new Image
+                      DataProvider.Ins.DB.Images.Add(new Model.Image
                       {
                           ProductID = ProductID,
                           ImageURL = path,
@@ -489,11 +648,23 @@ namespace Exchange_App.ViewModel
 
                   // save changes
                   DataProvider.Ins.DB.SaveChanges();
-                  MessageBox.Show("Added successfully!");
-
+                  MessageBox.Show("Edit successfully!");
 
               }
-              );
+            );
+
+            GetProductListCommand = new RelayCommand<TextBox>((p) => {
+                if (p != null)
+                {
+                    return true;
+                }
+                return false;
+            }, (p) => { 
+                string searchKey = p.Text;
+                Products = DataProvider.Ins.DB.Products.Where(x => x.ProductName.Contains(searchKey)).ToList();
+
+
+            });
 
             ShowEditProductCommand = new RelayCommand<Product>(
               (p) => {
@@ -506,7 +677,7 @@ namespace Exchange_App.ViewModel
                   Original_price = p.Original_price;
 
                   Pathes = new ObservableCollection<string>();
-              foreach (var image in p.Images.ToList())
+                  foreach (var image in p.Images.ToList())
                   {
                       Pathes.Add(image.ImageURL);
                   }
@@ -516,7 +687,6 @@ namespace Exchange_App.ViewModel
                   Info_des = p.Info_des;
                   SelectedCategory = Categories.Where(x => x.CatID == p.CatID).FirstOrDefault();
                   ProductID = p.ProductID;
-
 
                   ShowView("Edit");
               }
@@ -546,6 +716,19 @@ namespace Exchange_App.ViewModel
                 IsShowAddProduct = "Hidden";
                 IsShowEditProduct = "Visible";
             }
+        }
+
+        public void ResetProperty()
+        {
+            ProductName = "";
+            Sell_price = 0;
+            Original_price = 0;
+            Quantity = 0;
+            SelectedCategory = null;
+            Status_des = "";
+            Info_des = "";
+            Pathes = new ObservableCollection<string>();
+
         }
 
         #endregion

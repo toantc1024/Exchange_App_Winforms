@@ -24,7 +24,6 @@ namespace Exchange_App.Model
             this.WishItems = new HashSet<WishItem>();
         }
 
-
         public string GetPreviewImage
         {
             get
@@ -45,7 +44,7 @@ namespace Exchange_App.Model
         {
             get
             {
-                return this.Sell_price.ToString("C3", CultureInfo.CreateSpecificCulture("vi-VN"));
+                return this.Sell_price.ToString("C0", CultureInfo.CreateSpecificCulture("vi-VN"));
             }
             set
             {
@@ -57,7 +56,7 @@ namespace Exchange_App.Model
         {
             get
             {
-                return this.Original_price.ToString("C3", CultureInfo.CreateSpecificCulture("vi-VN"));
+                return this.Original_price.ToString("C0", CultureInfo.CreateSpecificCulture("vi-VN"));
             }
             set
             {
@@ -150,16 +149,18 @@ namespace Exchange_App.Model
                 ;
             }
         }
+
         public int ProductID { get; set; }
         public int Quantity { get; set; }
         public string Info_des { get; set; }
         public string Status_des { get; set; }
-        public double Original_price { get; set; }
+        public double Original_price { get; set; }  
         public double Sell_price { get; set; }
         public System.DateTime UploadedDate { get; set; }
         public string ProductName { get; set; }
         public Nullable<int> CatID { get; set; }
         public Nullable<int> UserID { get; set; }
+        public int View_count { get; set; }
     
         public virtual Category Category { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

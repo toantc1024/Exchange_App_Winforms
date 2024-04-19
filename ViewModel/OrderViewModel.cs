@@ -17,16 +17,19 @@ namespace Exchange_App.ViewModel
         private string _isShowOrderDetail = "Hidden";
         private User _currentUser;
         private User_Order _currentOrder;
+        private OrderDetail _currentOrderDetail;
         private List<User_Order> _orders;
 
         #endregion
 
         #region Properties
+        
 
         public string currentOrderName
         {
             get
             {
+                
                 return CurrentOrder.OrderName;
             }
         }
@@ -40,6 +43,15 @@ namespace Exchange_App.ViewModel
 
         }
 
+        public OrderDetail CurrentOrderDetail
+        {
+            get { return _currentOrderDetail; }
+            set
+            {
+                _currentOrderDetail = value;
+                OnPropertyChanged();
+            }
+        }
         public string IsShowOrderDetail
         {
             get => _isShowOrderDetail;
@@ -47,18 +59,23 @@ namespace Exchange_App.ViewModel
             set
             {
                 _isShowOrderDetail = value;
+                
+
+
                 OnPropertyChanged();
             }
         }
 
         public User_Order CurrentOrder
         {
-            get => _currentOrder; set
+            get { return _currentOrder; }
+            set
             {
                 _currentOrder = value;
                 OnPropertyChanged();
             }
-        }
+        }   
+
         public User CurrentUser
         {
             get { return _currentUser; }
@@ -100,12 +117,55 @@ namespace Exchange_App.ViewModel
             get; set;
         }
 
+        public ICommand SortProductByDateCommand { get; set; }
+
+            public ICommand SortProductByPriceCommand { get; set; }
+
+
+        public ICommand SortAlphabetCommand
+        {
+            get;set;
+        }
         #endregion
+
 
         public OrderViewModel(User user)
         {
             CurrentUser = user;
             Orders = CurrentUser.User_Order.ToList();
+
+            SortAlphabetCommand = new RelayCommand<ListBox>(p =>
+            {
+                return true;
+            }, p =>
+            {
+                var type = p.SelectedIndex;
+                if(type ==0)
+                {
+                    // sort desc
+                    Orders = Orders.OrderByDescending(x => x.OrderName).ToList();
+                } else
+                {
+                    Orders = Orders.OrderBy(x => x.OrderName).ToList();
+                }
+            });
+
+            SortProductByPriceCommand = new RelayCommand<object>(p =>
+            {
+                return true;
+            }, p =>
+            {
+                    Orders = Orders.OrderByDescending(x => x.Total).ToList();
+            });
+
+            SortProductByDateCommand = new RelayCommand<object>(p =>
+            {
+                return true;
+            }, p =>
+            {
+                Orders = Orders.OrderByDescending(x => x.OrderDate).ToList();
+            });
+
 
             ShowOrderDetailsCommand = new RelayCommand<User_Order>(p =>
             {
@@ -116,7 +176,9 @@ namespace Exchange_App.ViewModel
                 return true;
             }, p =>
             {
+                
                 CurrentOrder = p;
+                CurrentOrderDetail = p.OrderDetails.FirstOrDefault();
                 IsShowOrderDetail = "Visible";
             });
 

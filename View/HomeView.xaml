@@ -8,16 +8,35 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:uc="clr-namespace:Exchange_App.CustomUserControls"
+    xmlns:view="clr-namespace:Exchange_App.View"
+    xmlns:viewmodel="clr-namespace:Exchange_App.ViewModel"
     d:DesignHeight="450"
     d:DesignWidth="800"
+    FontFamily="{StaticResource PoppinsRegular}"
     mc:Ignorable="d">
     <Grid>
+        <Grid.Resources>
+            <DataTemplate DataType="{x:Type viewmodel:CheckoutViewModel}">
+                <view:CheckoutView />
+            </DataTemplate>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="13*" />
+            <ColumnDefinition Width="187*" />
+        </Grid.ColumnDefinitions>
+
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <materialDesign:ColorZone Padding="16" Mode="PrimaryMid">
+
+        <materialDesign:ColorZone
+            Grid.ColumnSpan="2"
+            Padding="16"
+            VerticalAlignment="Center"
+            Background="Orange"
+            Mode="PrimaryMid">
             <Grid>
 
                 <Grid.Resources>
@@ -92,6 +111,7 @@
         </materialDesign:ColorZone>
         <Grid
             Grid.Row="1"
+            Grid.ColumnSpan="2"
             Panel.ZIndex="999"
             Background="White"
             Visibility="{Binding IsShowContent}">
@@ -100,28 +120,57 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
             <StackPanel Background="White" Orientation="Horizontal">
-                <Button
-                    Width="20"
-                    Height="20"
-                    Margin="5"
-                    Padding="0"
-                    HorizontalAlignment="Left"
-                    HorizontalContentAlignment="Center"
-                    VerticalContentAlignment="Center"
-                    materialDesign:ButtonAssist.CornerRadius="50"
-                    materialDesign:ElevationAssist.Elevation="Dp0"
-                    Background="DarkOrange"
-                    BorderThickness="0"
-                    Command="{Binding HideProductDetailCommand}">
 
-                    <materialDesign:PackIcon
-                        Width="15"
-                        Height="15"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        Foreground="White"
-                        Kind="ArrowLeft" />
-                </Button>
+                <Grid>
+                    <Button
+                        Width="20"
+                        Height="20"
+                        Margin="5"
+                        Padding="0"
+                        HorizontalAlignment="Left"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Panel.ZIndex="9999"
+                        materialDesign:ButtonAssist.CornerRadius="50"
+                        materialDesign:ElevationAssist.Elevation="Dp0"
+                        Background="DarkOrange"
+                        BorderThickness="0"
+                        Command="{Binding HideProductDetailCommand}">
+
+                        <materialDesign:PackIcon
+                            Width="15"
+                            Height="15"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Foreground="White"
+                            Kind="ArrowLeft" />
+                    </Button>
+
+                    <Button
+                        Width="20"
+                        Height="20"
+                        Margin="5"
+                        Padding="0"
+                        HorizontalAlignment="Left"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Panel.ZIndex="100000"
+                        materialDesign:ButtonAssist.CornerRadius="50"
+                        materialDesign:ElevationAssist.Elevation="Dp0"
+                        Background="DarkOrange"
+                        BorderThickness="0"
+                        Command="{Binding HideCheckoutCommand}"
+                        Visibility="{Binding IsShowCheckout}">
+
+                        <materialDesign:PackIcon
+                            Width="15"
+                            Height="15"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Foreground="White"
+                            Kind="ArrowLeft" />
+                    </Button>
+                </Grid>
                 <TextBlock
                     VerticalAlignment="Center"
                     Foreground="Gray"
@@ -137,9 +186,12 @@
 
 
 
-        <Grid Grid.Row="1" Background="White">
+        <Grid
+            Grid.Row="1"
+            Grid.ColumnSpan="2"
+            Background="White">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="250" />
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
@@ -148,36 +200,77 @@
                 Margin="5"
                 Background="White"
                 Orientation="Vertical">
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon VerticalAlignment="Center" Kind="Filter" />
+                    <TextBlock
+                        Margin="5"
+                        FontSize="20"
+                        FontWeight="Bold">
+                        Filter
+                    </TextBlock>
+                </StackPanel>
+
+
                 <StackPanel Orientation="Vertical">
                     <TextBlock Margin="5" FontSize="15">Category</TextBlock>
-                    <StackPanel Margin="10,10,10,10" Orientation="Vertical">
 
-                        <ItemsControl ItemsSource="{Binding CategoriesFilter}">
+                    <Grid>
+                        <TextBlock Margin="5" FontSize="10">
+                            <Run Text="Selected: " />
+                            <Run Text="{Binding SelectedCount}" />
+                            <Run Text="item(s)." />
+                        </TextBlock>
+                    </Grid>
+                    <ScrollViewer MaxHeight="125" Margin="10,10,10,10">
+                        <StackPanel Orientation="Vertical">
 
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel>
-                                        <CheckBox
-                                            Content="Check"
-                                            IsChecked="{Binding IsChecked, Mode=OneWay}"
-                                            Style="{StaticResource MaterialDesignCheckBox}"
-                                            Tag="False" />
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
+                            <ItemsControl ItemsSource="{Binding CategoriesFilter}">
 
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel>
+                                            <CheckBox
+                                                Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:HomeView}}, Path=DataContext.UpdateSelectCountCommand}"
+                                                Content="{Binding Category.CatName}"
+                                                IsChecked="{Binding IsChecked, Mode=TwoWay}"
+                                                Style="{StaticResource MaterialDesignCheckBox}"
+                                                Tag="False" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+
+                    </ScrollViewer>
+
+
+                </StackPanel>
+                <StackPanel>
+                    <TextBlock>Price range</TextBlock>
+                    <StackPanel Margin="5" Orientation="Horizontal">
+                        <TextBox
+                            VerticalAlignment="Top"
+                            materialDesign:HintAssist.Hint="Minimum"
+                            Style="{StaticResource MaterialDesignFilledTextBox}"
+                            Text="{Binding MinimumPrice}" />
+                        <Separator Width="5" Margin="5" />
+                        <TextBox
+                            VerticalAlignment="Top"
+                            materialDesign:HintAssist.Hint="Maximum"
+                            Style="{StaticResource MaterialDesignFilledTextBox}"
+                            Text="{Binding MaximumPrice}" />
                     </StackPanel>
-
+                </StackPanel>
+                <StackPanel>
                     <Button
                         Margin="5"
                         materialDesign:ButtonAssist.CornerRadius="10"
                         materialDesign:ElevationAssist.Elevation="Dp0"
+                        Command="{Binding ProductQuery}"
                         Foreground="White">
                         Apply
                     </Button>
                 </StackPanel>
-
             </StackPanel>
             <Border
                 Grid.Column="1"
@@ -197,84 +290,49 @@
 
 
                             <TextBlock Margin="10,0,10,0" VerticalAlignment="Center">Sort by</TextBlock>
+
                             <Button
+                                HorizontalAlignment="Center"
+                                HorizontalContentAlignment="Center"
+                                VerticalContentAlignment="Center"
+                                materialDesign:ButtonAssist.CornerRadius="10"
                                 materialDesign:ElevationAssist.Elevation="Dp0"
-                                Background="White"
+                                Background="DarkOrange"
                                 BorderBrush="LightGray"
-                                BorderThickness="0.5">
-                                Related
-                            </Button>
-                            <Button
-                                materialDesign:ElevationAssist.Elevation="Dp0"
-                                Background="White"
-                                BorderBrush="LightGray"
-                                BorderThickness="0.5">
+                                BorderThickness="0.5"
+                                Command="{Binding SortByDate}"
+                                Foreground="White">
                                 Newest
                             </Button>
                             <Button
+                                HorizontalAlignment="Center"
+                                HorizontalContentAlignment="Center"
+                                VerticalContentAlignment="Center"
+                                materialDesign:ButtonAssist.CornerRadius="10"
                                 materialDesign:ElevationAssist.Elevation="Dp0"
-                                Background="White"
+                                Background="DarkOrange"
                                 BorderBrush="LightGray"
-                                BorderThickness="0.5">
+                                BorderThickness="0.5"
+                                Command="{Binding SortByOrders}"
+                                Foreground="White">
                                 Best seller
                             </Button>
 
-                            <ComboBox />
-                        </StackPanel>
 
-                        <StackPanel
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Center"
-                            Orientation="Horizontal">
-                            <TextBlock Margin="10" VerticalAlignment="Center">1/9</TextBlock>
-                            <StackPanel Orientation="Horizontal">
-                                <Button
-                                    Width="20"
-                                    Height="20"
-                                    Padding="0"
-                                    HorizontalAlignment="Center"
-                                    HorizontalContentAlignment="Center"
-                                    VerticalContentAlignment="Center"
-                                    materialDesign:ButtonAssist.CornerRadius="50"
-                                    materialDesign:ElevationAssist.Elevation="Dp0"
-                                    Background="DarkOrange"
-                                    BorderThickness="0"
-                                    Command="{Binding MinimizeWindowCommand}"
-                                    CommandParameter="{Binding ElementName=ucControlBar}">
+                            <Separator Width="5" Visibility="Hidden" />
+                            <StackPanel>
+                                <ComboBox
+                                    Width="256"
+                                    materialDesign:ComboBoxAssist.ShowSelectedItem="{Binding ElementName=DisplaySelectedItemCheckBox, Path=IsChecked}"
+                                    SelectedIndex="{Binding SelectedOrderType, Mode=TwoWay}">
+                                    <ComboBoxItem Content="Price descending" />
+                                    <ComboBoxItem Content="Price ascending" />
 
-                                    <materialDesign:PackIcon
-                                        Width="15"
-                                        Height="15"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        Foreground="White"
-                                        Kind="ArrowLeft" />
-                                </Button>
-                                <Separator Width="5" Visibility="Hidden" />
-                                <Button
-                                    Width="20"
-                                    Height="20"
-                                    Padding="0"
-                                    HorizontalAlignment="Center"
-                                    HorizontalContentAlignment="Center"
-                                    VerticalContentAlignment="Center"
-                                    materialDesign:ButtonAssist.CornerRadius="50"
-                                    materialDesign:ElevationAssist.Elevation="Dp0"
-                                    Background="DarkOrange"
-                                    BorderThickness="0"
-                                    Command="{Binding MinimizeWindowCommand}"
-                                    CommandParameter="{Binding ElementName=ucControlBar}">
-
-                                    <materialDesign:PackIcon
-                                        Width="15"
-                                        Height="15"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        Foreground="White"
-                                        Kind="ArrowRight" />
-                                </Button>
+                                </ComboBox>
                             </StackPanel>
+
                         </StackPanel>
+
                     </Grid>
 
                     <ItemsControl ItemsSource="{Binding Products}">
@@ -303,6 +361,7 @@
                                             <RowDefinition Height="auto" />
                                             <RowDefinition Height="*" />
                                             <RowDefinition Height="auto" />
+                                            <RowDefinition Height="auto" />
                                         </Grid.RowDefinitions>
 
                                         <DockPanel Height="210">
@@ -313,52 +372,85 @@
                                                 BorderThickness="0.5"
                                                 CornerRadius="5">
                                                 <Border.Background>
-                                                    <ImageBrush ImageSource="{Binding GetPreviewImage, UpdateSourceTrigger=PropertyChanged}" Stretch="None" />
+                                                    <ImageBrush ImageSource="{Binding GetPreviewImage, UpdateSourceTrigger=PropertyChanged}" Stretch="UniformToFill" />
                                                 </Border.Background>
                                             </Border>
                                         </DockPanel>
-                                        <StackPanel
-                                            Grid.Row="1"
-                                            Margin="10"
-                                            Orientation="Vertical">
-                                            <StackPanel Orientation="Vertical">
-                                                <TextBlock
-                                                    VerticalAlignment="Center"
-                                                    FontSize="15"
-                                                    FontWeight="Bold"
-                                                    Foreground="Black"
-                                                    Text="{Binding ProductName}" />
+
+
+                                        <Grid Grid.Row="1">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="50" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <StackPanel
+                                                Grid.Row="1"
+                                                Margin="10"
+                                                Orientation="Vertical">
+
+                                                <StackPanel Orientation="Vertical">
+                                                    <TextBlock
+                                                        VerticalAlignment="Center"
+                                                        FontSize="15"
+                                                        FontWeight="Bold"
+                                                        Foreground="Black"
+                                                        Text="{Binding ProductName}" />
+                                                </StackPanel>
+
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock
+                                                        VerticalAlignment="Center"
+                                                        FontSize="15"
+                                                        Foreground="DarkOrange">
+                                                        <TextBlock Text="{Binding ShowSellPrice}" />
+                                                    </TextBlock>
+                                                    <Separator Width="5" Visibility="Hidden" />
+                                                    <TextBlock
+                                                        VerticalAlignment="Center"
+                                                        FontSize="12"
+                                                        Foreground="Gray"
+                                                        Text="{Binding ShowOriginalPrice}"
+                                                        TextDecorations="Strikethrough" />
+
+
+                                                </StackPanel>
+                                                <StackPanel Orientation="Vertical">
+                                                    <TextBlock
+                                                        VerticalAlignment="Center"
+                                                        FontSize="15"
+                                                        FontWeight="Bold"
+                                                        Foreground="{Binding ShowQuantityColor}"
+                                                        Text="{Binding ShowQuantity}" />
+                                                </StackPanel>
+
+
+
                                             </StackPanel>
 
-                                            <StackPanel Orientation="Horizontal">
-                                                <TextBlock
-                                                    VerticalAlignment="Center"
-                                                    FontSize="15"
-                                                    Foreground="DarkOrange">
-                                                    <TextBlock Text="{Binding ShowSellPrice}" />
-                                                </TextBlock>
-                                                <Separator Width="5" Visibility="Hidden" />
-                                                <TextBlock
-                                                    VerticalAlignment="Center"
-                                                    FontSize="12"
-                                                    Foreground="Gray"
-                                                    Text="{Binding ShowOriginalPrice}"
-                                                    TextDecorations="Strikethrough" />
 
+
+                                            <StackPanel Grid.Column="2">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <materialDesign:PackIcon VerticalAlignment="Center" Kind="Eye" />
+                                                    <Separator Width="5" Visibility="Hidden" />
+                                                    <TextBlock
+                                                        VerticalAlignment="Center"
+                                                        FontSize="15"
+                                                        Foreground="Gray"
+                                                        Text="{Binding View_count}" />
+                                                </StackPanel>
 
                                             </StackPanel>
-                                            <StackPanel Orientation="Vertical">
-                                                <TextBlock
-                                                    VerticalAlignment="Center"
-                                                    FontSize="15"
-                                                    FontWeight="Bold"
-                                                    Foreground="{Binding ShowQuantityColor}"
-                                                    Text="{Binding ShowQuantity}" />
-                                            </StackPanel>
 
-                                        </StackPanel>
+                                        </Grid>
 
-                                        <Grid Grid.Row="2" Margin="10">
+
+                                        <Separator
+                                            Grid.Row="2"
+                                            Height="5"
+                                            Background="LightGray" />
+                                        <Grid Grid.Row="3" Margin="10">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition />
                                                 <ColumnDefinition />

@@ -31,6 +31,7 @@ namespace Exchange_App.Model
         public string Address { get; set; }
         public System.DateTime Birthdate { get; set; }
         public Nullable<int> RoleID { get; set; }
+        public string Location { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Product> Products { get; set; }
@@ -39,10 +40,5 @@ namespace Exchange_App.Model
         public virtual ICollection<User_Order> User_Order { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<WishItem> WishItems { get; set; }
-
-        internal void Validate()
-        {
-            
-        }
     }
 }

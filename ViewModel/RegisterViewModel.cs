@@ -208,7 +208,6 @@ namespace Exchange_App.ViewModel
 
                       // Write validation function later!
 
-                      user.Validate();
 
                       DataProvider.Ins.DB.Users.Add(user);
 

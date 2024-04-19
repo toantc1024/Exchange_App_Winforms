@@ -43,6 +43,7 @@
           <Property Name="ProductName" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="CatID" Type="int" />
           <Property Name="UserID" Type="int" />
+          <Property Name="View_count" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Role">
           <Key>
@@ -73,6 +74,7 @@
           <Property Name="Address" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="Birthdate" Type="date" Nullable="false" />
           <Property Name="RoleID" Type="int" />
+          <Property Name="Location" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="WishItem">
           <Key>
@@ -81,6 +83,74 @@
           <Property Name="WishItemID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ProductID" Type="int" />
           <Property Name="UserID" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ExchangeAppDB.dbo.View_Categories' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="View_Categories">
+          <Key>
+            <PropertyRef Name="CatID" />
+            <PropertyRef Name="CatName" />
+          </Key>
+          <Property Name="CatID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CatName" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ExchangeAppDB.dbo.View_Products' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="View_Products">
+          <Key>
+            <PropertyRef Name="ProductID" />
+            <PropertyRef Name="ProductName" />
+            <PropertyRef Name="Quantity" />
+            <PropertyRef Name="Info_des" />
+            <PropertyRef Name="Status_des" />
+            <PropertyRef Name="Original_price" />
+            <PropertyRef Name="Sell_price" />
+            <PropertyRef Name="UploadedDate" />
+            <PropertyRef Name="View_count" />
+            <PropertyRef Name="CatName" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="Phone" />
+            <PropertyRef Name="Address" />
+            <PropertyRef Name="Birthdate" />
+            <PropertyRef Name="Username" />
+          </Key>
+          <Property Name="ProductID" Type="int" Nullable="false" />
+          <Property Name="ProductName" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="Info_des" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Status_des" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Original_price" Type="float" Nullable="false" />
+          <Property Name="Sell_price" Type="float" Nullable="false" />
+          <Property Name="UploadedDate" Type="date" Nullable="false" />
+          <Property Name="View_count" Type="int" Nullable="false" />
+          <Property Name="CatName" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Phone" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Address" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Birthdate" Type="date" Nullable="false" />
+          <Property Name="Username" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="RoleID" Type="int" />
+          <Property Name="Location" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ExchangeAppDB.dbo.View_Users' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="View_Users">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="Username" />
+            <PropertyRef Name="Phone" />
+            <PropertyRef Name="Address" />
+            <PropertyRef Name="Birthdate" />
+          </Key>
+          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Username" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Phone" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Address" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Birthdate" Type="date" Nullable="false" />
+          <Property Name="RoleID" Type="int" />
+          <Property Name="Location" Type="varchar" MaxLength="255" />
         </EntityType>
         <Association Name="FK__Images__ProductI__5AEE82B9">
           <End Role="Product" Type="Self.Product" Multiplicity="1" />
@@ -190,6 +260,86 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="FindProductByKeyWord" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Keyword" Type="varchar" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="ProductID" Type="int" Nullable="false" />
+                <Property Name="Quantity" Type="int" Nullable="false" />
+                <Property Name="Info_des" Type="varchar" MaxLength="255" Nullable="false" />
+                <Property Name="Status_des" Type="varchar" MaxLength="255" Nullable="false" />
+                <Property Name="Original_price" Type="float" Nullable="false" />
+                <Property Name="Sell_price" Type="float" Nullable="false" />
+                <Property Name="UploadedDate" Type="date" Nullable="false" />
+                <Property Name="ProductName" Type="varchar" MaxLength="255" Nullable="false" />
+                <Property Name="CatID" Type="int" />
+                <Property Name="UserID" Type="int" />
+                <Property Name="View_count" Type="int" Nullable="false" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
+        <Function Name="GetProductByCategory" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CatID" Type="int" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="ProductID" Type="int" Nullable="false" />
+                <Property Name="Quantity" Type="int" Nullable="false" />
+                <Property Name="Info_des" Type="varchar" MaxLength="255" Nullable="false" />
+                <Property Name="Status_des" Type="varchar" MaxLength="255" Nullable="false" />
+                <Property Name="Original_price" Type="float" Nullable="false" />
+                <Property Name="Sell_price" Type="float" Nullable="false" />
+                <Property Name="UploadedDate" Type="date" Nullable="false" />
+                <Property Name="ProductName" Type="varchar" MaxLength="255" Nullable="false" />
+                <Property Name="CatID" Type="int" />
+                <Property Name="UserID" Type="int" />
+                <Property Name="View_count" Type="int" Nullable="false" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
+        <Function Name="GetProductByUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserID" Type="int" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="ProductID" Type="int" Nullable="false" />
+                <Property Name="Quantity" Type="int" Nullable="false" />
+                <Property Name="Info_des" Type="varchar" MaxLength="255" Nullable="false" />
+                <Property Name="Status_des" Type="varchar" MaxLength="255" Nullable="false" />
+                <Property Name="Original_price" Type="float" Nullable="false" />
+                <Property Name="Sell_price" Type="float" Nullable="false" />
+                <Property Name="UploadedDate" Type="date" Nullable="false" />
+                <Property Name="ProductName" Type="varchar" MaxLength="255" Nullable="false" />
+                <Property Name="CatID" Type="int" />
+                <Property Name="UserID" Type="int" />
+                <Property Name="View_count" Type="int" Nullable="false" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
+        <Function Name="LoginAccount" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Username" Type="varchar" Mode="In" />
+          <Parameter Name="Password" Type="varchar" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="UserID" Type="int" Nullable="false" />
+                <Property Name="Name" Type="varchar" MaxLength="255" Nullable="false" />
+                <Property Name="Username" Type="varchar" MaxLength="255" Nullable="false" />
+                <Property Name="Password" Type="varchar" MaxLength="255" Nullable="false" />
+                <Property Name="Phone" Type="varchar" MaxLength="255" Nullable="false" />
+                <Property Name="IsActive" Type="bit" Nullable="false" />
+                <Property Name="Address" Type="varchar" MaxLength="255" Nullable="false" />
+                <Property Name="Birthdate" Type="date" Nullable="false" />
+                <Property Name="RoleID" Type="int" />
+                <Property Name="Location" Type="varchar" MaxLength="255" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
         <EntityContainer Name="ExchangeAppDBModelStoreContainer">
           <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Images" EntityType="Self.Images" Schema="dbo" store:Type="Tables" />
@@ -199,6 +349,45 @@
           <EntitySet Name="User_Order" EntityType="Self.User_Order" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WishItem" EntityType="Self.WishItem" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="View_Categories" EntityType="Self.View_Categories" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [View_Categories].[CatID] AS [CatID], 
+    [View_Categories].[CatName] AS [CatName]
+    FROM [dbo].[View_Categories] AS [View_Categories]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="View_Products" EntityType="Self.View_Products" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [View_Products].[ProductID] AS [ProductID], 
+    [View_Products].[ProductName] AS [ProductName], 
+    [View_Products].[Quantity] AS [Quantity], 
+    [View_Products].[Info_des] AS [Info_des], 
+    [View_Products].[Status_des] AS [Status_des], 
+    [View_Products].[Original_price] AS [Original_price], 
+    [View_Products].[Sell_price] AS [Sell_price], 
+    [View_Products].[UploadedDate] AS [UploadedDate], 
+    [View_Products].[View_count] AS [View_count], 
+    [View_Products].[CatName] AS [CatName], 
+    [View_Products].[Name] AS [Name], 
+    [View_Products].[Phone] AS [Phone], 
+    [View_Products].[Address] AS [Address], 
+    [View_Products].[Birthdate] AS [Birthdate], 
+    [View_Products].[Username] AS [Username], 
+    [View_Products].[RoleID] AS [RoleID], 
+    [View_Products].[Location] AS [Location]
+    FROM [dbo].[View_Products] AS [View_Products]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="View_Users" EntityType="Self.View_Users" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [View_Users].[UserID] AS [UserID], 
+    [View_Users].[Name] AS [Name], 
+    [View_Users].[Username] AS [Username], 
+    [View_Users].[Phone] AS [Phone], 
+    [View_Users].[Address] AS [Address], 
+    [View_Users].[Birthdate] AS [Birthdate], 
+    [View_Users].[RoleID] AS [RoleID], 
+    [View_Users].[Location] AS [Location]
+    FROM [dbo].[View_Users] AS [View_Users]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK__Images__ProductI__5AEE82B9" Association="Self.FK__Images__ProductI__5AEE82B9">
             <End Role="Product" EntitySet="Product" />
             <End Role="Images" EntitySet="Images" />
@@ -287,6 +476,7 @@
           <NavigationProperty Name="OrderDetails" Relationship="Self.FK__OrderDeta__Produ__619B8048" FromRole="Product" ToRole="OrderDetail" />
           <NavigationProperty Name="User" Relationship="Self.FK__Product__UserID__5441852A" FromRole="Product" ToRole="Users" />
           <NavigationProperty Name="WishItems" Relationship="Self.FK_CartDetail_ProductID" FromRole="Product" ToRole="WishItem" />
+          <Property Name="View_count" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Role">
           <Key>
@@ -324,6 +514,7 @@
           <NavigationProperty Name="Role" Relationship="Self.FK__Users__RoleID__4CA06362" FromRole="Users" ToRole="Role" />
           <NavigationProperty Name="User_Order" Relationship="Self.FK__User_Orde__UserI__5DCAEF64" FromRole="Users" ToRole="User_Order" />
           <NavigationProperty Name="WishItems" Relationship="Self.FK__WishItem__UserID__66603565" FromRole="Users" ToRole="WishItem" />
+          <Property Name="Location" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="WishItem">
           <Key>
@@ -488,7 +679,136 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="WishItem" EntitySet="WishItems" />
           </AssociationSet>
+          <EntitySet Name="View_Categories" EntityType="ExchangeAppDBModel.View_Categories" />
+          <EntitySet Name="View_Products" EntityType="ExchangeAppDBModel.View_Products" />
+          <EntitySet Name="View_Users" EntityType="ExchangeAppDBModel.View_Users" />
+          <FunctionImport Name="FindProductByKeyWord" IsComposable="true" EntitySet="Products" ReturnType="Collection(ExchangeAppDBModel.Product)">
+          <Parameter Name="Keyword" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GetProductByCategory" IsComposable="true" EntitySet="Products" ReturnType="Collection(ExchangeAppDBModel.Product)">
+          <Parameter Name="CatID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetProductByUser" IsComposable="true" EntitySet="Products" ReturnType="Collection(ExchangeAppDBModel.Product)">
+          <Parameter Name="UserID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="LoginAccount" IsComposable="true" EntitySet="Users" ReturnType="Collection(ExchangeAppDBModel.User)">
+            <Parameter Name="Username" Mode="In" Type="String" />
+            <Parameter Name="Password" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
+        <EntityType Name="View_Categories">
+          <Key>
+            <PropertyRef Name="CatID" />
+            <PropertyRef Name="CatName" />
+          </Key>
+          <Property Name="CatID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CatName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="View_Products">
+          <Key>
+            <PropertyRef Name="ProductID" />
+            <PropertyRef Name="ProductName" />
+            <PropertyRef Name="Quantity" />
+            <PropertyRef Name="Info_des" />
+            <PropertyRef Name="Status_des" />
+            <PropertyRef Name="Original_price" />
+            <PropertyRef Name="Sell_price" />
+            <PropertyRef Name="UploadedDate" />
+            <PropertyRef Name="View_count" />
+            <PropertyRef Name="CatName" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="Phone" />
+            <PropertyRef Name="Address" />
+            <PropertyRef Name="Birthdate" />
+            <PropertyRef Name="Username" />
+          </Key>
+          <Property Name="ProductID" Type="Int32" Nullable="false" />
+          <Property Name="ProductName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="Info_des" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Status_des" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Original_price" Type="Double" Nullable="false" />
+          <Property Name="Sell_price" Type="Double" Nullable="false" />
+          <Property Name="UploadedDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="View_count" Type="Int32" Nullable="false" />
+          <Property Name="CatName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Phone" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Birthdate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Username" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="RoleID" Type="Int32" />
+          <Property Name="Location" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="View_Users">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="Username" />
+            <PropertyRef Name="Phone" />
+            <PropertyRef Name="Address" />
+            <PropertyRef Name="Birthdate" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Username" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Phone" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Birthdate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="RoleID" Type="Int32" />
+          <Property Name="Location" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <ComplexType Name="FindProductByKeyWord_Result">
+          <Property Type="Int32" Name="ProductID" Nullable="false" />
+          <Property Type="Int32" Name="Quantity" Nullable="false" />
+          <Property Type="String" Name="Info_des" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="Status_des" Nullable="false" MaxLength="255" />
+          <Property Type="Double" Name="Original_price" Nullable="false" />
+          <Property Type="Double" Name="Sell_price" Nullable="false" />
+          <Property Type="DateTime" Name="UploadedDate" Nullable="false" Precision="10" />
+          <Property Type="String" Name="ProductName" Nullable="false" MaxLength="255" />
+          <Property Type="Int32" Name="CatID" Nullable="true" />
+          <Property Type="Int32" Name="UserID" Nullable="true" />
+          <Property Type="Int32" Name="View_count" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="GetProductByCategory_Result">
+          <Property Type="Int32" Name="ProductID" Nullable="false" />
+          <Property Type="Int32" Name="Quantity" Nullable="false" />
+          <Property Type="String" Name="Info_des" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="Status_des" Nullable="false" MaxLength="255" />
+          <Property Type="Double" Name="Original_price" Nullable="false" />
+          <Property Type="Double" Name="Sell_price" Nullable="false" />
+          <Property Type="DateTime" Name="UploadedDate" Nullable="false" Precision="10" />
+          <Property Type="String" Name="ProductName" Nullable="false" MaxLength="255" />
+          <Property Type="Int32" Name="CatID" Nullable="true" />
+          <Property Type="Int32" Name="UserID" Nullable="true" />
+          <Property Type="Int32" Name="View_count" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="GetProductByUser_Result">
+          <Property Type="Int32" Name="ProductID" Nullable="false" />
+          <Property Type="Int32" Name="Quantity" Nullable="false" />
+          <Property Type="String" Name="Info_des" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="Status_des" Nullable="false" MaxLength="255" />
+          <Property Type="Double" Name="Original_price" Nullable="false" />
+          <Property Type="Double" Name="Sell_price" Nullable="false" />
+          <Property Type="DateTime" Name="UploadedDate" Nullable="false" Precision="10" />
+          <Property Type="String" Name="ProductName" Nullable="false" MaxLength="255" />
+          <Property Type="Int32" Name="CatID" Nullable="true" />
+          <Property Type="Int32" Name="UserID" Nullable="true" />
+          <Property Type="Int32" Name="View_count" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="LoginAccount_Result">
+          <Property Type="Int32" Name="UserID" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="Username" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="Password" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="Phone" Nullable="false" MaxLength="255" />
+          <Property Type="Boolean" Name="IsActive" Nullable="false" />
+          <Property Type="String" Name="Address" Nullable="false" MaxLength="255" />
+          <Property Type="DateTime" Name="Birthdate" Nullable="false" Precision="10" />
+          <Property Type="Int32" Name="RoleID" Nullable="true" />
+          <Property Type="String" Name="Location" Nullable="true" MaxLength="255" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -525,6 +845,7 @@
           <EntitySetMapping Name="Products">
             <EntityTypeMapping TypeName="ExchangeAppDBModel.Product">
               <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="View_count" ColumnName="View_count" />
                 <ScalarProperty Name="ProductID" ColumnName="ProductID" />
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />
                 <ScalarProperty Name="Info_des" ColumnName="Info_des" />
@@ -559,6 +880,7 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="ExchangeAppDBModel.User">
               <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Location" ColumnName="Location" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Username" ColumnName="Username" />
@@ -580,6 +902,59 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="View_Categories">
+            <EntityTypeMapping TypeName="ExchangeAppDBModel.View_Categories">
+              <MappingFragment StoreEntitySet="View_Categories">
+                <ScalarProperty Name="CatName" ColumnName="CatName" />
+                <ScalarProperty Name="CatID" ColumnName="CatID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="View_Products">
+            <EntityTypeMapping TypeName="ExchangeAppDBModel.View_Products">
+              <MappingFragment StoreEntitySet="View_Products">
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Birthdate" ColumnName="Birthdate" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CatName" ColumnName="CatName" />
+                <ScalarProperty Name="View_count" ColumnName="View_count" />
+                <ScalarProperty Name="UploadedDate" ColumnName="UploadedDate" />
+                <ScalarProperty Name="Sell_price" ColumnName="Sell_price" />
+                <ScalarProperty Name="Original_price" ColumnName="Original_price" />
+                <ScalarProperty Name="Status_des" ColumnName="Status_des" />
+                <ScalarProperty Name="Info_des" ColumnName="Info_des" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="View_Users">
+            <EntityTypeMapping TypeName="ExchangeAppDBModel.View_Users">
+              <MappingFragment StoreEntitySet="View_Users">
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+                <ScalarProperty Name="Birthdate" ColumnName="Birthdate" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="FindProductByKeyWord" FunctionName="ExchangeAppDBModel.Store.FindProductByKeyWord">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetProductByCategory" FunctionName="ExchangeAppDBModel.Store.GetProductByCategory">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetProductByUser" FunctionName="ExchangeAppDBModel.Store.GetProductByUser">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="LoginAccount" FunctionName="ExchangeAppDBModel.Store.LoginAccount">
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
