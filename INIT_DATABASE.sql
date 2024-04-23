@@ -83,45 +83,7 @@ INSERT INTO Role(Rolename) VALUES ('Admin');
 INSERT INTO Role(Rolename) VALUES ('User');
 
 
--- VIEWS
-
--- VIEW OF ORDERS
-CREATE VIEW View_Orders
-AS
-SELECT OrderID, UserID, Status, OrderDate, ProductID, Quantity, Sell_price * Quantity AS TotalPrice
-FROM User_Order
-JOIN OrderDetail ON User_Order.OrderID = OrderDetail.OrderID;
-
-
--- VIEW OF PRODUCTS
-CREATE VIEW View_Products
-AS
-SELECT ProductID, ProductName, Quantity, Info_des, Status_des, Original_price, Sell_price, UploadedDate, View_count, CatName, Name, Phone, Address, Birthdate, Username, RoleID, Location
-FROM Product
-JOIN Category ON Product.CatID = Category.CatID
-JOIN Users ON Product.UserID = Users.UserID;
-
-
--- VIEW OF USERS
-CREATE VIEW View_Users
-AS
-SELECT UserID, Name, Username, Phone, Address, Birthdate, RoleID, Location
-FROM Users;
-
--- VIEW OF CATEGORIES
-CREATE VIEW View_Categories
-AS
-SELECT CatID, CatName
-FROM Category;
-
-
--- TRIGGERS
-
 -- FUNCTIONS
-
-DROP FUNCTION GetProductByCategory;
-DROP FUNCTION GetProductByUser;
-DROP FUNCTION FindProductByKeyWord;
 
 CREATE FUNCTION GetProductByCategory(@CatID int)
 RETURNS TABLE
@@ -146,41 +108,3 @@ AS
 RETURN
 SELECT * FROM Product WHERE ProductName LIKE '%' + @Keyword + '%' ORDER BY View_count DESC OFFSET 0 ROWS;
 
-
-
-DROP FUNCTION Login;
--- CREATE LOGIN FUNCTION THAT RETURN SINGLE ROW OR DEFAULT NULL
-CREATE FUNCTION LoginAccount(@Username varchar(255), @Password varchar(255))
-RETURNS TABLE
-AS
-RETURN
-(
-	SELECT * FROM Users WHERE Username = @Username AND Password = @Password
-);
-
-
--- EXECUTE FUNCTION
-SELECT * FROM LoginAccount('tctoan', 'f90e791f916551c9e5fac06a83a840c8');
-
-
-SELECT * FROM FindProductByKeyWord('d')
-
-
-  /* 
-  This section joins products and categories based on category_id 
-  and filters based on IDs from the temporary table. You can modify it 
-  based on your table structure and desired filtering logic.
-  */
-  INSERT INTO @temp_table (product_id, name)
-  SELECT p.product_id, p.name
-  FROM products p
-  INNER JOIN product_categories pc ON p.product_id = pc.product_id
-  INNER JOIN categories c ON pc.category_id = c.category_id
-  WHERE pc.category_id IN (SELECT category_id FROM @temp_table);
-
-  /* Select products from the temporary table */
-  SELECT * FROM @temp_table;
-
-  /* Drop the temporary table after use */
-  DROP TABLE @temp_table;
-END;

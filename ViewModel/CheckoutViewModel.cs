@@ -72,7 +72,8 @@ namespace Exchange_App.ViewModel
             set;
         }
 
-        private readonly ClickCommand _locationItemChangedCommand;
+        private readonly ClickCommand 
+            _locationItemChangedCommand;
         public ClickCommand LocationItemChangedCommand
         {
             get
