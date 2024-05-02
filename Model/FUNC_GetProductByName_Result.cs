@@ -11,7 +11,7 @@ namespace Exchange_App.Model
 {
     using System;
     
-    public partial class GetProductByCategory_Result
+    public partial class FUNC_GetProductByName_Result
     {
         public int ProductID { get; set; }
         public int Quantity { get; set; }

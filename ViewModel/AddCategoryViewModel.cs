@@ -58,18 +58,8 @@ namespace Exchange_App.ViewModel
 
                   try
                   {
-                      if (String.IsNullOrEmpty(CategoryName))
-                      {
-                          throw new Exception("Category name is empty!");
-                      }
-                      DataProvider.Ins.DB.Categories.Add(new Category
-                      {
-                          CatName = CategoryName
-                      });
-                      DataProvider.Ins.DB.SaveChanges();
-
-                      MessageBox.Show("Add category successfully!");
-                     
+                       DataProvider.Ins.DB.PROC_AddCat(CategoryName);
+                      MessageBox.Show("Add Category Success");
                   }
                   catch (Exception ex)
                   {

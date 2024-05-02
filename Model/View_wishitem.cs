@@ -12,9 +12,10 @@ namespace Exchange_App.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class View_Categories
+    public partial class View_wishitem
     {
-        public int CatID { get; set; }
-        public string CatName { get; set; }
+        public int WishItemID { get; set; }
+        public Nullable<int> ProductID { get; set; }
+        public Nullable<int> UserID { get; set; }
     }
 }

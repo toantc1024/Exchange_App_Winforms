@@ -12,24 +12,18 @@ namespace Exchange_App.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class View_Products
+    public partial class View_products
     {
         public int ProductID { get; set; }
-        public string ProductName { get; set; }
         public int Quantity { get; set; }
         public string Info_des { get; set; }
         public string Status_des { get; set; }
         public double Original_price { get; set; }
         public double Sell_price { get; set; }
         public System.DateTime UploadedDate { get; set; }
+        public string ProductName { get; set; }
+        public Nullable<int> CatID { get; set; }
+        public Nullable<int> UserID { get; set; }
         public int View_count { get; set; }
-        public string CatName { get; set; }
-        public string Name { get; set; }
-        public string Phone { get; set; }
-        public string Address { get; set; }
-        public System.DateTime Birthdate { get; set; }
-        public string Username { get; set; }
-        public Nullable<int> RoleID { get; set; }
-        public string Location { get; set; }
     }
 }

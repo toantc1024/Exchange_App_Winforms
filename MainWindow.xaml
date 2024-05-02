@@ -111,6 +111,25 @@
                         <TextBlock HorizontalAlignment="Center" FontSize="6">Deliver</TextBlock>
                     </StackPanel>
                 </Button>
+                <Button
+                    Height="60"
+                    Margin="5"
+                    materialDesign:ButtonAssist.CornerRadius="10"
+                    materialDesign:ElevationAssist.Elevation="Dp0"
+                    Background="Orange"
+                    BorderBrush="Transparent"
+                    Command="{Binding UpdateViewCommand}"
+                    CommandParameter="UserManager"
+                    Foreground="White">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <materialDesign:PackIcon HorizontalAlignment="Center" Kind="Database" />
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            FontSize="6"
+                            Text="All user" />
+                    </StackPanel>
+                </Button>
+
 
                 <Button
                     Height="60"

@@ -16,11 +16,12 @@ namespace Exchange_App.Model
             set { _ins = value; }
         }
 
-        public ExchangeAppDBEntities DB { get; set; }
+
+        public ExchangeBeeEntities DB { get; set; }
 
         private DataProvider()
         {
-            DB = new ExchangeAppDBEntities();
+            DB = new ExchangeBeeEntities();
         }
     }
 }

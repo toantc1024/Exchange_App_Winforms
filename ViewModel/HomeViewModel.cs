@@ -1,4 +1,7 @@
-﻿using Exchange_App.Model;
+﻿using Exchange_App.CustomUserControls;
+using Exchange_App.Model;
+using Exchange_App.Repositories.Implementations;
+using Exchange_App.Tools;
 using Exchange_App.View;
 using System;
 using System.Collections.Generic;
@@ -20,6 +23,7 @@ namespace Exchange_App.ViewModel
         private int _selectedOrderType;
 
         private Product _selectedProduct;
+        private Boolean _isAllChecked;
         private string _isLoading = "Hidden";
         private User _currentUser;
         private List<Product> _products;
@@ -35,6 +39,11 @@ namespace Exchange_App.ViewModel
 
         #region Commands
         
+        public ICommand SelectAllCategory
+        {
+            get;set;
+        }
+
         public ICommand HideCheckoutCommand
         {
             get;set;
@@ -102,6 +111,13 @@ namespace Exchange_App.ViewModel
             set
             {
                 _products = value;
+                if(value.Count == 0)
+                {
+                    MaximumPrice = 0;
+                } else
+                {
+                    MaximumPrice = (int)value.Max(x => x.Sell_price);
+                }
                 OnPropertyChanged();
             }
         }
@@ -166,6 +182,7 @@ namespace Exchange_App.ViewModel
             }
 
         }
+        ProductRepository productRepository = new ProductRepository();
 
         public string IsLoading { get => _isLoading; set
             {
@@ -208,6 +225,13 @@ namespace Exchange_App.ViewModel
             }
             }
 
+        public bool IsAllChecked { get => _isAllChecked; set
+            {
+                _isAllChecked =value;
+             
+                OnPropertyChanged();
+            } }
+
 
         #endregion
         public void OrderByPrice(int type)
@@ -232,9 +256,12 @@ namespace Exchange_App.ViewModel
             foreach (var item in DataProvider.Ins.DB.Categories)
             {
 
-                var catItem = new CategoryFilterClass(item, false);
+                var catItem = new CategoryFilterClass(item, true);
                 CategoriesFilter.Add(catItem);
             }
+            IsAllChecked = true;
+            SelectedCount = CategoriesFilter.Count;
+            // define Aggregates to find maximum price
 
             SortByDate = new RelayCommand<object>(
                 (p) =>
@@ -273,9 +300,7 @@ namespace Exchange_App.ViewModel
                }
                // Sort products 
            });
-            GetProductByName(String.Empty);
-
-            ProductQuery = new RelayCommand<object>(
+            ProductQuery = new RelayCommand<string>(
 
                 (p) =>
                 {
@@ -283,22 +308,45 @@ namespace Exchange_App.ViewModel
                 },
                 (p) =>
                 {
-                    // Define empty list 
                     List<Product> products = new List<Product>();
                     // loop through CategoriesFiler
                     foreach(var item in CategoriesFilter)
                     {
                         if(item.IsChecked)
                         {
-                            var productsByCatID = DataProvider.Ins.DB.GetProductByCategory(item.Category.CatID).Where(x=>x.Sell_price > MinimumPrice && x.Sell_price < MaximumPrice).ToList();
-                            // add all item in productsByCatID  to products 
+                            var productsByCatID = productRepository.GetProductsByCategoryID(item.Category.CatID);
                             products.AddRange(productsByCatID);
                         }
                     }
+                    // filter  product  x => x.Sell_price >= MinimumPrice
+                    products = products.Where((x) => x.Sell_price >= MinimumPrice && x.Sell_price <= MaximumPrice).ToList();
                     Products = products;
                 });
 
-            UpdateSelectCountCommand = new RelayCommand<object>(
+            SelectAllCategory = new RelayCommand<object>(
+                (p) =>
+                {
+                    return true;
+                },
+                (p) =>
+                {
+                    List<CategoryFilterClass> categoryFilterClasses = new List<CategoryFilterClass>();
+                    foreach (var item in CategoriesFilter)
+                    {
+                        categoryFilterClasses.Add(new CategoryFilterClass(item.Category, IsAllChecked));
+                    }
+                    CategoriesFilter = categoryFilterClasses;
+                    if(IsAllChecked)
+                    {
+                        SelectedCount = CategoriesFilter.Count;
+                    } else
+                    {
+                        SelectedCount = 0;
+                    }
+                }
+            );
+
+            UpdateSelectCountCommand = new RelayCommand<string>(
 
                 (p) =>
                 {
@@ -313,6 +361,13 @@ namespace Exchange_App.ViewModel
                         }
                         return a;
                     });
+                    if(count == CategoriesFilter.Count)
+                    {
+                        IsAllChecked = true;
+                    } else
+                    {
+                        IsAllChecked = false;
+                    }
                     SelectedCount = count;
                 });
 
@@ -321,7 +376,6 @@ namespace Exchange_App.ViewModel
                   return true;
               },
               (p) => {
-                  Products = DataProvider.Ins.DB.Products.ToList(); 
                   IsShowContent = "Hidden";
                   SelectedProduct = null;
               }
@@ -342,9 +396,6 @@ namespace Exchange_App.ViewModel
                     IsShowCheckout = "Visible";
                     Content = new CheckoutViewModel(currentUser, p, HideCheckoutCommand);
                 }
-                                  
-                       
-                       
                        );
 
             HideCheckoutCommand = new RelayCommand<object>(
@@ -357,10 +408,11 @@ namespace Exchange_App.ViewModel
                 {
                     IsShowCheckout = "Hidden";
                     IsShowContent = "Visible";
-                    Content = new ProductDetailsViewModel(SelectedProduct, CurrentUser, ShowCheckoutCommand);
 
+                    var productID = SelectedProduct.ProductID;
+                    SelectedProduct = productRepository.GetProductById(productID);
+                    Content = new ProductDetailsViewModel(SelectedProduct, CurrentUser, ShowCheckoutCommand);
                 }
-                
                 );
 
             SelectProductCommand = new RelayCommand<Product>(
@@ -373,7 +425,7 @@ namespace Exchange_App.ViewModel
               },
               (p) => { 
                   // Increaase product view count
-                  if(CurrentUser.UserID != p.ProductID)
+                  if(CurrentUser.UserID != p.UserID)
                   {
                       // increase view_coutn
                       p.View_count += 1;
@@ -385,6 +437,8 @@ namespace Exchange_App.ViewModel
                   Content = new ProductDetailsViewModel(p, CurrentUser, ShowCheckoutCommand);
               }
             );
+        
+
 
 
             OnSearchCommand = new RelayCommand<TextBox>(p =>
@@ -399,16 +453,22 @@ namespace Exchange_App.ViewModel
          {
 
              string keyword = p.Text;
-             GetProductByName(keyword);
+             Products=  productRepository.DbContext.FUNC_GetProductByName(keyword).ToList();
          });
 
+            // run a async task 
+            async Task getDataAsync()
+            {
+                Products  = await Task.Run(() => productRepository.DbContext.FUNC_GetProductByName(string.Empty).ToList());
+            }
+
+            async void getData()
+            {
+                // convert code to async
+                await getDataAsync();
+            }
+            getData();
+
         }
-
-            public  void GetProductByName(string keyword)
-        {
-            Products = DataProvider.Ins.DB.FindProductByKeyWord(keyword).ToList();
-        }
-
-
     }
 }

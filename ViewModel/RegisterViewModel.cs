@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography.X509Certificates;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -18,6 +20,15 @@ namespace Exchange_App.ViewModel
     {
 
         #region Variables
+        private bool[] _modeArray = new bool[] { true, false };
+        public bool[] ModeArray
+        {
+            get { return _modeArray; }
+        }
+        public int SelectedMode
+        {
+            get { return Array.IndexOf(_modeArray, true); }
+        }
 
         private string _username;
         private string _password;
@@ -178,6 +189,28 @@ namespace Exchange_App.ViewModel
                   BirthDate = p.SelectedDate.Value;
               });
 
+             bool ValidatePassword(string password)
+            {
+                if (password == null || password.Length < 6)
+                {
+                    return false;
+                }
+
+                const string specialChars = "!@#$%^&*()-_=+[{]};':\",<.>/?|\\";
+                bool hasSpecialChar = false;
+
+                foreach (char c in password)
+                {
+                    if (specialChars.IndexOf(c) >= 0)
+                    {
+                        hasSpecialChar = true;
+                        break;
+                    }
+                }
+
+                return hasSpecialChar;
+            }
+
             SignUpCommand = new RelayCommand<Window>(
 
               (p) => {
@@ -189,10 +222,25 @@ namespace Exchange_App.ViewModel
               }, (p) => {
                   try
                   {
+                      // Validate password
+                      // User at least 6 chars
+                      // Must contain at least 1 special
+                      if(!ValidatePassword(Password))
+                      {
+                          throw new Exception("Password at least 6 chars and 1 special char!");
+
+                      }
+
                       if (Password != ConfirmPassword)
                       {
                           throw new Exception("Password and Confirm Password must be the same!");
                       };
+
+                      var role = 2;
+                      if (ModeArray[1])
+                      {
+                          role = 1;
+                      }
 
                       User user = new User
                       {
@@ -200,16 +248,15 @@ namespace Exchange_App.ViewModel
                           Username = Username,
                           Password = PasswordEncryption.MD5Hash(PasswordEncryption.Base64Encode(Password)),
                           Phone = Phone,
-                          Address = "",
+                          Address = "Chưa xác định",
                           Birthdate = BirthDate,
-                          RoleID = 2,
+                          RoleID = role,
                           IsActive = true,
                       };
 
+
                       // Write validation function later!
-
-
-                      DataProvider.Ins.DB.Users.Add(user);
+                      DataProvider.Ins.DB.PROC_CreateAccount(user.Name, user.Username, user.Password, user.Phone, user.Address, user.Birthdate, user.RoleID);
 
                       DataProvider.Ins.DB.SaveChanges();
 
@@ -222,7 +269,8 @@ namespace Exchange_App.ViewModel
                   }
                   catch (Exception ex)
                   {
-                      MessageBox.Show(ex.Message);
+                      var err = ex.InnerException.Message.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+                      MessageBox.Show(err.FirstOrDefault().ToString());
                   }
 
               });

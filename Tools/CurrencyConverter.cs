@@ -21,4 +21,12 @@ namespace Exchange_App.Tools
             return null;
         }
     }
+
+    public class VNCurrencyConveter
+    {
+        public static string ConvertDoubleToCurrency(double value)
+        {
+            return value.ToString("C0", CultureInfo.CreateSpecificCulture("vi-VN"));
+        }
+    }
 }

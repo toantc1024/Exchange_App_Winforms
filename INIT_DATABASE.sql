@@ -1,131 +1,122 @@
-﻿CREATE DATABASE TESTDB;
-USE TESTDB;
-go
+﻿SELECT * FROM PRODUCT;
+SELECT * FROM Users;
+SELECT * FROM Category;
+SELECT * FROM OrderDetail;
+SELECT * FROM User_Order;
 
---1. ROLE
-CREATE TABLE role
-  (
-     roleid   INT IDENTITY(1, 1) CONSTRAINT pk_role PRIMARY KEY,
-     rolename VARCHAR(255),
-  );
+DROP DATABASE ExchangeBee;
+CREATE DATABASE ExchangeBee;
+USE ExchangeBee;
+GO
 
---2. USER
-CREATE TABLE users
-  (
-     userid     INT IDENTITY(1, 1) CONSTRAINT pk_user PRIMARY KEY,
-     NAME       VARCHAR(255) NOT NULL,
-     username   VARCHAR(255) NOT NULL UNIQUE,
-     password   VARCHAR(255) NOT NULL,
-     phone      VARCHAR(255) NOT NULL,
-     isactive   BIT DEFAULT 1 NOT NULL,
-     address    VARCHAR(255) NOT NULL,
-     birthdate  DATE NOT NULL,
-     roleid     INT REFERENCES role(roleid),
-     location   VARCHAR(255),
-     view_count INT DEFAULT 0,
-     CONSTRAINT ck_phone CHECK ( phone LIKE
-     '[0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]-[0-9][0-9][0-9]' ),
-     CONSTRAINT ck_birthdate CHECK ( birthdate <= Getdate() )
-  );
+create table Role(
+    RoleID int IDENTITY(1,1) constraint PK_Role PRIMARY KEY,
+    Rolename varchar(255),
+);
 
---3. CATEGORY
-CREATE TABLE category
-  (
-     catid   INT IDENTITY(1, 1) CONSTRAINT pk_category PRIMARY KEY,
-     catname VARCHAR(255) NOT NULL
-  );
+create table Users(
+    UserID int IDENTITY(1,1) constraint PK_User PRIMARY KEY,
+    Name varchar(255) not null,
+    Username varchar(255) not null unique,
+    Password varchar(255) not null,
+    Phone varchar(255) not null,
+    IsActive bit default 1 not null,
+    Address varchar(255) not null,
+    Birthdate date not null,
+    RoleID int references Role(RoleID),
+	Location varchar(255)
+);
 
---4. PRODUCT
-CREATE TABLE product
-  (
-     productid      INT IDENTITY(1, 1) CONSTRAINT pk_product PRIMARY KEY,
-     quantity       INT NOT NULL,
-     info_des       VARCHAR(255) NOT NULL,
-     status_des     VARCHAR(255) NOT NULL,
-     original_price FLOAT NOT NULL,
-     sell_price     FLOAT NOT NULL,
-     uploadeddate   DATE NOT NULL,
-     productname    VARCHAR(255) NOT NULL,
-     catid          INT REFERENCES category(catid),
-     userid         INT REFERENCES users(userid),
-     CONSTRAINT ck_original_price CHECK (original_price > 0),
-     CONSTRAINT ck_sell_price CHECK (sell_price > 0),
-     CONSTRAINT ck_quantity CHECK (quantity >= 0),
-     CONSTRAINT ck_uploadeddate CHECK ( uploadeddate <= Getdate() )
-  );
+
+
+
+CREATE TABLE Category(
+    CatID int IDENTITY(1,1) constraint PK_Category PRIMARY KEY,
+    CatName varchar(255) NOT NULL
+);
+
+
+
+
+create table Product(
+    ProductID int IDENTITY(1,1) constraint PK_Product PRIMARY KEY,
+    Quantity int not null,
+    Info_des varchar(255) not null,
+    Status_des varchar(255) not null,
+    Original_price float not null,
+    Sell_price float not null,
+    UploadedDate date not null,
+    ProductName varchar(255) not null,
+	CatID int references Category(CatID),
+    UserID int references Users(UserID),
+    constraint CK_Original_price check (Original_price > 0),
+    constraint CK_Sell_price check (Sell_price > 0),
+    constraint CK_Quantity check (Quantity >= 0),
+    constraint CK_UploadedDate check (UploadedDate <= getdate())
+);
 
 -- add View_count to Product table
-ALTER TABLE product
-  ADD view_count INT NOT NULL DEFAULT 0;
+ALTER TABLE Product
+ADD View_count int not null default 0;
 
---5. IMAGES
-CREATE TABLE images
-  (
-     imageid   INT IDENTITY(1, 1) PRIMARY KEY,
-     productid INT NOT NULL REFERENCES product(productid),
-     imageurl  VARCHAR(255) NOT NULL
-  );
+alter table Product WITH CHECK ADD CONSTRAINT [FK_Product_category] foreign key([CatID]) references Category ON DELETE SET NULL
 
---6. USER_ORDER
-CREATE TABLE user_order
-  (
-     orderid   INT IDENTITY(1, 1) CONSTRAINT pk_user_order PRIMARY KEY,
-     userid    INT REFERENCES users(userid),
-     status    VARCHAR(255) NOT NULL,
-     orderdate DATE NOT NULL
-  );
 
---7. ORDERDETAIL
-CREATE TABLE orderdetail
-  (
-     orderdetailid INT IDENTITY(1, 1) CONSTRAINT pk_orderdetail PRIMARY KEY,
-     orderid       INT REFERENCES user_order(orderid),
-     productid     INT REFERENCES product(productid),
-     quantity      INT CHECK (quantity > 0) NOT NULL,
-  );
+CREATE TABLE Images(
+    ImageID INT IDENTITY(1,1) PRIMARY KEY,
+    ProductID INT not null references Product(ProductID),
+    ImageURL VARCHAR(255) not null
+);
 
---8. WISHITEM
-CREATE TABLE wishitem
-  (
-     wishitemid INT IDENTITY(1, 1) PRIMARY KEY,
-     productid  INT CONSTRAINT fk_cartdetail_productid REFERENCES product(
-     productid),
-     userid     INT FOREIGN KEY REFERENCES users(userid)
-  )
+create table User_Order(
+    OrderID int IDENTITY(1,1) constraint PK_User_Order PRIMARY KEY,
+    UserID int references Users(UserID),
+    Status varchar(255) not null,
+    OrderDate date not null
+);
 
-INSERT INTO role
-            (rolename)
-VALUES      ('Admin');
+create table OrderDetail(
+    OrderDetailID int IDENTITY(1,1) constraint PK_OrderDetail PRIMARY KEY,
+    OrderID int references User_Order(OrderID),
+    ProductID int references Product(ProductID),
+    Quantity int check (Quantity > 0) not null,  
+);
 
-INSERT INTO role
-            (rolename)
-VALUES      ('User');
+Create Table WishItem (
+	WishItemID int identity(1,1) primary key,
+	ProductID int CONSTRAINT FK_CartDetail_ProductID references Product(ProductID), 
+	UserID int FOREIGN KEY REFERENCES Users(UserId)
+)
+
+INSERT INTO Role(Rolename) VALUES ('Admin');
+INSERT INTO Role(Rolename) VALUES ('User');
+-- VIEWS
 
 -- VIEWS
 go
 
-CREATE VIEW view_products
+CREATE VIEW View_products
 AS
   SELECT *
-  FROM   product;
+  FROM  Product;
 
 go
 
-CREATE VIEW view_users
+CREATE VIEW View_users
 AS
   SELECT *
   FROM   users;
 
 go
 
-CREATE VIEW view_category
+CREATE VIEW View_category
 AS
   SELECT *
   FROM   category;
 
 go
 
-CREATE VIEW view_product_images
+CREATE VIEW View_product_images
 AS
   SELECT *
   FROM   images
@@ -133,21 +124,21 @@ AS
 
 go
 
-CREATE VIEW view_user_order
+CREATE VIEW View_user_order
 AS
   SELECT *
   FROM   user_order;
 
 go
 
-CREATE VIEW view_orderdetail
+CREATE VIEW View_orderdetail
 AS
   SELECT *
   FROM   orderdetail;
 
 go
 
-CREATE VIEW view_wishitem
+CREATE VIEW View_wishitem
 AS
   SELECT *
   FROM   wishitem;
@@ -155,1012 +146,1002 @@ AS
 go
 
 -- TRIGGERS
-CREATE TRIGGER trg_validateuser
-ON users
-after INSERT, UPDATE
+GO
+CREATE TRIGGER TRG_ValidateUser
+ON Users
+AFTER INSERT, UPDATE
 AS
-  BEGIN
-      -- VALIDATE PHONE NUMBER
-      IF EXISTS (SELECT *
-                 FROM   inserted
-                 WHERE  NOT
-            phone LIKE '[0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]-[0-9][0-9][0-9]')
-        BEGIN
-            RAISERROR('Invalid Phone Number',16,1);
+BEGIN
+    -- VALIDATE PHONE NUMBER
+IF EXISTS (SELECT * FROM inserted WHERE NOT Phone LIKE '[0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]-[0-9][0-9][0-9]')
+    BEGIN
+        RAISERROR('Invalid Phone Number', 16, 1);
+        ROLLBACK TRANSACTION;
+    END
+    -- VALIDATE BIRTHDATE GREATER THAN 16
+IF EXISTS (SELECT * FROM inserted WHERE DATEDIFF(YEAR, Birthdate, GETDATE()) < 16)
+    BEGIN
+        RAISERROR('Invalid Birthdate', 16, 1);
+        ROLLBACK TRANSACTION;
+    END
 
-            ROLLBACK TRANSACTION;
-        END
 
-      -- VALIDATE BIRTHDATE GREATER THAN 16
-      IF EXISTS (SELECT *
-                 FROM   inserted
-                 WHERE  Datediff(year, birthdate, Getdate()) < 16)
-        BEGIN
-            RAISERROR('Invalid Birthdate',16,1);
 
-            ROLLBACK TRANSACTION;
-        END
 
-      -- VALIDATE ROLE
-      IF EXISTS (SELECT *
-                 FROM   inserted
-                 WHERE  roleid NOT IN (SELECT roleid
-                                       FROM   role))
-        BEGIN
-            RAISERROR('Invalid Role',16,1);
+    -- VALIDATE ROLE
+IF EXISTS (SELECT * FROM inserted WHERE RoleID NOT IN (SELECT RoleID FROM Role))
+    BEGIN
+        RAISERROR('Invalid Role', 16, 1);
+        ROLLBACK TRANSACTION;
+    END
+    -- VALIDATE ADDRESS
+IF EXISTS (SELECT * FROM inserted WHERE Address = '')
+    BEGIN
+        RAISERROR('Address is not empty', 16, 1);
+        ROLLBACK TRANSACTION;
+    END
 
-            ROLLBACK TRANSACTION;
-        END
 
-      -- VALIDATE ADDRESS
-      IF EXISTS (SELECT *
-                 FROM   inserted
-                 WHERE  address = '')
-        BEGIN
-            RAISERROR('Address is not empty',16,1);
 
-            ROLLBACK TRANSACTION;
-        END
 
-      -- VALIDATE NAME
-      IF EXISTS (SELECT *
-                 FROM   inserted
-                 WHERE  NAME = '')
-        BEGIN
-            RAISERROR('Name is not empty',16,1);
+    -- VALIDATE NAME
+IF EXISTS (SELECT * FROM inserted WHERE Name = '')
+    BEGIN
+        RAISERROR('Name is not empty', 16, 1);
+        ROLLBACK TRANSACTION;
+    END
 
-            ROLLBACK TRANSACTION;
-        END
 
-      -- VALIDATE USERNAME
-      IF EXISTS (SELECT *
-                 FROM   inserted
-                 WHERE  username = '')
-        BEGIN
-            RAISERROR('Username is not empty',16,1);
 
-            ROLLBACK TRANSACTION;
-        END
 
-      -- VALIDATE PASSWORD
-      IF EXISTS (SELECT *
-                 FROM   inserted
-                 WHERE  password = '')
-        BEGIN
-            RAISERROR('Password is not empty',16,1);
+    -- VALIDATE USERNAME
 
-            ROLLBACK TRANSACTION;
-        END
 
-      -- IS PASSWORD STRONG
-      IF EXISTS (SELECT *
-                 FROM   inserted
-                 WHERE  Len(password) < 8)
-        BEGIN
-            RAISERROR('Password is not strong',16,1);
 
-            ROLLBACK TRANSACTION;
-        END
 
-      -- IS PASSWORD ONLY CONTAIN ALPHABET AND NUMBER
-      IF EXISTS (SELECT *
-                 FROM   inserted
-                 WHERE  password NOT LIKE '%[^a-zA-Z0-9]%')
-        BEGIN
-            RAISERROR('Password only contain alphabet and number',16,1);
+IF EXISTS (SELECT * FROM inserted WHERE Username = '')
 
-            ROLLBACK TRANSACTION;
-        END
 
-      -- IS PASSWORD CONTAIN AT LEAST 1 UPPERCASE
-      IF EXISTS (SELECT *
-                 FROM   inserted
-                 WHERE  password NOT LIKE '%[A-Z]%')
-        BEGIN
-            RAISERROR('Password must contain at least 1 uppercase',16,1);
 
-            ROLLBACK TRANSACTION;
-        END
-  END
 
-go
+    BEGIN
+        RAISERROR('Username is not empty', 16, 1);
+        ROLLBACK TRANSACTION;
+    END
 
-CREATE TRIGGER trg_productinsert
-ON product
+
+
+
+    -- VALIDATE PASSWORD
+
+
+
+
+IF EXISTS (SELECT * FROM inserted WHERE Password = '')
+
+
+
+
+    BEGIN
+        RAISERROR('Password is not empty', 16, 1);
+        ROLLBACK TRANSACTION;
+    END
+
+
+
+
+    -- IS PASSWORD STRONG
+IF EXISTS (SELECT * FROM inserted WHERE LEN(Password) < 8)
+    BEGIN
+        RAISERROR('Password is not strong', 16, 1);
+        ROLLBACK TRANSACTION;
+    END
+
+END
+
+GO
+
+
+CREATE TRIGGER TRG_ProductInsert
+ON Product
 FOR INSERT, UPDATE
 AS
-  BEGIN
-      -- Info_des không được để trống
-      IF EXISTS (SELECT 1
-                 FROM   inserted
-                 WHERE  info_des = '')
-        BEGIN
-            RAISERROR ('Info_des không được để trống.',16,1);
-
-            ROLLBACK TRANSACTION;
-
-            RETURN;
-        END;
-
-      -- Status_des không được để trống
-      IF EXISTS (SELECT 1
-                 FROM   inserted
-                 WHERE  status_des = '')
-        BEGIN
-            RAISERROR ('Status_des không được để trống.',16,1);
-
-            ROLLBACK TRANSACTION;
-
-            RETURN;
-        END;
-
-      -- Product Name không được để trống
-      IF EXISTS (SELECT 1
-                 FROM   inserted
-                 WHERE  productname = '')
-        BEGIN
-            RAISERROR ('Product Name không được để trống.',16,1);
-
-            ROLLBACK TRANSACTION;
-
-            RETURN;
-        END;
-
-      -- Kiểm tra giá trị Original_price và Sell_price
-      IF EXISTS (SELECT 1
-                 FROM   inserted
-                 WHERE  original_price <= 0
-                         OR sell_price <= 0)
-        BEGIN
-            RAISERROR ('Original_price và Sell_price phải lớn hơn 0.',16,1
-            );
-
-            ROLLBACK TRANSACTION;
-
-            RETURN;
-        END;
-
-      -- Kiểm tra giá trị Quantity
-      IF EXISTS (SELECT 1
-                 FROM   inserted
-                 WHERE  quantity < 0)
-        BEGIN
-            RAISERROR ('Quantity phải lớn hơn hoặc bằng 0.',16,1);
-
-            ROLLBACK TRANSACTION;
-
-            RETURN;
-        END;
-
-      -- Kiểm tra giá trị UploadedDate
-      IF EXISTS (SELECT 1
-                 FROM   inserted
-                 WHERE  uploadeddate > Getdate())
-        BEGIN
-            RAISERROR (
-            'UploadedDate không thể lớn hơn ngày hiện tại.',
-            16,1
-            );
-
-            ROLLBACK TRANSACTION;
-
-            RETURN;
-        END;
-  END;
-
-go
-
-CREATE TRIGGER trg_deleteproduct
-ON product
-FOR DELETE
-AS
-  BEGIN
-      -- Kiểm tra xem sản phẩm bị xóa có nằm trong đơn hàng khác hay không
-      IF EXISTS (SELECT 1
-                 FROM   deleted d
-                        INNER JOIN orderdetail od
-                                ON d.productid = od.productid)
-        BEGIN
-            -- Nếu sản phẩm bị xóa có nằm trong đơn hàng khác
-            -- Thực hiện hành động tương ứng ở đây (ví dụ: ROLLBACK TRANSACTION hoặc DELETE các đơn hàng liên quan)
-            ROLLBACK TRANSACTION;
-            -- Ví dụ: Rollback giao dịch để không cho xóa sản phẩm
-
-            RAISERROR (
-            'Cannot delete the product. It is associated with other orders.',
-            16,1);
-        END
-  END;
-
--- TRIGGER Category
-go
-
-CREATE TRIGGER trg_addcategory
-ON category
-after INSERT, UPDATE
-AS
-  BEGIN
-      SET nocount ON;
-
-      DECLARE @DuplicateCount INT;
-
-      SELECT @DuplicateCount = Count(*)
-      FROM   category c
-             INNER JOIN inserted i
-                     ON c.catname = i.catname;
-
-      IF @DuplicateCount > 1
-        BEGIN
-            RAISERROR('Category name already exists',16,1);
-
-            ROLLBACK TRANSACTION;
-
-            RETURN;
-        END;
-
-      IF EXISTS (SELECT *
-                 FROM   inserted
-                 WHERE  catname = '')
-        BEGIN
-            RAISERROR('Category name must not be empty',16,1);
-
-            ROLLBACK TRANSACTION;
-
-            RETURN;
-        END;
-  END;
-
-go
-
-CREATE TRIGGER trg_del_category
-ON category
-after DELETE
-AS
-  BEGIN
-      DECLARE @CatName VARCHAR(50)
-
-      SELECT @CatName = catname
-      FROM   deleted
-
-      IF EXISTS (SELECT *
-                 FROM   product
-                 WHERE  catid = (SELECT catid
-                                 FROM   category
-                                 WHERE  catname = @CatName))
-        BEGIN
-            RAISERROR ('The category being referenced by the product',16,1)
-
-            ROLLBACK
-        END
-  END
-
-go
-
-CREATE TRIGGER trg_orderproduct
-ON orderdetail
-after INSERT
-AS
-  BEGIN
-      DECLARE @ProductID INT;
-      DECLARE @Quantity INT;
-      DECLARE @CurrentQuantity INT;
-
-      -- Lấy ProductID và Quantity của dòng dữ liệu vừa được thêm vào OrderDetail
-      SELECT @ProductID = productid,
-             @Quantity = quantity
-      FROM   inserted;
-
-      -- Lấy số lượng hiện tại của sản phẩm
-      SELECT @CurrentQuantity = quantity
-      FROM   product
-      WHERE  productid = @ProductID;
-
-      -- Kiểm tra nếu Quantity mới đặt lớn hơn Quantity hiện tại của sản phẩm
-      IF @Quantity > @CurrentQuantity
-        BEGIN
-            RAISERROR(
-'Số lượng đặt hàng vượt quá số lượng hiện có của sản phẩm'
-,16,1);
-
+BEGIN
+    -- Info_des không được để trống
+IF EXISTS (SELECT 1 FROM inserted WHERE Info_des = '')
+BEGIN
+    RAISERROR ('Info_des không được để trống.', 16, 1);
     ROLLBACK TRANSACTION;
-END
-ELSE
+    RETURN;
+END;
+-- Status_des không được để trống
+IF EXISTS (SELECT 1 FROM inserted WHERE Status_des = '')
+BEGIN
+    RAISERROR ('Status_des không được để trống.', 16, 1);
+ROLLBACK TRANSACTION;
+RETURN;
+END;
+-- Product Name không được để trống
+IF EXISTS (SELECT 1 FROM inserted WHERE ProductName = '')
+BEGIN
+    RAISERROR ('Product Name không được để trống.', 16, 1);
+ROLLBACK TRANSACTION;
+RETURN;
+END;
+  -- Kiểm tra giá trị Original_price và Sell_price
+  IF EXISTS (SELECT 1 FROM inserted WHERE Original_price <= 0 OR Sell_price <= 0)
   BEGIN
-      UPDATE product
-      SET    quantity = @CurrentQuantity - @Quantity
-      WHERE  productid = @ProductID;
-  END
+      RAISERROR ('Original_price và Sell_price phải lớn hơn 0.', 16, 1);
+      ROLLBACK TRANSACTION;
+      RETURN;
+  END;
+
+
+  -- Kiểm tra giá trị Quantity
+  IF EXISTS (SELECT 1 FROM inserted WHERE Quantity < 0)
+  BEGIN
+      RAISERROR ('Quantity phải lớn hơn hoặc bằng 0.', 16, 1);
+      ROLLBACK TRANSACTION;
+      RETURN;
+  END;
 END;
 
-go
-
-CREATE TRIGGER trg_wishlist
-ON wishitem
-after INSERT
+GO
+CREATE TRIGGER TRG_DeleteProduct
+ON Product
+FOR DELETE
 AS
+BEGIN
+  -- Kiểm tra xem sản phẩm bị xóa có nằm trong đơn hàng khác hay không
+  IF EXISTS (
+      SELECT 1
+      FROM Deleted d
+      INNER JOIN OrderDetail od ON d.ProductID = od.ProductID
+  )
   BEGIN
-      BEGIN TRAN
-
-      IF EXISTS (SELECT *
-                 FROM   inserted i
-                        JOIN wishitem w
-                          ON i.productid = w.productid)
-        BEGIN
-            ROLLBACK TRAN
-
-            RAISERROR('Product is already in the wish list',16,1)
-        END
+      -- Nếu sản phẩm bị xóa có nằm trong đơn hàng khác
+      -- Thực hiện hành động tương ứng ở đây (ví dụ: ROLLBACK TRANSACTION hoặc DELETE các đơn hàng liên quan)
+      ROLLBACK TRANSACTION; -- Ví dụ: Rollback giao dịch để không cho xóa sản phẩm
+      RAISERROR ('Cannot delete the product. It is associated with other orders.', 16, 1);
   END
+END;
+GO
 
-go
-
-CREATE TRIGGER trg_addimage
-ON images
-after INSERT
+-- TRIGGER Category
+CREATE TRIGGER TRG_AddCategory
+ON Category
+AFTER INSERT, UPDATE
 AS
-  BEGIN
-      DECLARE @ProductID INT;
-      DECLARE @ImageURL VARCHAR(255);
+BEGIN
+   SET NOCOUNT ON;
+  
+   DECLARE @DuplicateCount INT;
 
-      -- Lấy ProductID và ImageURL của dòng dữ liệu vừa được thêm vào Product
-      SELECT @ProductID = productid,
-             @ImageURL = imageurl
-      FROM   inserted;
 
-      -- Kiểm tra nếu ImageURL rỗng
-      IF @ImageURL = ''
-        BEGIN
-            RAISERROR('ImageURL không được để trống',16,1);
+   SELECT @DuplicateCount = COUNT(*)
+   FROM Category c
+   INNER JOIN INSERTED i ON c.CatName = i.CatName;
 
-            ROLLBACK TRANSACTION;
-        END
-      ELSE
-        BEGIN
-            INSERT INTO images
-                        (productid,
-                         imageurl)
-            VALUES      (@ProductID,
-                         @ImageURL);
-        END;
-  END;
+
+   IF @DuplicateCount > 1
+   BEGIN
+       RAISERROR('Category name already exists', 16, 1);
+       ROLLBACK TRANSACTION;
+       RETURN;
+   END;
+
+
+   IF EXISTS (
+       SELECT *
+       FROM INSERTED
+       WHERE CatName = ''
+   )
+   BEGIN
+       RAISERROR('Category name must not be empty', 16, 1);
+       ROLLBACK TRANSACTION;
+       RETURN;
+   END;
+END;
+
+GO
+CREATE TRIGGER TRG_DEL_CATEGORY
+ON Category
+AFTER DELETE
+AS
+BEGIN
+   DECLARE @CatName VARCHAR(50)
+   SELECT @CatName = CatName
+   FROM DELETED
+
+
+
+
+
+
+
+
+   IF EXISTS (
+       SELECT *
+       FROM Product
+       WHERE CatID = (
+           SELECT CatID
+           FROM Category
+           WHERE CatName = @CatName
+       )
+   )
+   BEGIN
+       RAISERROR ('The category being referenced by the product', 16, 1)
+       ROLLBACK
+   END
+END
+
+
+GO
+CREATE TRIGGER TRG_OrderProduct
+ON OrderDetail
+FOR INSERT
+AS
+BEGIN
+    DECLARE @ProductID INT;
+    DECLARE @Quantity INT;
+    DECLARE @CurrentQuantity INT;
+    DECLARE @OrderID INT 
+
+    
+    -- Lấy ProductID và Quantity của dòng dữ liệu vừa được thêm vào OrderDetail
+    SELECT @ProductID = ProductID, @Quantity = Quantity, @OrderID = OrderID
+    FROM INSERTED;
+
+
+
+    -- Lấy số lượng hiện tại của sản phẩm
+    SELECT @CurrentQuantity = Quantity
+    FROM Product
+    WHERE ProductID = @ProductID;
+
+    -- Kiểm tra nếu Quantity mới đặt lớn hơn Quantity hiện tại của sản phẩm
+    IF @Quantity > @CurrentQuantity
+    BEGIN
+        RAISERROR('Số lượng đặt hàng vượt quá số lượng hiện có của sản phẩm', 16, 1);
+        ROLLBACK TRANSACTION;
+    END
+END;
+
+GO
+CREATE TRIGGER TRG_AddImage
+ON Images
+AFTER INSERT
+AS
+BEGIN
+    DECLARE @ProductID INT;
+	DECLARE @ImageURL VARCHAR(255);
+	
+	-- Lấy ProductID và ImageURL của dòng dữ liệu vừa được thêm vào Product
+	SELECT @ProductID = ProductID, @ImageURL = ImageURL
+	FROM INSERTED;
+
+
+	-- Kiểm tra nếu ImageURL rỗng
+	IF @ImageURL = ''
+	BEGIN
+		RAISERROR('ImageURL không được để trống', 16, 1);
+		ROLLBACK TRANSACTION;
+	END
+END;
+
+
 
 -- PROCEDURES
-go
 
-CREATE PROCEDURE Proc_addproduct @Quantity       INT,
-                                 @Info_des       VARCHAR(255),
-                                 @Status_des     VARCHAR(255),
-                                 @Original_price FLOAT,
-                                 @Sell_price     FLOAT,
-                                 @ProductName    VARCHAR(255),
-                                 @CatID          INT,
-                                 @UserID         INT
-AS
-    SET nocount ON;
 
-  BEGIN try
-      BEGIN TRAN
+EXEC PROC_AddProduct 10, 'This is a product', 'New', 100000, 120000, 'Product 1', 13, 7;
 
-      -- upload date
-      DECLARE @UploadDate DATE;
 
-      SET @UploadDate = Getdate();
 
-      INSERT product
-             (quantity,
-              info_des,
-              status_des,
-              original_price,
-              sell_price,
-              uploadeddate,
-              productname,
-              catid,
-              userid,
-              view_count)
-      VALUES ( @Quantity,
-               @Info_des,
-               @Status_des,
-               @Original_price,
-               @Sell_price,
-               @UploadDate,
-               @ProductName,
-               @CatID,
-               @UserID,
-               0 )
-
-      COMMIT TRAN
-  END try
-
-  BEGIN catch
-      ROLLBACK TRAN
-
-      -- declare error
-      DECLARE @ErrorMessage NVARCHAR(4000);
-
-      SET @ErrorMessage = N'Lỗi ' + Error_message();
-
-      RAISERROR(@ErrorMessage,16,1);
-  -- declare error state
-  END catch
-
-go
-
---Sua san pham
-CREATE PROC Proc_editproduct @ProductID      INT,
-                             @Quantity       INT,
-                             @Info_des       VARCHAR(255),
-                             @Status_des     VARCHAR(255),
-                             @Original_price FLOAT,
-                             @Sell_price     FLOAT,
-                             @UploadedDate   DATE,
-                             @ProductName    VARCHAR(255),
-                             @CatID          INT,
-                             @UserID         INT,
-                             @View_count     INT
-AS
-  BEGIN
-      SET nocount ON;
-
-      BEGIN try
-          BEGIN TRAN
-
-          UPDATE product
-          SET    quantity = @Quantity,
-                 info_des = @Info_des,
-                 status_des = @Status_des,
-                 original_price = @Original_price,
-                 sell_price = @Sell_price,
-                 uploadeddate = @UploadedDate,
-                 productname = @ProductName,
-                 catid = @CatID,
-                 view_count = @View_count
-          WHERE  productid = @ProductID
-
-          COMMIT TRAN
-      END try
-
-      BEGIN catch
-          ROLLBACK TRAN
-
-          DECLARE @ErrorNumber_INT INT;
-          DECLARE @ErrorSeverity_INT INT;
-          DECLARE @ErrorProcedure_VC VARCHAR(200);
-          DECLARE @ErrorLine_INT INT;
-          DECLARE @ErrorMessage_NVC NVARCHAR(4000);
-
-          SELECT @ErrorMessage_NVC = Error_message(),
-                 @ErrorLine_INT = Error_line(),
-                 @ErrorNumber_INT = Error_number(),
-                 @ErrorProcedure_VC = Error_procedure(),
-                 @ErrorSeverity_INT = Error_severity()
-
-          RAISERROR(@ErrorMessage_NVC,@ErrorSeverity_INT,1);
-      END catch
-  END
-
-go
-
-CREATE PROCEDURE Proc_deleteproduct @ProductID INT
-AS
-    SET nocount ON;
-
-  BEGIN try
-      BEGIN TRAN
-
-      DELETE FROM product
-      WHERE  product.productid = @ProductID
-
-      COMMIT TRAN
-  END try
-
-  BEGIN catch
-      ROLLBACK TRAN
-
-      DECLARE @ErrorNumber_INT INT;
-      DECLARE @ErrorSeverity_INT INT;
-      DECLARE @ErrorProcedure_VC VARCHAR(200);
-      DECLARE @ErrorLine_INT INT;
-      DECLARE @ErrorMessage_NVC NVARCHAR(4000);
-
-      SELECT @ErrorMessage_NVC = Error_message(),
-             @ErrorLine_INT = Error_line(),
-             @ErrorNumber_INT = Error_number(),
-             @ErrorProcedure_VC = Error_procedure(),
-             @ErrorSeverity_INT = Error_severity()
-
-      RAISERROR(@ErrorMessage_NVC,@ErrorSeverity_INT,1);
-  END catch
-
-go
-
-go
-
-CREATE PROCEDURE Proc_addwishitem @ProductID INT,
-                                  @UserID    INT
-AS
-    SET nocount ON;
-
-  BEGIN
-      BEGIN TRAN
-
-      BEGIN try
-          INSERT wishitem
-                 (productid,
-                  userid)
-          VALUES ( @ProductID,
-                   @UserID )
-
-          COMMIT TRAN
-      END try
-
-      BEGIN catch
-          ROLLBACK TRAN
-
-          DECLARE @ErrorNumber_INT INT;
-          DECLARE @ErrorSeverity_INT INT;
-          DECLARE @ErrorProcedure_VC VARCHAR(200);
-          DECLARE @ErrorLine_INT INT;
-          DECLARE @ErrorMessage_NVC NVARCHAR(4000);
-
-          SELECT @ErrorMessage_NVC = Error_message(),
-                 @ErrorLine_INT = Error_line(),
-                 @ErrorNumber_INT = Error_number(),
-                 @ErrorProcedure_VC = Error_procedure(),
-                 @ErrorSeverity_INT = Error_severity()
-
-          RAISERROR(@ErrorMessage_NVC,@ErrorSeverity_INT,1);
-      END catch
-  END
-
-go
-
-CREATE PROCEDURE Proc_deletewishitem @WishItemID INT
-AS
-    SET nocount ON;
-
-  BEGIN try
-      BEGIN TRAN
-
-      DELETE FROM wishitem
-      WHERE  wishitem.wishitemid = @WishItemID
-
-      COMMIT TRAN
-  END try
-
-  BEGIN catch
-      ROLLBACK TRAN
-
-      DECLARE @ErrorNumber_INT INT;
-      DECLARE @ErrorSeverity_INT INT;
-      DECLARE @ErrorProcedure_VC VARCHAR(200);
-      DECLARE @ErrorLine_INT INT;
-      DECLARE @ErrorMessage_NVC NVARCHAR(4000);
-
-      SELECT @ErrorMessage_NVC = Error_message(),
-             @ErrorLine_INT = Error_line(),
-             @ErrorNumber_INT = Error_number(),
-             @ErrorProcedure_VC = Error_procedure(),
-             @ErrorSeverity_INT = Error_severity()
-
-      RAISERROR(@ErrorMessage_NVC,@ErrorSeverity_INT,1);
-  END catch
-
-go
-
-CREATE PROCEDURE Proc_addcat @CatName VARCHAR(255)
-AS
-  BEGIN
-      BEGIN TRANSACTION
-
-      BEGIN try
-          INSERT INTO category
-                      (catname)
-          VALUES     (@CatName)
-
-          COMMIT TRANSACTION
-      END try
-
-      BEGIN catch
-          ROLLBACK TRANSACTION
-
-          DECLARE @err NVARCHAR(max)
-
-          SELECT @err = N'Lỗi ' + Error_message()
-
-          RAISERROR(@err,16,1)
-
-          RETURN
-      END catch
-  END
-
-go
-
-CREATE PROCEDURE Proc_deletecat @CatId INT
-AS
-  BEGIN
-      BEGIN TRANSACTION
-
-      BEGIN try
-          DELETE FROM category
-          WHERE  catid = @CatID
-
-          UPDATE product
-          SET    catid = NULL
-          WHERE  catid = @CatID
-
-          COMMIT TRANSACTION
-      END try
-
-      BEGIN catch
-          ROLLBACK TRANSACTION
-
-          DECLARE @err NVARCHAR(max)
-
-          SELECT @err = N'Lỗi ' + Error_message()
-
-          RAISERROR(@err,16,1)
-
-          RETURN
-      END catch
-  END
-
-go
-
-CREATE PROCEDURE Proc_updatecat @CatId   INT,
-                                @CatName VARCHAR(255)
-AS
-  BEGIN
-      BEGIN TRANSACTION
-
-      BEGIN try
-          UPDATE category
-          SET    catname = @CatName
-          WHERE  catid = @CatID
-
-          COMMIT TRANSACTION
-      END try
-
-      BEGIN catch
-          ROLLBACK TRANSACTION
-
-          DECLARE @err NVARCHAR(max)
-
-          SELECT @err = N'Lỗi ' + Error_message()
-
-          RAISERROR(@err,16,1)
-
-          RETURN
-      END catch
-  END
-
-go
-
-CREATE PROCEDURE Proc_updateuserinformation @UserId    INT,
-                                            @Name      VARCHAR(255),
-                                            @Username  VARCHAR(255),
-                                            @Password  VARCHAR(255),
-                                            @Phone     VARCHAR(255),
-                                            @Address   VARCHAR(255),
-                                            @Birthdate DATE
-AS
-  BEGIN
-      BEGIN try
-          BEGIN TRANSACTION
-
-          UPDATE users
-          SET    NAME = @Name,
-                 username = @Username,
-                 password = @Password,
-                 phone = @Phone,
-                 address = @Address,
-                 birthdate = @Birthdate
-          WHERE  userid = @UserId
-
-          COMMIT TRANSACTION
-      END try
-
-      BEGIN catch
-          ROLLBACK TRANSACTION
-
-          DECLARE @err NVARCHAR(max)
-
-          SET @err = Error_message()
-
-          RAISERROR(@err,16,1)
-      END catch
-  END
-
-go
-
-CREATE PROC Proc_createaccount @Name      VARCHAR(255),
-                               @Username  VARCHAR(255),
-                               @Password  VARCHAR(255),
-                               @Phone     VARCHAR(255),
-                               @Address   VARCHAR(255),
-                               @Birthdate DATE,
-                               @RoleID    INT
-AS
-  BEGIN
-      BEGIN try
-          BEGIN TRANSACTION
-
-          INSERT INTO users
-                      (NAME,
-                       username,
-                       password,
-                       phone,
-                       address,
-                       birthdate,
-                       roleid,
-                       location,
-                       isactive)
-          VALUES      (@Name,
-                       @Username,
-                       @Password,
-                       @Phone,
-                       @Address,
-                       @Birthdate,
-                       @RoleID,
-                       NULL,
-                       1)
-
-          COMMIT TRANSACTION
-      END try
-
-      BEGIN catch
-          ROLLBACK TRANSACTION
-
-          DECLARE @err NVARCHAR(max)
-
-          SET @err = N'Lỗi ' + Error_message()
-
-          RAISERROR(@err,16,1)
-      END catch
-  END
-
-go
-
-CREATE PROC Proc_setaccountstatus @UserID   INT,
-                                  @IsActive BIT
-AS
-  BEGIN
-      BEGIN try
-          BEGIN TRANSACTION
-
-          UPDATE users
-          SET    isactive = @IsActive
-          WHERE  userid = @UserID
-
-          COMMIT TRANSACTION
-      END try
-
-      BEGIN catch
-          ROLLBACK TRANSACTION
-
-          DECLARE @err NVARCHAR(max)
-
-          SET @err = N'Lỗi ' + Error_message()
-
-          RAISERROR(@err,16,1)
-      END catch
-  END
-
-go
-
-go
-
-CREATE PROC Proc_adduserorder @UserID    INT,
-                              @ProductID INT,
-                              @Quantity  INT
-AS
-  BEGIN
-      BEGIN TRANSACTION
-
-      BEGIN try
-          INSERT INTO user_order
-                      (userid,
-                       status,
-                       orderdate)
-          VALUES      (@UserID,
-                       'Success',
-                       Getdate())
-
-          DECLARE @OrderID INT
-
-          SET @OrderID = Scope_identity()
-
-          -- PRINT @OrderID
-          PRINT @OrderID
-
-          INSERT INTO orderdetail
-                      (orderid,
-                       productid,
-                       quantity)
-          VALUES      (@OrderID,
-                       @ProductID,
-                       @Quantity)
-
-          COMMIT TRANSACTION
-      END try
-
-      BEGIN catch
-          ROLLBACK TRANSACTION
-
-          DECLARE @err NVARCHAR(max)
-
-          SET @err = N'Lỗi ' + Error_message()
-
-          RAISERROR(@err,16,1)
-      END catch
-  END
-
-go
-
-CREATE PROC Proc_addimagebyproductid @ImageURL  VARCHAR(255),
-                                     @ProductID INT
-AS
-  BEGIN
-      BEGIN TRANSACTION
-
-      BEGIN try
-          INSERT INTO images
-                      (imageurl,
-                       productid)
-          VALUES      (@ImageURL,
-                       @ProductID);
-
-          COMMIT TRANSACTION
-      END try
-
-      BEGIN catch
-          ROLLBACK TRANSACTION
-
-          DECLARE @err NVARCHAR(max)
-
-          SET @err = N'Lỗi ' + Error_message()
-
-          RAISERROR(@err,16,1)
-      END catch
-  END
-
-go
-
-CREATE PROC Proc_removeimagesbyproductid @ProductID INT
-AS
-  BEGIN
-      BEGIN TRANSACTION
-
-      BEGIN try
-          DELETE FROM images
-          WHERE  productid = @ProductID
-
-          COMMIT TRANSACTION
-      END try
-
-      BEGIN catch
-          ROLLBACK TRANSACTION
-
-          DECLARE @err NVARCHAR(max)
-
-          SET @err = N'Lỗi ' + Error_message()
-
-          RAISERROR(@err,16,1)
-      END catch
-  END
-
--- FUNCTIONS
-go
-
-CREATE FUNCTION Func_login (@Username VARCHAR(255),
-                            @Password VARCHAR(255))
-returns TABLE
-AS
-    RETURN
-      (SELECT *
-       FROM   users
-       WHERE  username = @Username
-              AND password = @Password
-              AND EXISTS (SELECT 1
-                          FROM   users
-                          WHERE  username = @Username));
-
-go
-
-CREATE FUNCTION Func_searchproductbyname (@ProductName VARCHAR(255))
-returns TABLE
-AS
-    RETURN
-      (SELECT *
-       FROM   product
-       WHERE  productname LIKE '%' + @ProductName + '%');
-
-go
-
-CREATE FUNCTION Func_searchproductbyuserid (@UserID INT)
-returns TABLE
-AS
-    RETURN
-      (SELECT *
-       FROM   product
-       WHERE  userid = @UserID);
-
-go
 GO
-CREATE FUNCTION Func_getordersbyuserid (@UserID INT)
-returns TABLE
+CREATE PROCEDURE PROC_AddProduct
+(
+  @Quantity int,
+  @Info_des varchar(255),
+  @Status_des varchar(255),
+  @Original_price float,
+  @Sell_price float,
+  @ProductName varchar(255),
+  @CatID int,
+  @UserID int
+)
 AS
-    RETURN
-      (SELECT UO.orderid,
-              UO.status,
-              UO.orderdate
-       FROM   user_order UO
-       WHERE  UO.userid = @UserID);
+BEGIN TRY
+  BEGIN TRAN
 
+  -- Upload date
+  DECLARE @UploadDate date;
+  SET @UploadDate = GETDATE();
+
+  INSERT Product
+  (
+    Quantity, Info_des, Status_des, Original_price, Sell_price, UploadedDate, ProductName, CatID, UserID, View_count
+  )
+  VALUES
+  (
+    @Quantity, @Info_des, @Status_des, @Original_price, @Sell_price, @UploadDate, @ProductName, @CatID, @UserID, 0
+  )
+
+  -- Set output parameter with SCOPE_IDENTITY()
+  DECLARE @ProductID int
+  SET @ProductID = SCOPE_IDENTITY();
+  SELECT @ProductID;
+  COMMIT TRAN
+
+  -- No need for return statement, output parameter handles it
+END TRY
+
+BEGIN CATCH
+  ROLLBACK TRAN
+
+  -- Declare error
+  DECLARE @ErrorMessage nvarchar(4000);
+  SET @ErrorMessage = N'Lỗi ' + ERROR_MESSAGE();
+  RAISERROR(@ErrorMessage, 16, 1);
+
+  -- Declare error state
+END CATCH
+
+    go
+        --Sua san pham
+create procedure PROC_UpdateProduct
+	   @ProductID int,
+	   @Quantity int,
+	   @Info_des varchar(255),
+	   @Status_des varchar(255),
+	   @Original_price float,
+	   @Sell_price float,
+	   @ProductName varchar(255),
+	   @CatID int
+as 
+begin
+begin try
+    begin tran
+update Product
+set
+	Quantity = @Quantity,   
+Info_des = @Info_des,
+Status_des = @Status_des,
+Original_price = @Original_price,
+Sell_price = @Sell_price,
+ProductName = @ProductName,
+CatID = @CatID
+where ProductID = @ProductID
+commit tran
+end try
+begin catch
+rollback tran
+    DECLARE @err NVARCHAR(max)
+    SET @err = N'Lỗi '+ ERROR_MESSAGE()
+    RAISERROR(@err, 16, 1)
+end catch
+end
 go
 
-CREATE FUNCTION Func_getimagesbyproductid (@ProductID INT)
-returns TABLE
-AS
-    RETURN
-      (SELECT imageid,
-              imageurl
-       FROM   images
-       WHERE  productid = @ProductID);
 
+create procedure PROC_DeleteProduct
+   @ProductID int
+as
+set nocount on;
+begin try
+   begin tran
+   delete from Product
+   where Product.ProductID = @ProductID
+   commit tran
+end try
+
+
+   begin catch
+       rollback tran
+
+
+       declare @ErrorNumber_INT INT;
+       declare @ErrorSeverity_INT INT;
+       declare @ErrorProcedure_VC VARCHAR(200);
+       declare @ErrorLine_INT INT;
+       declare @ErrorMessage_NVC NVARCHAR(4000);
+
+
+       select
+           @ErrorMessage_NVC = ERROR_MESSAGE(),
+           @ErrorLine_INT = ERROR_LINE(),
+           @ErrorNumber_INT = ERROR_NUMBER(),
+           @ErrorProcedure_VC = ERROR_PROCEDURE(),
+           @ErrorSeverity_INT = ERROR_SEVERITY()
+
+
+       raiserror(@ErrorMessage_NVC, @ErrorSeverity_INT,1);
+
+
+   end catch
+go
 go
 
-CREATE FUNCTION Func_getallusers()
-returns TABLE
+
+create procedure PROC_AddWishItem
+   @ProductID int,
+   @UserID int
+as
+set nocount on;
+   begin
+   begin tran
+
+begin try
+
+  IF EXISTS (SELECT * FROM WishItem WHERE ProductID = @ProductID and UserID = @UserID)         BEGIN
+			RAISERROR('Product đã nằm trong wish list', 16, 1)
+			RETURN
+		END
+
+
+   insert WishItem
+   (
+       ProductID, UserID
+   )
+
+
+   values
+   (
+       @ProductID, @UserID
+   )
+
+
+   commit tran
+end try
+
+
+   begin catch
+       rollback tran
+
+
+       declare @ErrorNumber_INT INT;
+       declare @ErrorSeverity_INT INT;
+       declare @ErrorProcedure_VC VARCHAR(200);
+       declare @ErrorLine_INT INT;
+       declare @ErrorMessage_NVC NVARCHAR(4000);
+
+
+       select
+           @ErrorMessage_NVC = ERROR_MESSAGE(),
+           @ErrorLine_INT = ERROR_LINE(),
+           @ErrorNumber_INT = ERROR_NUMBER(),
+           @ErrorProcedure_VC = ERROR_PROCEDURE(),
+           @ErrorSeverity_INT = ERROR_SEVERITY()
+
+
+       raiserror(@ErrorMessage_NVC, @ErrorSeverity_INT,1);
+
+
+   end catch
+
+   end
+
+
+GO
+
+
+create procedure PROC_DeleteWishItem
+   @WishItemID int
+as
+begin
+set nocount on;
+begin try
+   begin tran
+   delete from WishItem
+   where WishItem.WishItemID = @WishItemID
+  
+   commit tran
+end try
+
+
+
+
+   begin catch
+       rollback tran
+
+
+
+
+       declare @ErrorNumber_INT INT;
+       declare @ErrorSeverity_INT INT;
+       declare @ErrorProcedure_VC VARCHAR(200);
+       declare @ErrorLine_INT INT;
+       declare @ErrorMessage_NVC NVARCHAR(4000);
+
+
+
+
+       select
+           @ErrorMessage_NVC = ERROR_MESSAGE(),
+           @ErrorLine_INT = ERROR_LINE(),
+           @ErrorNumber_INT = ERROR_NUMBER(),
+           @ErrorProcedure_VC = ERROR_PROCEDURE(),
+           @ErrorSeverity_INT = ERROR_SEVERITY()
+
+
+
+
+       raiserror(@ErrorMessage_NVC, @ErrorSeverity_INT,1);
+
+
+
+
+   end catch
+end
+
+GO
+
+CREATE PROCEDURE PROC_AddCat
+@CatName VARCHAR(255)
 AS
-    RETURN
-      (SELECT *
-       FROM   users);
+BEGIN
+	BEGIN TRANSACTION
+	BEGIN TRY
+		INSERT INTO Category(CatName)
+	    VALUES(@CatName)
+        COMMIT TRANSACTION
+    END TRY
+    BEGIN CATCH
+		ROLLBACK TRANSACTION
+		    DECLARE @err NVARCHAR(MAX)
+            SELECT @err = N'Lỗi ' + ERROR_MESSAGE()
+            RAISERROR(@err, 16, 1)
+        RETURN
+	END CATCH
+END
 
-go
-
-CREATE FUNCTION Func_getuserinformationbyid (@UserID INT)
-returns TABLE
+Go
+CREATE PROCEDURE PROC_DeleteCat 
+@CatId INT
 AS
-    RETURN
-      (SELECT *
-       FROM   users
-       WHERE  userid = @UserID)
+BEGIN
+	BEGIN TRANSACTION
+	BEGIN TRY
+		DELETE FROM Category
+		WHERE CatID = @CatID
 
-go
-
-CREATE FUNCTION Func_getproductbyname (@Keyword VARCHAR(255))
-returns TABLE
+		UPDATE Product SET CatID = null
+		WHERE CatID = @CatID
+        COMMIT TRANSACTION
+    END TRY
+    BEGIN CATCH
+		ROLLBACK TRANSACTION
+		    DECLARE @err NVARCHAR(MAX)
+            SELECT @err = N'Lỗi ' + ERROR_MESSAGE()
+            RAISERROR(@err, 16, 1)
+        RETURN
+	END CATCH
+END
+Go
+CREATE PROCEDURE PROC_UpdateCat
+@CatId INT,
+@CatName VARCHAR(255)
 AS
-    RETURN
-      SELECT *
-      FROM   product
-      WHERE  productname LIKE '%' + @Keyword + '%';
+BEGIN
+	BEGIN TRANSACTION
+	BEGIN TRY
+		UPDATE Category SET CatName = @CatName
+		WHERE CatID = @CatID
+        COMMIT TRANSACTION
+    END TRY
+    BEGIN CATCH
+		ROLLBACK TRANSACTION
+		    DECLARE @err NVARCHAR(MAX)
+            SELECT @err = N'Lỗi ' + ERROR_MESSAGE()
+            RAISERROR(@err, 16, 1)
+        RETURN
+	END CATCH
+END
 
-go
+GO
 
-CREATE FUNCTION Func_getproductbycategories (@CatID INT)
-returns TABLE
+
+CREATE PROCEDURE PROC_UpdateUserInformation
+@UserId int,
+@Name varchar(255),
+@Username varchar(255),
+@Password varchar(255),
+@Phone varchar(255),
+@Address varchar(255),
+@Birthdate date
 AS
-    RETURN
-      SELECT *
-      FROM   product
-      WHERE  catid = @CatID
+BEGIN
+    BEGIN TRY
+        BEGIN TRANSACTION
+        UPDATE Users
+        SET Name = @Name, Username = @Username, Password = @Password, Phone = @Phone, Address = @Address, Birthdate = @Birthdate
+        WHERE UserID = @UserId
+        COMMIT TRANSACTION
+    END TRY
+BEGIN CATCH
+    ROLLBACK TRANSACTION
+    DECLARE @err NVARCHAR(max)
+    SET @err = ERROR_MESSAGE()
+    RAISERROR(@err, 16, 1)
+END CATCH
+END
 
-go
-CREATE FUNCTION Func_getallorders ()
-returns TABLE
+
+GO
+
+
+CREATE PROC PROC_CreateAccount
+@Name varchar(255),
+@Username varchar(255),
+@Password varchar(255),
+@Phone varchar(255),
+@Address varchar(255),
+@Birthdate date,
+@RoleID int
 AS
-    RETURN
-      (SELECT *
-       FROM   user_order);
+BEGIN
+    BEGIN TRY
+        BEGIN TRANSACTION
+        INSERT INTO Users(Name, Username, Password, Phone, Address, Birthdate, RoleID, Location, IsActive)
+        VALUES (@Name, @Username, @Password, @Phone, @Address, @Birthdate, @RoleID, Null, 1)
+        COMMIT TRANSACTION
+    END TRY
+BEGIN CATCH
+    ROLLBACK TRANSACTION
+    DECLARE @err NVARCHAR(max)
+    SET @err = N'Lỗi '+ ERROR_MESSAGE()
+    RAISERROR(@err, 16, 1)
+END CATCH
+END
 
+GO
+CREATE PROC PROC_SetAccountStatus
+@UserID int,
+@IsActive bit
+AS
+BEGIN
+	BEGIN TRY
+		BEGIN TRANSACTION
+		UPDATE Users
+		SET IsActive = @IsActive
+		WHERE UserID = @UserID
+		COMMIT TRANSACTION
+	END TRY
+BEGIN CATCH
+	ROLLBACK TRANSACTION
+	DECLARE @err NVARCHAR(max)
+	SET @err = N'Lỗi '+ ERROR_MESSAGE()
+	RAISERROR(@err, 16, 1)
+END CATCH
+END
+
+
+--2034
+--User = 7
+
+--EXEC PROC_AddUserOrder 7, 2034, 1
+
+
+GO
+CREATE PROC PROC_AddUserOrder
+@UserID int,
+@ProductID int,
+@Quantity int
+AS
+BEGIN
+	BEGIN TRANSACTION
+    	BEGIN TRY
+        -- if ProductID have UserID == User -> raise error.
+        DECLARE @ProductOwnerID int
+
+        SET @ProductOwnerID = (SELECT UserID FROM Product WHERE ProductID = @ProductID)
+        IF (@ProductOwnerID = @UserID)
+            BEGIN
+			RAISERROR('Không thể mua sản phẩm của chính mình', 16, 1)
+			RETURN
+		END
+
+		INSERT INTO User_Order(UserID, Status, OrderDate)
+		VALUES (@UserID, 'Success', GETDATE())
+		DECLARE @OrderID int
+		SET @OrderID = SCOPE_IDENTITY()
+		INSERT INTO OrderDetail(OrderID, ProductID, Quantity)
+		VALUES (@OrderID, @ProductID, @Quantity)
+		COMMIT TRANSACTION
+	END TRY
+BEGIN CATCH
+	ROLLBACK TRANSACTION
+	DECLARE @err NVARCHAR(max)
+	SET @err = N'Lỗi '+ ERROR_MESSAGE()
+	RAISERROR(@err, 16, 1)
+END CATCH
+END
+Go
+
+
+
+CREATE PROC PROC_AddImageByProductID
+@ImageURL varchar(255),
+@ProductID int
+AS
+BEGIN
+       BEGIN TRANSACTION
+           BEGIN TRY
+               INSERT INTO Images(ImageURL, ProductID) VALUES (@ImageURL, @ProductID);
+               COMMIT TRANSACTION
+           END TRY
+   BEGIN CATCH
+       ROLLBACK TRANSACTION
+       DECLARE @err NVARCHAR(max)
+       SET @err = N'Lỗi '+ ERROR_MESSAGE()
+       RAISERROR(@err, 16, 1)
+   END CATCH
+END
+
+GO
+
+
+CREATE PROC PROC_RemoveImagesByProductID
+@ProductID int
+AS
+BEGIN
+           BEGIN TRANSACTION
+            BEGIN TRY
+                DELETE FROM Images Where ProductID = @ProductID
+                COMMIT TRANSACTION
+            END TRY
+    BEGIN CATCH
+        ROLLBACK TRANSACTION
+        DECLARE @err NVARCHAR(max)
+        SET @err = N'Lỗi '+ ERROR_MESSAGE()
+        RAISERROR(@err, 16, 1)
+    END CATCH
+END
+--- FUNCTIONS
+GO
+CREATE FUNCTION FUNC_Login
+(
+  @Username VARCHAR(255),
+  @Password VARCHAR(255)
+)
+RETURNS TABLE
+AS
+RETURN
+(
+  SELECT *
+  FROM Users
+  WHERE Username = @Username AND Password = @Password
+     AND EXISTS (SELECT 1 FROM Users WHERE Username = @Username)
+);
+GO
+
+
+CREATE
+FUNCTION FUNC_SearchProductByName
+(
+   @ProductName varchar(255)
+)
+RETURNS TABLE
+AS
+RETURN
+(
+   SELECT *
+   FROM Product
+   WHERE ProductName LIKE '%' + @ProductName + '%'
+);
+Go
+CREATE 
+FUNCTION FUNC_SearchProductByUserID
+(
+  @UserID int
+)
+RETURNS TABLE
+AS
+RETURN
+(
+  SELECT *
+  FROM Product
+  WHERE UserID = @UserID
+);
+GO
+CREATE FUNCTION FUNC_getAllOrders()
+RETURNS TABLE
+AS
+RETURN
+(
+	SELECT * FROM User_Order
+)
+GO
+CREATE  
+FUNCTION FUNC_GetOrdersByUserID
+(
+  @UserID int
+)
+RETURNS TABLE
+AS
+RETURN
+(
+  SELECT *
+  FROM User_Order UO
+  WHERE UO.UserID = @UserID
+);
+GO
+
+
+CREATE 
+FUNCTION FUNC_GetImagesByProductID
+(
+  @ProductID int
+)
+RETURNS TABLE
+AS
+RETURN
+(
+  SELECT *
+  FROM Images
+  WHERE ProductID = @ProductID
+);
+Go
+
+
+CREATE FUNCTION FUNC_CheckUserRole
+(
+ @UserID int
+)
+RETURNS VARCHAR(20)
+AS
+BEGIN
+ DECLARE @RoleName VARCHAR(20);
+
+
+
+
+ SELECT @RoleName = R.Rolename
+ FROM Users U
+ INNER JOIN Role R ON U.RoleID = R.RoleID
+ WHERE U.UserID = @UserID;
+
+
+
+
+ RETURN @RoleName;
+END;
+GO
+CREATE FUNCTION FUNC_getAllUsers()
+RETURNS TABLE
+AS
+RETURN
+(
+   SELECT * 
+   FROM Users
+);
+GO
+CREATE FUNCTION FUNC_GetUserInformationById (@UserID int)
+RETURNS TABLE
+AS
+    RETURN (
+        SELECT * FROM Users WHERE UserID = @UserID  
+    )
+
+	GO
+CREATE FUNCTION FUNC_GetProductByName (@Keyword varchar(255))
+RETURNS TABLE
+AS
+RETURN 
+    SELECT * FROM Product WHERE ProductName LIKE '%' + @Keyword + '%';
+Go
+
+CREATE FUNCTION FUNC_GetProductByCategories (@CatID int)
+RETURNS TABLE
+AS
+RETURN 
+    SELECT * FROM Product WHERE CatID = @CatID
+
+	GO
+
+
+
+GO
 --lay orderdetail theo orderid
-go
-
-CREATE FUNCTION Func_getorderdetail (@OrderID INT)
-returns TABLE
+create function FUNC_GetOrderDetail (@OrderID int)
+RETURNS TABLE
 AS
-    RETURN
-      SELECT *
-      FROM   orderdetail
-      WHERE  orderid = @OrderID 
+RETURN 
+SELECT * FROM OrderDetail WHERE OrderID = @OrderID
+GO
+
+
+
+-- ROLES
+CREATE ROLE NormalUser;
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON Product TO NormalUser;
+GRANT SELECT, INSERT, UPDATE, DELETE ON Category TO NormalUser;
+GRANT UPDATE ON Users TO NormalUser;
+GRANT SELECT ON Role TO NormalUser;
+GRANT SELECT, INSERT, UPDATE, DELETE ON Images TO NormalUser;
+GRANT SELECT, INSERt, UPDATE ON User_Order TO NormalUser;
+GRANT SELECT, INSERT, UPDATE ON OrderDetail TO NormalUser;
+GRANT SELECT, INSERT, UPDATE, DELETE ON WishItem TO NormalUser;
+
+DENY SELECT ON FUNC_getAllOrders TO NormalUser;
+DENY SELECT ON FUNC_getAllUsers TO NormalUser;
+DENY EXECUTE ON PROC_SetAccountStatus TO NormalUser;
+REVOKE DELETE ON dbo.Users TO NormalUser;
+
+GO
+CREATE TRIGGER TRG_AddUserRole
+ON Users
+AFTER INSERT
+AS
+BEGIN
+	DECLARE @Username VARCHAR(255);
+    DECLARE @RoleID INT;
+    DECLARE @Password VARCHAR(255);
+    DECLARE @sqlCmd NVARCHAR(MAX);
+
+    SELECT @Username = Username, @RoleID = RoleID, @Password = Password FROM INSERTED;
+
+	SET @sqlCmd= 'CREATE LOGIN [' + @Username +'] WITH PASSWORD='''+ @Password+ ''', DEFAULT_DATABASE=[ExchangeBee], CHECK_EXPIRATION=OFF, CHECK_POLICY=OFF'
+	EXEC (@sqlCmd)
+
+	SET @sqlCmd= 'CREATE USER ' + @Username +' FOR LOGIN '+ @Username
+	EXEC (@sqlCmd)
+
+	IF(@RoleID = 2) -- 2 la role cua user
+		SET @sqlCmd = 'ALTER ROLE NormalUser ADD MEMBER ' + @Username;
+	ELSE
+		SET @sqlCmd = 'ALTER SERVER ROLE sysadmin' + ' ADD MEMBER ' + @Username;
+	EXEC (@sqlCmd)
+END;
+
+GO
+CREATE PROCEDURE PROC_DeleteUser
+@UserID INT
+AS
+BEGIN
+    DECLARE @Username VARCHAR(255);
+DECLARE @sqlCmd NVARCHAR(MAX);
+    
+    SELECT @Username = Users.Username FROM Users WHERE UserID = @UserID;
+
+    BEGIN TRANSACTION
+        BEGIN TRY
+            UPDATE Users
+            SET RoleID = NULL
+			WHERE UserID = @UserID;
+
+            SET @sqlCmd = 'DROP USER ' + @Username;
+            EXEC (@sqlCmd);
+            SET @sqlCmd = 'DROP LOGIN ' + @Username;
+            EXEC (@sqlCmd); 
+
+            DELETE Users
+            WHERE UserID = @UserID;
+            COMMIT TRANSACTION
+END TRY
+BEGIN CATCH
+    ROLLBACK TRANSACTION
+	DECLARE @err NVARCHAR(MAX)
+	SELECT @err = N'Lỗi' + ERROR_MESSAGE()
+	RAISERROR(@err, 16, 1)
+END CATCH
+END;
+
+
+--      @Quantity int,
+--        @Info_des varchar(255),
+--        @Status_des varchar(255),
+--        @Original_price float,
+--        @Sell_price float,
+--        @ProductName varchar(255),
+--        @CatID int,
+--        @UserID int
+
+DECLARE @data INT;
+EXEC @data = PROC_AddProduct 10, 'This is a product', 'New', 100000, 120000, 'Product 1', 13, 7;
+PRINT( @data)
+
+INSERT INTO Product(Quantity, Info_des, Status_des, Original_price, Sell_price, UploadedDate, ProductName, CatID, UserID, View_count)
+VALUES(10, 'This is a product', 'New', 100000, 120000, GETDATE(), 'Product 1', 1, 1, 0);
+

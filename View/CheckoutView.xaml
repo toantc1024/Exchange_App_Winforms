@@ -177,10 +177,7 @@
                                         Please choose receiving method
                                     </TextBlock>
                                     <Separator Height="5" Visibility="Hidden" />
-                                    <ComboBox
-                                        materialDesign:HintAssist.Hint="Receving method"
-                                        SelectedIndex="{Binding}"
-                                        Style="{StaticResource MaterialDesignFilledComboBox}">
+                                    <ComboBox materialDesign:HintAssist.Hint="Receving method" Style="{StaticResource MaterialDesignFilledComboBox}">
                                         <ComboBoxItem>Receive at Bee Office</ComboBoxItem>
                                         <ComboBoxItem>To my address</ComboBoxItem>
                                     </ComboBox>

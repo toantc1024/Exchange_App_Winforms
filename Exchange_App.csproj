@@ -105,72 +105,119 @@
     <Compile Include="CustomUserControls\UCOrderDetail.xaml.cs">
       <DependentUpon>UCOrderDetail.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Model\FindProductByKeyWord_Result.cs">
-      <DependentUpon>Exchange_App_Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\GetProductByCategory_Result.cs">
-      <DependentUpon>Exchange_App_Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\GetProductByUser_Result.cs">
-      <DependentUpon>Exchange_App_Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\LoginAccount_Result.cs">
-      <DependentUpon>Exchange_App_Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\View_Categories.cs">
-      <DependentUpon>Exchange_App_Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\View_Products.cs">
-      <DependentUpon>Exchange_App_Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\View_Users.cs">
-      <DependentUpon>Exchange_App_Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\CurrencyConverter.cs" />
-    <Compile Include="ValidationRules\NotEmptyRule.cs" />
-    <Compile Include="ViewModel\AddCategoryViewModel.cs" />
-    <Compile Include="ViewModel\CheckoutViewModel.cs" />
-    <Compile Include="ViewModel\HomeViewModel.cs" />
     <Compile Include="Model\Category.cs">
-      <DependentUpon>Exchange_App_Model.tt</DependentUpon>
+      <DependentUpon>ExchangeBee.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\DataProvider.cs" />
-    <Compile Include="Model\Exchange_App_Model.Context.cs">
+    <Compile Include="Model\ExchangeBee.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Exchange_App_Model.Context.tt</DependentUpon>
+      <DependentUpon>ExchangeBee.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\Exchange_App_Model.cs">
+    <Compile Include="Model\ExchangeBee.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Exchange_App_Model.tt</DependentUpon>
+      <DependentUpon>ExchangeBee.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\Exchange_App_Model.Designer.cs">
+    <Compile Include="Model\ExchangeBee.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Exchange_App_Model.edmx</DependentUpon>
+      <DependentUpon>ExchangeBee.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Model\FUNC_getAllOrders_Result.cs">
+      <DependentUpon>ExchangeBee.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\FUNC_getAllUsers_Result.cs">
+      <DependentUpon>ExchangeBee.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\FUNC_GetImagesByProductID_Result.cs">
+      <DependentUpon>ExchangeBee.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\FUNC_GetOrderDetail_Result.cs">
+      <DependentUpon>ExchangeBee.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\FUNC_GetOrdersByUserID_Result.cs">
+      <DependentUpon>ExchangeBee.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\FUNC_GetProductByCategories_Result.cs">
+      <DependentUpon>ExchangeBee.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\FUNC_GetProductByName_Result.cs">
+      <DependentUpon>ExchangeBee.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\FUNC_GetUserInformationById_Result.cs">
+      <DependentUpon>ExchangeBee.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\FUNC_Login_Result.cs">
+      <DependentUpon>ExchangeBee.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\FUNC_SearchProductByName_Result.cs">
+      <DependentUpon>ExchangeBee.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\FUNC_SearchProductByUserID_Result.cs">
+      <DependentUpon>ExchangeBee.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Image.cs">
-      <DependentUpon>Exchange_App_Model.tt</DependentUpon>
+      <DependentUpon>ExchangeBee.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\OrderDetail.cs">
-      <DependentUpon>Exchange_App_Model.tt</DependentUpon>
+      <DependentUpon>ExchangeBee.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Product.cs">
-      <DependentUpon>Exchange_App_Model.tt</DependentUpon>
+      <DependentUpon>ExchangeBee.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Role.cs">
-      <DependentUpon>Exchange_App_Model.tt</DependentUpon>
+      <DependentUpon>ExchangeBee.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\User.cs">
-      <DependentUpon>Exchange_App_Model.tt</DependentUpon>
+      <DependentUpon>ExchangeBee.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\User_Order.cs">
-      <DependentUpon>Exchange_App_Model.tt</DependentUpon>
+      <DependentUpon>ExchangeBee.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\View_category.cs">
+      <DependentUpon>ExchangeBee.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\View_orderdetail.cs">
+      <DependentUpon>ExchangeBee.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\View_products.cs">
+      <DependentUpon>ExchangeBee.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\View_product_images.cs">
+      <DependentUpon>ExchangeBee.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\View_users.cs">
+      <DependentUpon>ExchangeBee.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\View_user_order.cs">
+      <DependentUpon>ExchangeBee.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\View_wishitem.cs">
+      <DependentUpon>ExchangeBee.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\WishItem.cs">
-      <DependentUpon>Exchange_App_Model.tt</DependentUpon>
+      <DependentUpon>ExchangeBee.tt</DependentUpon>
     </Compile>
+    <Compile Include="Repositories\connectStr.cs" />
+    <Compile Include="Repositories\Implementations\BaseRepository.cs" />
+    <Compile Include="Repositories\Implementations\CategoryRepository.cs" />
+    <Compile Include="Repositories\Implementations\ImageRepository.cs" />
+    <Compile Include="Repositories\Implementations\ProductRepository.cs" />
+    <Compile Include="Repositories\Implementations\WishItemRepository.cs" />
+    <Compile Include="Repositories\Interfaces\ICategoryRepository.cs" />
+    <Compile Include="Repositories\Interfaces\IImageRepository.cs" />
+    <Compile Include="Repositories\Interfaces\IProductsRepository.cs" />
+    <Compile Include="Repositories\Interfaces\IWishItemRepository.cs" />
+    <Compile Include="Tools\ControlConverter.cs" />
+    <Compile Include="Tools\CurrencyConverter.cs" />
+    <Compile Include="Tools\ProductConverter.cs" />
+    <Compile Include="Tools\WishlistConverter.cs" />
+    <Compile Include="ValidationRules\NotEmptyRule.cs" />
+    <Compile Include="ViewModel\AddCategoryViewModel.cs" />
+    <Compile Include="ViewModel\CategoryManagerViewModel.cs" />
+    <Compile Include="ViewModel\CheckoutViewModel.cs" />
+    <Compile Include="ViewModel\HomeViewModel.cs" />
+    <Compile Include="Model\DataProvider.cs" />
     <Compile Include="RegisterWindow.xaml.cs">
       <DependentUpon>RegisterWindow.xaml</DependentUpon>
     </Compile>
@@ -188,11 +235,17 @@
     <Compile Include="View\AddCategoryView.xaml.cs">
       <DependentUpon>AddCategoryView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\CategoriesManagerView.xaml.cs">
+      <DependentUpon>CategoriesManagerView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\CheckoutView.xaml.cs">
       <DependentUpon>CheckoutView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\HomeView.xaml.cs">
       <DependentUpon>HomeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\InputForm.xaml.cs">
+      <DependentUpon>InputForm.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\OrderView.xaml.cs">
       <DependentUpon>OrderView.xaml</DependentUpon>
@@ -269,11 +322,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\CategoriesManagerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\CheckoutView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\HomeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\InputForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -315,12 +376,12 @@
     <Resource Include="Fonts\Poppins-Regular.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <EntityDeploy Include="Model\Exchange_App_Model.edmx">
+    <EntityDeploy Include="Model\ExchangeBee.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Exchange_App_Model.Designer.cs</LastGenOutput>
+      <LastGenOutput>ExchangeBee.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="Model\Exchange_App_Model.edmx.diagram">
-      <DependentUpon>Exchange_App_Model.edmx</DependentUpon>
+    <None Include="Model\ExchangeBee.edmx.diagram">
+      <DependentUpon>ExchangeBee.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -335,15 +396,15 @@
     <Content Include="INIT_DATABASE.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Model\Exchange_App_Model.Context.tt">
+    <Content Include="Model\ExchangeBee.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Exchange_App_Model.edmx</DependentUpon>
-      <LastGenOutput>Exchange_App_Model.Context.cs</LastGenOutput>
+      <DependentUpon>ExchangeBee.edmx</DependentUpon>
+      <LastGenOutput>ExchangeBee.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Model\Exchange_App_Model.tt">
+    <Content Include="Model\ExchangeBee.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Exchange_App_Model.edmx</DependentUpon>
-      <LastGenOutput>Exchange_App_Model.cs</LastGenOutput>
+      <DependentUpon>ExchangeBee.edmx</DependentUpon>
+      <LastGenOutput>ExchangeBee.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <ItemGroup />
