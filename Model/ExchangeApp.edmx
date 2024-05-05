@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="ExchangeAppDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="BEE_APPModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Category">
           <Key>
             <PropertyRef Name="CatID" />
@@ -84,75 +84,7 @@
           <Property Name="ProductID" Type="int" />
           <Property Name="UserID" Type="int" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'ExchangeAppDB.dbo.View_Categories' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="View_Categories">
-          <Key>
-            <PropertyRef Name="CatID" />
-            <PropertyRef Name="CatName" />
-          </Key>
-          <Property Name="CatID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="CatName" Type="varchar" MaxLength="255" Nullable="false" />
-        </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'ExchangeAppDB.dbo.View_Products' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="View_Products">
-          <Key>
-            <PropertyRef Name="ProductID" />
-            <PropertyRef Name="ProductName" />
-            <PropertyRef Name="Quantity" />
-            <PropertyRef Name="Info_des" />
-            <PropertyRef Name="Status_des" />
-            <PropertyRef Name="Original_price" />
-            <PropertyRef Name="Sell_price" />
-            <PropertyRef Name="UploadedDate" />
-            <PropertyRef Name="View_count" />
-            <PropertyRef Name="CatName" />
-            <PropertyRef Name="Name" />
-            <PropertyRef Name="Phone" />
-            <PropertyRef Name="Address" />
-            <PropertyRef Name="Birthdate" />
-            <PropertyRef Name="Username" />
-          </Key>
-          <Property Name="ProductID" Type="int" Nullable="false" />
-          <Property Name="ProductName" Type="varchar" MaxLength="255" Nullable="false" />
-          <Property Name="Quantity" Type="int" Nullable="false" />
-          <Property Name="Info_des" Type="varchar" MaxLength="255" Nullable="false" />
-          <Property Name="Status_des" Type="varchar" MaxLength="255" Nullable="false" />
-          <Property Name="Original_price" Type="float" Nullable="false" />
-          <Property Name="Sell_price" Type="float" Nullable="false" />
-          <Property Name="UploadedDate" Type="date" Nullable="false" />
-          <Property Name="View_count" Type="int" Nullable="false" />
-          <Property Name="CatName" Type="varchar" MaxLength="255" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="255" Nullable="false" />
-          <Property Name="Phone" Type="varchar" MaxLength="255" Nullable="false" />
-          <Property Name="Address" Type="varchar" MaxLength="255" Nullable="false" />
-          <Property Name="Birthdate" Type="date" Nullable="false" />
-          <Property Name="Username" Type="varchar" MaxLength="255" Nullable="false" />
-          <Property Name="RoleID" Type="int" />
-          <Property Name="Location" Type="varchar" MaxLength="255" />
-        </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'ExchangeAppDB.dbo.View_Users' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="View_Users">
-          <Key>
-            <PropertyRef Name="UserID" />
-            <PropertyRef Name="Name" />
-            <PropertyRef Name="Username" />
-            <PropertyRef Name="Phone" />
-            <PropertyRef Name="Address" />
-            <PropertyRef Name="Birthdate" />
-          </Key>
-          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="255" Nullable="false" />
-          <Property Name="Username" Type="varchar" MaxLength="255" Nullable="false" />
-          <Property Name="Phone" Type="varchar" MaxLength="255" Nullable="false" />
-          <Property Name="Address" Type="varchar" MaxLength="255" Nullable="false" />
-          <Property Name="Birthdate" Type="date" Nullable="false" />
-          <Property Name="RoleID" Type="int" />
-          <Property Name="Location" Type="varchar" MaxLength="255" />
-        </EntityType>
-        <Association Name="FK__Images__ProductI__5AEE82B9">
+        <Association Name="FK__Images__ProductI__36B12243">
           <End Role="Product" Type="Self.Product" Multiplicity="1" />
           <End Role="Images" Type="Self.Images" Multiplicity="*" />
           <ReferentialConstraint>
@@ -164,7 +96,7 @@ warning 6002: The table/view 'ExchangeAppDB.dbo.View_Users' does not have a prim
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__OrderDeta__Order__60A75C0F">
+        <Association Name="FK__OrderDeta__Order__3C69FB99">
           <End Role="User_Order" Type="Self.User_Order" Multiplicity="0..1" />
           <End Role="OrderDetail" Type="Self.OrderDetail" Multiplicity="*" />
           <ReferentialConstraint>
@@ -176,7 +108,7 @@ warning 6002: The table/view 'ExchangeAppDB.dbo.View_Users' does not have a prim
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__OrderDeta__Produ__619B8048">
+        <Association Name="FK__OrderDeta__Produ__3D5E1FD2">
           <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
           <End Role="OrderDetail" Type="Self.OrderDetail" Multiplicity="*" />
           <ReferentialConstraint>
@@ -188,7 +120,7 @@ warning 6002: The table/view 'ExchangeAppDB.dbo.View_Users' does not have a prim
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Product__CatID__534D60F1">
+        <Association Name="FK__Product__CatID__2E1BDC42">
           <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
           <End Role="Product" Type="Self.Product" Multiplicity="*" />
           <ReferentialConstraint>
@@ -200,7 +132,7 @@ warning 6002: The table/view 'ExchangeAppDB.dbo.View_Users' does not have a prim
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Product__UserID__5441852A">
+        <Association Name="FK__Product__UserID__2F10007B">
           <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
           <End Role="Product" Type="Self.Product" Multiplicity="*" />
           <ReferentialConstraint>
@@ -212,7 +144,7 @@ warning 6002: The table/view 'ExchangeAppDB.dbo.View_Users' does not have a prim
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__User_Orde__UserI__5DCAEF64">
+        <Association Name="FK__User_Orde__UserI__398D8EEE">
           <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
           <End Role="User_Order" Type="Self.User_Order" Multiplicity="*" />
           <ReferentialConstraint>
@@ -224,7 +156,7 @@ warning 6002: The table/view 'ExchangeAppDB.dbo.View_Users' does not have a prim
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Users__RoleID__4CA06362">
+        <Association Name="FK__Users__RoleID__276EDEB3">
           <End Role="Role" Type="Self.Role" Multiplicity="0..1" />
           <End Role="Users" Type="Self.Users" Multiplicity="*" />
           <ReferentialConstraint>
@@ -236,7 +168,7 @@ warning 6002: The table/view 'ExchangeAppDB.dbo.View_Users' does not have a prim
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__WishItem__UserID__66603565">
+        <Association Name="FK__WishItem__UserID__4222D4EF">
           <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
           <End Role="WishItem" Type="Self.WishItem" Multiplicity="*" />
           <ReferentialConstraint>
@@ -340,7 +272,7 @@ warning 6002: The table/view 'ExchangeAppDB.dbo.View_Users' does not have a prim
             </CollectionType>
           </ReturnType>
         </Function>
-        <EntityContainer Name="ExchangeAppDBModelStoreContainer">
+        <EntityContainer Name="BEE_APPModelStoreContainer">
           <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Images" EntityType="Self.Images" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OrderDetail" EntityType="Self.OrderDetail" Schema="dbo" store:Type="Tables" />
@@ -349,74 +281,35 @@ warning 6002: The table/view 'ExchangeAppDB.dbo.View_Users' does not have a prim
           <EntitySet Name="User_Order" EntityType="Self.User_Order" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WishItem" EntityType="Self.WishItem" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="View_Categories" EntityType="Self.View_Categories" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [View_Categories].[CatID] AS [CatID], 
-    [View_Categories].[CatName] AS [CatName]
-    FROM [dbo].[View_Categories] AS [View_Categories]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="View_Products" EntityType="Self.View_Products" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [View_Products].[ProductID] AS [ProductID], 
-    [View_Products].[ProductName] AS [ProductName], 
-    [View_Products].[Quantity] AS [Quantity], 
-    [View_Products].[Info_des] AS [Info_des], 
-    [View_Products].[Status_des] AS [Status_des], 
-    [View_Products].[Original_price] AS [Original_price], 
-    [View_Products].[Sell_price] AS [Sell_price], 
-    [View_Products].[UploadedDate] AS [UploadedDate], 
-    [View_Products].[View_count] AS [View_count], 
-    [View_Products].[CatName] AS [CatName], 
-    [View_Products].[Name] AS [Name], 
-    [View_Products].[Phone] AS [Phone], 
-    [View_Products].[Address] AS [Address], 
-    [View_Products].[Birthdate] AS [Birthdate], 
-    [View_Products].[Username] AS [Username], 
-    [View_Products].[RoleID] AS [RoleID], 
-    [View_Products].[Location] AS [Location]
-    FROM [dbo].[View_Products] AS [View_Products]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="View_Users" EntityType="Self.View_Users" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [View_Users].[UserID] AS [UserID], 
-    [View_Users].[Name] AS [Name], 
-    [View_Users].[Username] AS [Username], 
-    [View_Users].[Phone] AS [Phone], 
-    [View_Users].[Address] AS [Address], 
-    [View_Users].[Birthdate] AS [Birthdate], 
-    [View_Users].[RoleID] AS [RoleID], 
-    [View_Users].[Location] AS [Location]
-    FROM [dbo].[View_Users] AS [View_Users]</DefiningQuery>
-          </EntitySet>
-          <AssociationSet Name="FK__Images__ProductI__5AEE82B9" Association="Self.FK__Images__ProductI__5AEE82B9">
+          <AssociationSet Name="FK__Images__ProductI__36B12243" Association="Self.FK__Images__ProductI__36B12243">
             <End Role="Product" EntitySet="Product" />
             <End Role="Images" EntitySet="Images" />
           </AssociationSet>
-          <AssociationSet Name="FK__OrderDeta__Order__60A75C0F" Association="Self.FK__OrderDeta__Order__60A75C0F">
+          <AssociationSet Name="FK__OrderDeta__Order__3C69FB99" Association="Self.FK__OrderDeta__Order__3C69FB99">
             <End Role="User_Order" EntitySet="User_Order" />
             <End Role="OrderDetail" EntitySet="OrderDetail" />
           </AssociationSet>
-          <AssociationSet Name="FK__OrderDeta__Produ__619B8048" Association="Self.FK__OrderDeta__Produ__619B8048">
+          <AssociationSet Name="FK__OrderDeta__Produ__3D5E1FD2" Association="Self.FK__OrderDeta__Produ__3D5E1FD2">
             <End Role="Product" EntitySet="Product" />
             <End Role="OrderDetail" EntitySet="OrderDetail" />
           </AssociationSet>
-          <AssociationSet Name="FK__Product__CatID__534D60F1" Association="Self.FK__Product__CatID__534D60F1">
+          <AssociationSet Name="FK__Product__CatID__2E1BDC42" Association="Self.FK__Product__CatID__2E1BDC42">
             <End Role="Category" EntitySet="Category" />
             <End Role="Product" EntitySet="Product" />
           </AssociationSet>
-          <AssociationSet Name="FK__Product__UserID__5441852A" Association="Self.FK__Product__UserID__5441852A">
+          <AssociationSet Name="FK__Product__UserID__2F10007B" Association="Self.FK__Product__UserID__2F10007B">
             <End Role="Users" EntitySet="Users" />
             <End Role="Product" EntitySet="Product" />
           </AssociationSet>
-          <AssociationSet Name="FK__User_Orde__UserI__5DCAEF64" Association="Self.FK__User_Orde__UserI__5DCAEF64">
+          <AssociationSet Name="FK__User_Orde__UserI__398D8EEE" Association="Self.FK__User_Orde__UserI__398D8EEE">
             <End Role="Users" EntitySet="Users" />
             <End Role="User_Order" EntitySet="User_Order" />
           </AssociationSet>
-          <AssociationSet Name="FK__Users__RoleID__4CA06362" Association="Self.FK__Users__RoleID__4CA06362">
+          <AssociationSet Name="FK__Users__RoleID__276EDEB3" Association="Self.FK__Users__RoleID__276EDEB3">
             <End Role="Role" EntitySet="Role" />
             <End Role="Users" EntitySet="Users" />
           </AssociationSet>
-          <AssociationSet Name="FK__WishItem__UserID__66603565" Association="Self.FK__WishItem__UserID__66603565">
+          <AssociationSet Name="FK__WishItem__UserID__4222D4EF" Association="Self.FK__WishItem__UserID__4222D4EF">
             <End Role="Users" EntitySet="Users" />
             <End Role="WishItem" EntitySet="WishItem" />
           </AssociationSet>
@@ -428,14 +321,53 @@ warning 6002: The table/view 'ExchangeAppDB.dbo.View_Users' does not have a prim
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="ExchangeAppDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="BEE_APPModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <ComplexType Name="FindProductByKeyWord_Result">
+          <Property Name="ProductID" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="Info_des" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Status_des" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Original_price" Type="Double" Nullable="false" />
+          <Property Name="Sell_price" Type="Double" Nullable="false" />
+          <Property Name="UploadedDate" Type="DateTime" Nullable="false" />
+          <Property Name="ProductName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CatID" Type="Int32" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="View_count" Type="Int32" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="GetProductByCategory_Result">
+          <Property Name="ProductID" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="Info_des" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Status_des" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Original_price" Type="Double" Nullable="false" />
+          <Property Name="Sell_price" Type="Double" Nullable="false" />
+          <Property Name="UploadedDate" Type="DateTime" Nullable="false" />
+          <Property Name="ProductName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CatID" Type="Int32" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="View_count" Type="Int32" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="GetProductByUser_Result">
+          <Property Name="ProductID" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="Info_des" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Status_des" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Original_price" Type="Double" Nullable="false" />
+          <Property Name="Sell_price" Type="Double" Nullable="false" />
+          <Property Name="UploadedDate" Type="DateTime" Nullable="false" />
+          <Property Name="ProductName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CatID" Type="Int32" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="View_count" Type="Int32" Nullable="false" />
+        </ComplexType>
         <EntityType Name="Category">
           <Key>
             <PropertyRef Name="CatID" />
           </Key>
           <Property Name="CatID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CatName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Products" Relationship="Self.FK__Product__CatID__534D60F1" FromRole="Category" ToRole="Product" />
+          <NavigationProperty Name="Products" Relationship="Self.FK__Product__CatID__2E1BDC42" FromRole="Category" ToRole="Product" />
         </EntityType>
         <EntityType Name="Image">
           <Key>
@@ -444,7 +376,7 @@ warning 6002: The table/view 'ExchangeAppDB.dbo.View_Users' does not have a prim
           <Property Name="ImageID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ProductID" Type="Int32" Nullable="false" />
           <Property Name="ImageURL" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Product" Relationship="Self.FK__Images__ProductI__5AEE82B9" FromRole="Images" ToRole="Product" />
+          <NavigationProperty Name="Product" Relationship="Self.FK__Images__ProductI__36B12243" FromRole="Images" ToRole="Product" />
         </EntityType>
         <EntityType Name="OrderDetail">
           <Key>
@@ -454,8 +386,8 @@ warning 6002: The table/view 'ExchangeAppDB.dbo.View_Users' does not have a prim
           <Property Name="OrderID" Type="Int32" />
           <Property Name="ProductID" Type="Int32" />
           <Property Name="Quantity" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="User_Order" Relationship="Self.FK__OrderDeta__Order__60A75C0F" FromRole="OrderDetail" ToRole="User_Order" />
-          <NavigationProperty Name="Product" Relationship="Self.FK__OrderDeta__Produ__619B8048" FromRole="OrderDetail" ToRole="Product" />
+          <NavigationProperty Name="User_Order" Relationship="Self.FK__OrderDeta__Order__3C69FB99" FromRole="OrderDetail" ToRole="User_Order" />
+          <NavigationProperty Name="Product" Relationship="Self.FK__OrderDeta__Produ__3D5E1FD2" FromRole="OrderDetail" ToRole="Product" />
         </EntityType>
         <EntityType Name="Product">
           <Key>
@@ -471,12 +403,12 @@ warning 6002: The table/view 'ExchangeAppDB.dbo.View_Users' does not have a prim
           <Property Name="ProductName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="CatID" Type="Int32" />
           <Property Name="UserID" Type="Int32" />
-          <NavigationProperty Name="Category" Relationship="Self.FK__Product__CatID__534D60F1" FromRole="Product" ToRole="Category" />
-          <NavigationProperty Name="Images" Relationship="Self.FK__Images__ProductI__5AEE82B9" FromRole="Product" ToRole="Images" />
-          <NavigationProperty Name="OrderDetails" Relationship="Self.FK__OrderDeta__Produ__619B8048" FromRole="Product" ToRole="OrderDetail" />
-          <NavigationProperty Name="User" Relationship="Self.FK__Product__UserID__5441852A" FromRole="Product" ToRole="Users" />
-          <NavigationProperty Name="WishItems" Relationship="Self.FK_CartDetail_ProductID" FromRole="Product" ToRole="WishItem" />
           <Property Name="View_count" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Category" Relationship="Self.FK__Product__CatID__2E1BDC42" FromRole="Product" ToRole="Category" />
+          <NavigationProperty Name="Images" Relationship="Self.FK__Images__ProductI__36B12243" FromRole="Product" ToRole="Images" />
+          <NavigationProperty Name="OrderDetails" Relationship="Self.FK__OrderDeta__Produ__3D5E1FD2" FromRole="Product" ToRole="OrderDetail" />
+          <NavigationProperty Name="User" Relationship="Self.FK__Product__UserID__2F10007B" FromRole="Product" ToRole="Users" />
+          <NavigationProperty Name="WishItems" Relationship="Self.FK_CartDetail_ProductID" FromRole="Product" ToRole="WishItem" />
         </EntityType>
         <EntityType Name="Role">
           <Key>
@@ -484,7 +416,7 @@ warning 6002: The table/view 'ExchangeAppDB.dbo.View_Users' does not have a prim
           </Key>
           <Property Name="RoleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Rolename" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Users" Relationship="Self.FK__Users__RoleID__4CA06362" FromRole="Role" ToRole="Users" />
+          <NavigationProperty Name="Users" Relationship="Self.FK__Users__RoleID__276EDEB3" FromRole="Role" ToRole="Users" />
         </EntityType>
         <EntityType Name="User_Order">
           <Key>
@@ -494,8 +426,8 @@ warning 6002: The table/view 'ExchangeAppDB.dbo.View_Users' does not have a prim
           <Property Name="UserID" Type="Int32" />
           <Property Name="Status" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="OrderDate" Type="DateTime" Nullable="false" Precision="0" />
-          <NavigationProperty Name="OrderDetails" Relationship="Self.FK__OrderDeta__Order__60A75C0F" FromRole="User_Order" ToRole="OrderDetail" />
-          <NavigationProperty Name="User" Relationship="Self.FK__User_Orde__UserI__5DCAEF64" FromRole="User_Order" ToRole="Users" />
+          <NavigationProperty Name="OrderDetails" Relationship="Self.FK__OrderDeta__Order__3C69FB99" FromRole="User_Order" ToRole="OrderDetail" />
+          <NavigationProperty Name="User" Relationship="Self.FK__User_Orde__UserI__398D8EEE" FromRole="User_Order" ToRole="Users" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -510,11 +442,11 @@ warning 6002: The table/view 'ExchangeAppDB.dbo.View_Users' does not have a prim
           <Property Name="Address" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Birthdate" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="RoleID" Type="Int32" />
-          <NavigationProperty Name="Products" Relationship="Self.FK__Product__UserID__5441852A" FromRole="Users" ToRole="Product" />
-          <NavigationProperty Name="Role" Relationship="Self.FK__Users__RoleID__4CA06362" FromRole="Users" ToRole="Role" />
-          <NavigationProperty Name="User_Order" Relationship="Self.FK__User_Orde__UserI__5DCAEF64" FromRole="Users" ToRole="User_Order" />
-          <NavigationProperty Name="WishItems" Relationship="Self.FK__WishItem__UserID__66603565" FromRole="Users" ToRole="WishItem" />
           <Property Name="Location" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Products" Relationship="Self.FK__Product__UserID__2F10007B" FromRole="Users" ToRole="Product" />
+          <NavigationProperty Name="Role" Relationship="Self.FK__Users__RoleID__276EDEB3" FromRole="Users" ToRole="Role" />
+          <NavigationProperty Name="User_Order" Relationship="Self.FK__User_Orde__UserI__398D8EEE" FromRole="Users" ToRole="User_Order" />
+          <NavigationProperty Name="WishItems" Relationship="Self.FK__WishItem__UserID__4222D4EF" FromRole="Users" ToRole="WishItem" />
         </EntityType>
         <EntityType Name="WishItem">
           <Key>
@@ -524,9 +456,9 @@ warning 6002: The table/view 'ExchangeAppDB.dbo.View_Users' does not have a prim
           <Property Name="ProductID" Type="Int32" />
           <Property Name="UserID" Type="Int32" />
           <NavigationProperty Name="Product" Relationship="Self.FK_CartDetail_ProductID" FromRole="WishItem" ToRole="Product" />
-          <NavigationProperty Name="User" Relationship="Self.FK__WishItem__UserID__66603565" FromRole="WishItem" ToRole="Users" />
+          <NavigationProperty Name="User" Relationship="Self.FK__WishItem__UserID__4222D4EF" FromRole="WishItem" ToRole="Users" />
         </EntityType>
-        <Association Name="FK__Product__CatID__534D60F1">
+        <Association Name="FK__Product__CatID__2E1BDC42">
           <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
           <End Role="Product" Type="Self.Product" Multiplicity="*" />
           <ReferentialConstraint>
@@ -538,7 +470,7 @@ warning 6002: The table/view 'ExchangeAppDB.dbo.View_Users' does not have a prim
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Images__ProductI__5AEE82B9">
+        <Association Name="FK__Images__ProductI__36B12243">
           <End Role="Product" Type="Self.Product" Multiplicity="1" />
           <End Role="Images" Type="Self.Image" Multiplicity="*" />
           <ReferentialConstraint>
@@ -550,7 +482,7 @@ warning 6002: The table/view 'ExchangeAppDB.dbo.View_Users' does not have a prim
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__OrderDeta__Order__60A75C0F">
+        <Association Name="FK__OrderDeta__Order__3C69FB99">
           <End Role="User_Order" Type="Self.User_Order" Multiplicity="0..1" />
           <End Role="OrderDetail" Type="Self.OrderDetail" Multiplicity="*" />
           <ReferentialConstraint>
@@ -562,7 +494,7 @@ warning 6002: The table/view 'ExchangeAppDB.dbo.View_Users' does not have a prim
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__OrderDeta__Produ__619B8048">
+        <Association Name="FK__OrderDeta__Produ__3D5E1FD2">
           <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
           <End Role="OrderDetail" Type="Self.OrderDetail" Multiplicity="*" />
           <ReferentialConstraint>
@@ -574,7 +506,7 @@ warning 6002: The table/view 'ExchangeAppDB.dbo.View_Users' does not have a prim
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Product__UserID__5441852A">
+        <Association Name="FK__Product__UserID__2F10007B">
           <End Role="Users" Type="Self.User" Multiplicity="0..1" />
           <End Role="Product" Type="Self.Product" Multiplicity="*" />
           <ReferentialConstraint>
@@ -598,7 +530,7 @@ warning 6002: The table/view 'ExchangeAppDB.dbo.View_Users' does not have a prim
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Users__RoleID__4CA06362">
+        <Association Name="FK__Users__RoleID__276EDEB3">
           <End Role="Role" Type="Self.Role" Multiplicity="0..1" />
           <End Role="Users" Type="Self.User" Multiplicity="*" />
           <ReferentialConstraint>
@@ -610,7 +542,7 @@ warning 6002: The table/view 'ExchangeAppDB.dbo.View_Users' does not have a prim
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__User_Orde__UserI__5DCAEF64">
+        <Association Name="FK__User_Orde__UserI__398D8EEE">
           <End Role="Users" Type="Self.User" Multiplicity="0..1" />
           <End Role="User_Order" Type="Self.User_Order" Multiplicity="*" />
           <ReferentialConstraint>
@@ -622,7 +554,7 @@ warning 6002: The table/view 'ExchangeAppDB.dbo.View_Users' does not have a prim
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__WishItem__UserID__66603565">
+        <Association Name="FK__WishItem__UserID__4222D4EF">
           <End Role="Users" Type="Self.User" Multiplicity="0..1" />
           <End Role="WishItem" Type="Self.WishItem" Multiplicity="*" />
           <ReferentialConstraint>
@@ -634,7 +566,7 @@ warning 6002: The table/view 'ExchangeAppDB.dbo.View_Users' does not have a prim
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="ExchangeAppDBEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="BEE_APPEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Categories" EntityType="Self.Category" />
           <EntitySet Name="Images" EntityType="Self.Image" />
           <EntitySet Name="OrderDetails" EntityType="Self.OrderDetail" />
@@ -643,23 +575,23 @@ warning 6002: The table/view 'ExchangeAppDB.dbo.View_Users' does not have a prim
           <EntitySet Name="User_Order" EntityType="Self.User_Order" />
           <EntitySet Name="Users" EntityType="Self.User" />
           <EntitySet Name="WishItems" EntityType="Self.WishItem" />
-          <AssociationSet Name="FK__Product__CatID__534D60F1" Association="Self.FK__Product__CatID__534D60F1">
+          <AssociationSet Name="FK__Product__CatID__2E1BDC42" Association="Self.FK__Product__CatID__2E1BDC42">
             <End Role="Category" EntitySet="Categories" />
             <End Role="Product" EntitySet="Products" />
           </AssociationSet>
-          <AssociationSet Name="FK__Images__ProductI__5AEE82B9" Association="Self.FK__Images__ProductI__5AEE82B9">
+          <AssociationSet Name="FK__Images__ProductI__36B12243" Association="Self.FK__Images__ProductI__36B12243">
             <End Role="Product" EntitySet="Products" />
             <End Role="Images" EntitySet="Images" />
           </AssociationSet>
-          <AssociationSet Name="FK__OrderDeta__Order__60A75C0F" Association="Self.FK__OrderDeta__Order__60A75C0F">
+          <AssociationSet Name="FK__OrderDeta__Order__3C69FB99" Association="Self.FK__OrderDeta__Order__3C69FB99">
             <End Role="User_Order" EntitySet="User_Order" />
             <End Role="OrderDetail" EntitySet="OrderDetails" />
           </AssociationSet>
-          <AssociationSet Name="FK__OrderDeta__Produ__619B8048" Association="Self.FK__OrderDeta__Produ__619B8048">
+          <AssociationSet Name="FK__OrderDeta__Produ__3D5E1FD2" Association="Self.FK__OrderDeta__Produ__3D5E1FD2">
             <End Role="Product" EntitySet="Products" />
             <End Role="OrderDetail" EntitySet="OrderDetails" />
           </AssociationSet>
-          <AssociationSet Name="FK__Product__UserID__5441852A" Association="Self.FK__Product__UserID__5441852A">
+          <AssociationSet Name="FK__Product__UserID__2F10007B" Association="Self.FK__Product__UserID__2F10007B">
             <End Role="Users" EntitySet="Users" />
             <End Role="Product" EntitySet="Products" />
           </AssociationSet>
@@ -667,136 +599,32 @@ warning 6002: The table/view 'ExchangeAppDB.dbo.View_Users' does not have a prim
             <End Role="Product" EntitySet="Products" />
             <End Role="WishItem" EntitySet="WishItems" />
           </AssociationSet>
-          <AssociationSet Name="FK__Users__RoleID__4CA06362" Association="Self.FK__Users__RoleID__4CA06362">
+          <AssociationSet Name="FK__Users__RoleID__276EDEB3" Association="Self.FK__Users__RoleID__276EDEB3">
             <End Role="Role" EntitySet="Roles" />
             <End Role="Users" EntitySet="Users" />
           </AssociationSet>
-          <AssociationSet Name="FK__User_Orde__UserI__5DCAEF64" Association="Self.FK__User_Orde__UserI__5DCAEF64">
+          <AssociationSet Name="FK__User_Orde__UserI__398D8EEE" Association="Self.FK__User_Orde__UserI__398D8EEE">
             <End Role="Users" EntitySet="Users" />
             <End Role="User_Order" EntitySet="User_Order" />
           </AssociationSet>
-          <AssociationSet Name="FK__WishItem__UserID__66603565" Association="Self.FK__WishItem__UserID__66603565">
+          <AssociationSet Name="FK__WishItem__UserID__4222D4EF" Association="Self.FK__WishItem__UserID__4222D4EF">
             <End Role="Users" EntitySet="Users" />
             <End Role="WishItem" EntitySet="WishItems" />
           </AssociationSet>
-          <EntitySet Name="View_Categories" EntityType="ExchangeAppDBModel.View_Categories" />
-          <EntitySet Name="View_Products" EntityType="ExchangeAppDBModel.View_Products" />
-          <EntitySet Name="View_Users" EntityType="ExchangeAppDBModel.View_Users" />
-          <FunctionImport Name="FindProductByKeyWord" IsComposable="true" EntitySet="Products" ReturnType="Collection(ExchangeAppDBModel.Product)">
+          <FunctionImport Name="FindProductByKeyWord" IsComposable="true" EntitySet="Products" ReturnType="Collection(BEE_APPModel.Product)">
           <Parameter Name="Keyword" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="GetProductByCategory" IsComposable="true" EntitySet="Products" ReturnType="Collection(ExchangeAppDBModel.Product)">
+          <FunctionImport Name="GetProductByCategory" IsComposable="true" EntitySet="Products" ReturnType="Collection(BEE_APPModel.Product)">
           <Parameter Name="CatID" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="GetProductByUser" IsComposable="true" EntitySet="Products" ReturnType="Collection(ExchangeAppDBModel.Product)">
+          <FunctionImport Name="GetProductByUser" IsComposable="true" EntitySet="Products" ReturnType="Collection(BEE_APPModel.Product)">
           <Parameter Name="UserID" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="LoginAccount" IsComposable="true" EntitySet="Users" ReturnType="Collection(ExchangeAppDBModel.User)">
+          <FunctionImport Name="LoginAccount" IsComposable="true" EntitySet="Users" ReturnType="Collection(BEE_APPModel.User)">
             <Parameter Name="Username" Mode="In" Type="String" />
             <Parameter Name="Password" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
-        <EntityType Name="View_Categories">
-          <Key>
-            <PropertyRef Name="CatID" />
-            <PropertyRef Name="CatName" />
-          </Key>
-          <Property Name="CatID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CatName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="View_Products">
-          <Key>
-            <PropertyRef Name="ProductID" />
-            <PropertyRef Name="ProductName" />
-            <PropertyRef Name="Quantity" />
-            <PropertyRef Name="Info_des" />
-            <PropertyRef Name="Status_des" />
-            <PropertyRef Name="Original_price" />
-            <PropertyRef Name="Sell_price" />
-            <PropertyRef Name="UploadedDate" />
-            <PropertyRef Name="View_count" />
-            <PropertyRef Name="CatName" />
-            <PropertyRef Name="Name" />
-            <PropertyRef Name="Phone" />
-            <PropertyRef Name="Address" />
-            <PropertyRef Name="Birthdate" />
-            <PropertyRef Name="Username" />
-          </Key>
-          <Property Name="ProductID" Type="Int32" Nullable="false" />
-          <Property Name="ProductName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="Quantity" Type="Int32" Nullable="false" />
-          <Property Name="Info_des" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="Status_des" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="Original_price" Type="Double" Nullable="false" />
-          <Property Name="Sell_price" Type="Double" Nullable="false" />
-          <Property Name="UploadedDate" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="View_count" Type="Int32" Nullable="false" />
-          <Property Name="CatName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="Phone" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="Address" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="Birthdate" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="Username" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="RoleID" Type="Int32" />
-          <Property Name="Location" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="View_Users">
-          <Key>
-            <PropertyRef Name="UserID" />
-            <PropertyRef Name="Name" />
-            <PropertyRef Name="Username" />
-            <PropertyRef Name="Phone" />
-            <PropertyRef Name="Address" />
-            <PropertyRef Name="Birthdate" />
-          </Key>
-          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="Username" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="Phone" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="Address" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="Birthdate" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="RoleID" Type="Int32" />
-          <Property Name="Location" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <ComplexType Name="FindProductByKeyWord_Result">
-          <Property Type="Int32" Name="ProductID" Nullable="false" />
-          <Property Type="Int32" Name="Quantity" Nullable="false" />
-          <Property Type="String" Name="Info_des" Nullable="false" MaxLength="255" />
-          <Property Type="String" Name="Status_des" Nullable="false" MaxLength="255" />
-          <Property Type="Double" Name="Original_price" Nullable="false" />
-          <Property Type="Double" Name="Sell_price" Nullable="false" />
-          <Property Type="DateTime" Name="UploadedDate" Nullable="false" Precision="10" />
-          <Property Type="String" Name="ProductName" Nullable="false" MaxLength="255" />
-          <Property Type="Int32" Name="CatID" Nullable="true" />
-          <Property Type="Int32" Name="UserID" Nullable="true" />
-          <Property Type="Int32" Name="View_count" Nullable="false" />
-        </ComplexType>
-        <ComplexType Name="GetProductByCategory_Result">
-          <Property Type="Int32" Name="ProductID" Nullable="false" />
-          <Property Type="Int32" Name="Quantity" Nullable="false" />
-          <Property Type="String" Name="Info_des" Nullable="false" MaxLength="255" />
-          <Property Type="String" Name="Status_des" Nullable="false" MaxLength="255" />
-          <Property Type="Double" Name="Original_price" Nullable="false" />
-          <Property Type="Double" Name="Sell_price" Nullable="false" />
-          <Property Type="DateTime" Name="UploadedDate" Nullable="false" Precision="10" />
-          <Property Type="String" Name="ProductName" Nullable="false" MaxLength="255" />
-          <Property Type="Int32" Name="CatID" Nullable="true" />
-          <Property Type="Int32" Name="UserID" Nullable="true" />
-          <Property Type="Int32" Name="View_count" Nullable="false" />
-        </ComplexType>
-        <ComplexType Name="GetProductByUser_Result">
-          <Property Type="Int32" Name="ProductID" Nullable="false" />
-          <Property Type="Int32" Name="Quantity" Nullable="false" />
-          <Property Type="String" Name="Info_des" Nullable="false" MaxLength="255" />
-          <Property Type="String" Name="Status_des" Nullable="false" MaxLength="255" />
-          <Property Type="Double" Name="Original_price" Nullable="false" />
-          <Property Type="Double" Name="Sell_price" Nullable="false" />
-          <Property Type="DateTime" Name="UploadedDate" Nullable="false" Precision="10" />
-          <Property Type="String" Name="ProductName" Nullable="false" MaxLength="255" />
-          <Property Type="Int32" Name="CatID" Nullable="true" />
-          <Property Type="Int32" Name="UserID" Nullable="true" />
-          <Property Type="Int32" Name="View_count" Nullable="false" />
-        </ComplexType>
         <ComplexType Name="LoginAccount_Result">
           <Property Type="Int32" Name="UserID" Nullable="false" />
           <Property Type="String" Name="Name" Nullable="false" MaxLength="255" />
@@ -814,9 +642,9 @@ warning 6002: The table/view 'ExchangeAppDB.dbo.View_Users' does not have a prim
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="ExchangeAppDBModelStoreContainer" CdmEntityContainer="ExchangeAppDBEntities">
+        <EntityContainerMapping StorageEntityContainer="BEE_APPModelStoreContainer" CdmEntityContainer="BEE_APPEntities">
           <EntitySetMapping Name="Categories">
-            <EntityTypeMapping TypeName="ExchangeAppDBModel.Category">
+            <EntityTypeMapping TypeName="BEE_APPModel.Category">
               <MappingFragment StoreEntitySet="Category">
                 <ScalarProperty Name="CatID" ColumnName="CatID" />
                 <ScalarProperty Name="CatName" ColumnName="CatName" />
@@ -824,7 +652,7 @@ warning 6002: The table/view 'ExchangeAppDB.dbo.View_Users' does not have a prim
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Images">
-            <EntityTypeMapping TypeName="ExchangeAppDBModel.Image">
+            <EntityTypeMapping TypeName="BEE_APPModel.Image">
               <MappingFragment StoreEntitySet="Images">
                 <ScalarProperty Name="ImageID" ColumnName="ImageID" />
                 <ScalarProperty Name="ProductID" ColumnName="ProductID" />
@@ -833,7 +661,7 @@ warning 6002: The table/view 'ExchangeAppDB.dbo.View_Users' does not have a prim
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="OrderDetails">
-            <EntityTypeMapping TypeName="ExchangeAppDBModel.OrderDetail">
+            <EntityTypeMapping TypeName="BEE_APPModel.OrderDetail">
               <MappingFragment StoreEntitySet="OrderDetail">
                 <ScalarProperty Name="OrderDetailID" ColumnName="OrderDetailID" />
                 <ScalarProperty Name="OrderID" ColumnName="OrderID" />
@@ -843,9 +671,8 @@ warning 6002: The table/view 'ExchangeAppDB.dbo.View_Users' does not have a prim
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Products">
-            <EntityTypeMapping TypeName="ExchangeAppDBModel.Product">
+            <EntityTypeMapping TypeName="BEE_APPModel.Product">
               <MappingFragment StoreEntitySet="Product">
-                <ScalarProperty Name="View_count" ColumnName="View_count" />
                 <ScalarProperty Name="ProductID" ColumnName="ProductID" />
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />
                 <ScalarProperty Name="Info_des" ColumnName="Info_des" />
@@ -856,11 +683,12 @@ warning 6002: The table/view 'ExchangeAppDB.dbo.View_Users' does not have a prim
                 <ScalarProperty Name="ProductName" ColumnName="ProductName" />
                 <ScalarProperty Name="CatID" ColumnName="CatID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="View_count" ColumnName="View_count" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Roles">
-            <EntityTypeMapping TypeName="ExchangeAppDBModel.Role">
+            <EntityTypeMapping TypeName="BEE_APPModel.Role">
               <MappingFragment StoreEntitySet="Role">
                 <ScalarProperty Name="RoleID" ColumnName="RoleID" />
                 <ScalarProperty Name="Rolename" ColumnName="Rolename" />
@@ -868,7 +696,7 @@ warning 6002: The table/view 'ExchangeAppDB.dbo.View_Users' does not have a prim
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="User_Order">
-            <EntityTypeMapping TypeName="ExchangeAppDBModel.User_Order">
+            <EntityTypeMapping TypeName="BEE_APPModel.User_Order">
               <MappingFragment StoreEntitySet="User_Order">
                 <ScalarProperty Name="OrderID" ColumnName="OrderID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
@@ -878,9 +706,8 @@ warning 6002: The table/view 'ExchangeAppDB.dbo.View_Users' does not have a prim
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Users">
-            <EntityTypeMapping TypeName="ExchangeAppDBModel.User">
+            <EntityTypeMapping TypeName="BEE_APPModel.User">
               <MappingFragment StoreEntitySet="Users">
-                <ScalarProperty Name="Location" ColumnName="Location" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Username" ColumnName="Username" />
@@ -890,11 +717,12 @@ warning 6002: The table/view 'ExchangeAppDB.dbo.View_Users' does not have a prim
                 <ScalarProperty Name="Address" ColumnName="Address" />
                 <ScalarProperty Name="Birthdate" ColumnName="Birthdate" />
                 <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="WishItems">
-            <EntityTypeMapping TypeName="ExchangeAppDBModel.WishItem">
+            <EntityTypeMapping TypeName="BEE_APPModel.WishItem">
               <MappingFragment StoreEntitySet="WishItem">
                 <ScalarProperty Name="WishItemID" ColumnName="WishItemID" />
                 <ScalarProperty Name="ProductID" ColumnName="ProductID" />
@@ -902,58 +730,13 @@ warning 6002: The table/view 'ExchangeAppDB.dbo.View_Users' does not have a prim
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="View_Categories">
-            <EntityTypeMapping TypeName="ExchangeAppDBModel.View_Categories">
-              <MappingFragment StoreEntitySet="View_Categories">
-                <ScalarProperty Name="CatName" ColumnName="CatName" />
-                <ScalarProperty Name="CatID" ColumnName="CatID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="View_Products">
-            <EntityTypeMapping TypeName="ExchangeAppDBModel.View_Products">
-              <MappingFragment StoreEntitySet="View_Products">
-                <ScalarProperty Name="Location" ColumnName="Location" />
-                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
-                <ScalarProperty Name="Username" ColumnName="Username" />
-                <ScalarProperty Name="Birthdate" ColumnName="Birthdate" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="Phone" ColumnName="Phone" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="CatName" ColumnName="CatName" />
-                <ScalarProperty Name="View_count" ColumnName="View_count" />
-                <ScalarProperty Name="UploadedDate" ColumnName="UploadedDate" />
-                <ScalarProperty Name="Sell_price" ColumnName="Sell_price" />
-                <ScalarProperty Name="Original_price" ColumnName="Original_price" />
-                <ScalarProperty Name="Status_des" ColumnName="Status_des" />
-                <ScalarProperty Name="Info_des" ColumnName="Info_des" />
-                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
-                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
-                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="View_Users">
-            <EntityTypeMapping TypeName="ExchangeAppDBModel.View_Users">
-              <MappingFragment StoreEntitySet="View_Users">
-                <ScalarProperty Name="Location" ColumnName="Location" />
-                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
-                <ScalarProperty Name="Birthdate" ColumnName="Birthdate" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="Phone" ColumnName="Phone" />
-                <ScalarProperty Name="Username" ColumnName="Username" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="FindProductByKeyWord" FunctionName="ExchangeAppDBModel.Store.FindProductByKeyWord">
+          <FunctionImportMapping FunctionName="BEE_APPModel.Store.FindProductByKeyWord" FunctionImportName="FindProductByKeyWord">
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetProductByCategory" FunctionName="ExchangeAppDBModel.Store.GetProductByCategory">
+          <FunctionImportMapping FunctionName="BEE_APPModel.Store.GetProductByCategory" FunctionImportName="GetProductByCategory">
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetProductByUser" FunctionName="ExchangeAppDBModel.Store.GetProductByUser">
+          <FunctionImportMapping FunctionName="BEE_APPModel.Store.GetProductByUser" FunctionImportName="GetProductByUser">
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="LoginAccount" FunctionName="ExchangeAppDBModel.Store.LoginAccount">
+          <FunctionImportMapping FunctionImportName="LoginAccount" FunctionName="BEE_APPModel.Store.LoginAccount">
           </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>

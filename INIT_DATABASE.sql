@@ -84,6 +84,13 @@ INSERT INTO Role(Rolename) VALUES ('User');
 
 
 -- FUNCTIONS
+CREATE FUNCTION LoginAccount(@Username varchar(255), @Password varchar(255))
+RETURNS TABLE
+AS
+RETURN
+(
+	SELECT * FROM Users WHERE Username = @Username AND Password = @Password
+);
 
 CREATE FUNCTION GetProductByCategory(@CatID int)
 RETURNS TABLE

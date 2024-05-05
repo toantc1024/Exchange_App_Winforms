@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="b641522ede78458b83f9e21c0d7ba00a" Name="Diagram1" ZoomLevel="55">
+        <EntityTypeShape EntityType="BEE_APPModel.Category" Width="1.5" PointX="3" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BEE_APPModel.Image" Width="1.5" PointX="7.5" PointY="5.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="BEE_APPModel.OrderDetail" Width="1.5" PointX="7.5" PointY="8.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="BEE_APPModel.Product" Width="1.5" PointX="5.25" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="BEE_APPModel.Role" Width="1.5" PointX="0.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BEE_APPModel.User_Order" Width="1.5" PointX="5.25" PointY="10.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="BEE_APPModel.User" Width="1.5" PointX="3" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="BEE_APPModel.WishItem" Width="1.5" PointX="7.5" PointY="2.5" IsExpanded="true" />
+        <AssociationConnector Association="BEE_APPModel.FK__Product__CatID__2E1BDC42" ManuallyRouted="false" />
+        <AssociationConnector Association="BEE_APPModel.FK__Images__ProductI__36B12243" ManuallyRouted="false" />
+        <AssociationConnector Association="BEE_APPModel.FK__OrderDeta__Order__3C69FB99" ManuallyRouted="false" />
+        <AssociationConnector Association="BEE_APPModel.FK__OrderDeta__Produ__3D5E1FD2" ManuallyRouted="false" />
+        <AssociationConnector Association="BEE_APPModel.FK__Product__UserID__2F10007B" ManuallyRouted="false" />
+        <AssociationConnector Association="BEE_APPModel.FK_CartDetail_ProductID" ManuallyRouted="false" />
+        <AssociationConnector Association="BEE_APPModel.FK__Users__RoleID__276EDEB3" ManuallyRouted="false" />
+        <AssociationConnector Association="BEE_APPModel.FK__User_Orde__UserI__398D8EEE" ManuallyRouted="false" />
+        <AssociationConnector Association="BEE_APPModel.FK__WishItem__UserID__4222D4EF" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

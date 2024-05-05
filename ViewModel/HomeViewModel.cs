@@ -327,25 +327,22 @@ namespace Exchange_App.ViewModel
               }
             );
                 
-            ShowCheckoutCommand = new RelayCommand<Product>(
-                
-        (p) =>
-        {
-                    if (p != null)
-            {
-                        return true;
-                    }
-                    return false;
-                },
-                       (p) =>
-                       {
+            ShowCheckoutCommand = new RelayCommand<Product>(    
+              (p) =>
+              {
+                  if (p != null)
+                  {
+                       return true;
+                  }
+                       return false;
+              },
+              (p) =>
+              {
                     IsShowCheckout = "Visible";
                     Content = new CheckoutViewModel(currentUser, p, HideCheckoutCommand);
-                }
-                                  
-                       
-                       
-                       );
+              }
+                                                         
+            );
 
             HideCheckoutCommand = new RelayCommand<object>(
                 (p) =>
@@ -375,7 +372,7 @@ namespace Exchange_App.ViewModel
                   // Increaase product view count
                   if(CurrentUser.UserID != p.ProductID)
                   {
-                      // increase view_coutn
+                      // increase view_count
                       p.View_count += 1;
                       DataProvider.Ins.DB.SaveChanges();
                   }

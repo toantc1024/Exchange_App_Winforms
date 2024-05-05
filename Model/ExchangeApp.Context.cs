@@ -15,10 +15,10 @@ namespace Exchange_App.Model
     using System.Data.Entity.Core.Objects;
     using System.Linq;
     
-    public partial class ExchangeAppDBEntities : DbContext
+    public partial class BEE_APPEntities : DbContext
     {
-        public ExchangeAppDBEntities()
-            : base("name=ExchangeAppDBEntities")
+        public BEE_APPEntities()
+            : base("name=BEE_APPEntities")
         {
         }
     
@@ -35,41 +35,38 @@ namespace Exchange_App.Model
         public virtual DbSet<User_Order> User_Order { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<WishItem> WishItems { get; set; }
-        public virtual DbSet<View_Categories> View_Categories { get; set; }
-        public virtual DbSet<View_Products> View_Products { get; set; }
-        public virtual DbSet<View_Users> View_Users { get; set; }
     
-        [DbFunction("ExchangeAppDBEntities", "FindProductByKeyWord")]
+        [DbFunction("BEE_APPEntities", "FindProductByKeyWord")]
         public virtual IQueryable<Product> FindProductByKeyWord(string keyword)
         {
             var keywordParameter = keyword != null ?
                 new ObjectParameter("Keyword", keyword) :
                 new ObjectParameter("Keyword", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<Product>("[ExchangeAppDBEntities].[FindProductByKeyWord](@Keyword)", keywordParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<Product>("[BEE_APPEntities].[FindProductByKeyWord](@Keyword)", keywordParameter);
         }
     
-        [DbFunction("ExchangeAppDBEntities", "GetProductByCategory")]
+        [DbFunction("BEE_APPEntities", "GetProductByCategory")]
         public virtual IQueryable<Product> GetProductByCategory(Nullable<int> catID)
         {
             var catIDParameter = catID.HasValue ?
                 new ObjectParameter("CatID", catID) :
                 new ObjectParameter("CatID", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<Product>("[ExchangeAppDBEntities].[GetProductByCategory](@CatID)", catIDParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<Product>("[BEE_APPEntities].[GetProductByCategory](@CatID)", catIDParameter);
         }
     
-        [DbFunction("ExchangeAppDBEntities", "GetProductByUser")]
+        [DbFunction("BEE_APPEntities", "GetProductByUser")]
         public virtual IQueryable<Product> GetProductByUser(Nullable<int> userID)
         {
             var userIDParameter = userID.HasValue ?
                 new ObjectParameter("UserID", userID) :
                 new ObjectParameter("UserID", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<Product>("[ExchangeAppDBEntities].[GetProductByUser](@UserID)", userIDParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<Product>("[BEE_APPEntities].[GetProductByUser](@UserID)", userIDParameter);
         }
     
-        [DbFunction("ExchangeAppDBEntities", "LoginAccount")]
+        [DbFunction("BEE_APPEntities", "LoginAccount")]
         public virtual IQueryable<User> LoginAccount(string username, string password)
         {
             var usernameParameter = username != null ?
@@ -80,7 +77,7 @@ namespace Exchange_App.Model
                 new ObjectParameter("Password", password) :
                 new ObjectParameter("Password", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<User>("[ExchangeAppDBEntities].[LoginAccount](@Username, @Password)", usernameParameter, passwordParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<User>("[BEE_APPEntities].[LoginAccount](@Username, @Password)", usernameParameter, passwordParameter);
         }
     }
 }

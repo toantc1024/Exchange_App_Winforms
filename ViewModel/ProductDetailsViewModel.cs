@@ -1,7 +1,9 @@
-﻿using Exchange_App.Model;
+﻿using Exchange_App.CustomUserControls;
+using Exchange_App.Model;
 using Exchange_App.View;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Security.Policy;
@@ -19,6 +21,17 @@ namespace Exchange_App.ViewModel
         private Model.Product _selectedProduct;
         private Model.User _currentUser;
         private int _currentImageIndex = 0;
+
+        private Product _selectedRecommendProduct;
+        private ObservableCollection<Product> _recommendProducts;
+        private ObservableCollection<Product> _totalRecommendProducts;
+        private BaseViewModel _content;
+        private string _isShowContent = "Hidden";
+        private string _isShowCheckout = "Hidden";
+        private int _recommendCurrentIndex = 0;
+        private List<string> _status_des;
+        private List<string> _info_des;
+
         #endregion
 
         #region Properties
@@ -35,21 +48,26 @@ namespace Exchange_App.ViewModel
         {
             get
             {
-                // init string array
-                // get n of line from product.status
-                List<string> status = _selectedProduct.Status_des.Split(';').ToList();
-                return status;
-
+                return _status_des;
             }
+            set
+            {
+                _status_des = value;
+                OnPropertyChanged();
+            }
+
         }
 
         public List<string> Info_des
         {
             get
             {
-                List<string> infos = _selectedProduct.Info_des.Split(';').ToList();
-                return infos;
-
+                return _info_des;
+            }
+            set
+            {
+                 _info_des = value;
+                OnPropertyChanged();
             }
         }
 
@@ -95,6 +113,11 @@ namespace Exchange_App.ViewModel
             }
         }
 
+        public List<string> stringToLine(string str)
+        {
+            return str.Split(';').ToList();
+        }
+
         public Model.Product SelectedProduct
         {
             get
@@ -104,7 +127,10 @@ namespace Exchange_App.ViewModel
             set
             {
                 _selectedProduct = value;
-                OnPropertyChanged("SelectedProduct");
+                Status_des = stringToLine(value.Status_des);
+                Info_des = stringToLine(value.Info_des);
+
+                OnPropertyChanged();
             }
         }
 
@@ -149,6 +175,67 @@ namespace Exchange_App.ViewModel
                 }
             }
         }
+
+        public Product SelectedRecommendProduct
+        {
+            get => _selectedRecommendProduct;
+            set
+            {
+                _selectedRecommendProduct = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<Product> RecommendProducts
+        {
+            get => _recommendProducts;
+            set
+            {
+                _recommendProducts = value;
+                OnPropertyChanged();
+            }
+        }
+        
+        public ObservableCollection<Product> TotalRecommendProducts
+        {
+            get => _totalRecommendProducts;
+            set
+            {
+                _totalRecommendProducts = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public BaseViewModel Content
+        {
+            get => _content;
+            set
+            {
+                _content = value;
+                OnPropertyChanged();
+            }
+
+        }
+
+        public string IsShowContent
+        {
+            get => _isShowContent;
+            set
+            {
+                _isShowContent = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string IsShowCheckout
+        {
+            get => _isShowCheckout;
+            set
+            {
+                _isShowCheckout = value;
+                OnPropertyChanged();
+            }
+        }
         #endregion
 
         #region Commands
@@ -183,6 +270,47 @@ namespace Exchange_App.ViewModel
             set;
         }
 
+        public ICommand SelectRecommendProductCommand
+        {
+            get;
+            set;
+        }
+
+        public ICommand HideCheckoutRecommendCommand
+        {
+            get;
+            set;
+        }
+
+        public ICommand ShowCheckoutRecommendCommand
+        {
+            get;
+            set;
+        }
+
+        public ICommand HideRecommendProductDetailCommand
+        {
+            get;
+            set;
+        }
+
+        public ICommand ShowRecommendProductDetailCommand
+        {
+            get;
+            set;
+        }
+
+        public ICommand PreviousProductCommand
+        {
+            get;
+            set;
+        }
+
+        public ICommand NextProductCommand
+        {
+            get;
+            set;
+        }
         #endregion
 
         public ProductDetailsViewModel(Model.Product product, Model.User user, ICommand showCheckoutCommand)
@@ -191,6 +319,8 @@ namespace Exchange_App.ViewModel
             ShowCheckoutCommand = showCheckoutCommand;
             SelectedProduct = product;
             CurrentUser = user;
+            TotalRecommendProducts = new ObservableCollection<Product>(DataProvider.Ins.DB.Products.Where(p => p.CatID == SelectedProduct.CatID).Take(20));
+            RecommendProducts = new ObservableCollection<Product>(DataProvider.Ins.DB.Products.Where(p => p.CatID == SelectedProduct.CatID).Take(4));
 
             //BuyCommand = new RelayCommand<object>(
             //  (p) => {
@@ -260,7 +390,119 @@ namespace Exchange_App.ViewModel
               }
             );
 
+            HideCheckoutRecommendCommand = new RelayCommand<Product>(
+                (p) =>
+                {
+                    return true;
+                },
+
+                (p) =>
+                {
+                    IsShowCheckout = "Hidden";
+                    IsShowContent = "Visible";
+                    Content = new ProductDetailsViewModel(SelectedRecommendProduct, CurrentUser, ShowCheckoutRecommendCommand);
+
+                }
+            );
+
+            ShowCheckoutRecommendCommand = new RelayCommand<Product>(
+              (p) =>
+              {
+                  if (p != null)
+                  {
+                      return true;
+                  }
+                  return false;
+              },
+              (p) =>
+              {
+                  IsShowCheckout = "Visible";
+                  Content = new CheckoutViewModel(CurrentUser, p, HideCheckoutRecommendCommand);
+              }
+
+            );
+
+            HideRecommendProductDetailCommand = new RelayCommand<object>(
+              (p) => {
+                  return true;
+              },
+              (p) => {
+                  UpdateCarousel();
+                  IsShowContent = "Hidden";
+                  SelectedProduct = null;
+              }
+            );
+
+            SelectRecommendProductCommand = new RelayCommand<Product>(
+             (p) => {
+                 if (p != null)
+                 {
+                     return true;
+                 }
+                 return false;
+             },
+             (p) => {
+                 // Increaase product view count
+                 if (CurrentUser.UserID != p.ProductID)
+                 {
+                     // increase view_count
+                     p.View_count += 1;
+                     DataProvider.Ins.DB.SaveChanges();
+                 }
+
+                 SelectedProduct = p;
+
+             }
+            );
+
+            PreviousProductCommand = new RelayCommand<object>(
+                (p) =>
+                {
+                    return true;
+                },
+                (p) => {
+                    _recommendCurrentIndex--;
+                    if (_recommendCurrentIndex < 0)
+                    {
+                        _recommendCurrentIndex = TotalRecommendProducts.Count - 1;
+                    }
+                    UpdateCarousel();
+                    OnPropertyChanged("RecommendProducts");
+                }
+            );
+
+            NextProductCommand = new RelayCommand<object>(
+                (p) =>
+                {
+                    return true;
+                },
+                (p) => {
+                    _recommendCurrentIndex++;
+                    if (_recommendCurrentIndex >= TotalRecommendProducts.Count)
+                    {
+                        _recommendCurrentIndex = 0;
+                    }
+                    UpdateCarousel();
+                    OnPropertyChanged("RecommendProducts");
+                }
+            );
+
+
             #endregion
+        }
+
+        private void UpdateCarousel()
+        {
+            int count = TotalRecommendProducts.Count;
+            // Clear items and add items based on current index
+            RecommendProducts.Clear();
+            // For simplicity, always show 5 items
+            // You may need to adjust this logic based on your requirements            
+            for (int i = 0; i < 4; i++)
+            {
+                int index = (_recommendCurrentIndex + i) % count;
+                RecommendProducts.Add(TotalRecommendProducts[index]);
+            }
         }
     }
 }

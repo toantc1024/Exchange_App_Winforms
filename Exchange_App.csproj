@@ -105,72 +105,63 @@
     <Compile Include="CustomUserControls\UCOrderDetail.xaml.cs">
       <DependentUpon>UCOrderDetail.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\Category.cs">
+      <DependentUpon>ExchangeApp.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\ExchangeApp.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ExchangeApp.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\ExchangeApp.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ExchangeApp.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\ExchangeApp.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ExchangeApp.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Model\FindProductByKeyWord_Result.cs">
-      <DependentUpon>Exchange_App_Model.tt</DependentUpon>
+      <DependentUpon>ExchangeApp.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\GetProductByCategory_Result.cs">
-      <DependentUpon>Exchange_App_Model.tt</DependentUpon>
+      <DependentUpon>ExchangeApp.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\GetProductByUser_Result.cs">
-      <DependentUpon>Exchange_App_Model.tt</DependentUpon>
+      <DependentUpon>ExchangeApp.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Image.cs">
+      <DependentUpon>ExchangeApp.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\LoginAccount_Result.cs">
-      <DependentUpon>Exchange_App_Model.tt</DependentUpon>
+      <DependentUpon>ExchangeApp.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\View_Categories.cs">
-      <DependentUpon>Exchange_App_Model.tt</DependentUpon>
+    <Compile Include="Model\OrderDetail.cs">
+      <DependentUpon>ExchangeApp.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\View_Products.cs">
-      <DependentUpon>Exchange_App_Model.tt</DependentUpon>
+    <Compile Include="Model\Product.cs">
+      <DependentUpon>ExchangeApp.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\View_Users.cs">
-      <DependentUpon>Exchange_App_Model.tt</DependentUpon>
+    <Compile Include="Model\Role.cs">
+      <DependentUpon>ExchangeApp.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\User.cs">
+      <DependentUpon>ExchangeApp.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\User_Order.cs">
+      <DependentUpon>ExchangeApp.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\WishItem.cs">
+      <DependentUpon>ExchangeApp.tt</DependentUpon>
     </Compile>
     <Compile Include="Tools\CurrencyConverter.cs" />
     <Compile Include="ValidationRules\NotEmptyRule.cs" />
     <Compile Include="ViewModel\AddCategoryViewModel.cs" />
     <Compile Include="ViewModel\CheckoutViewModel.cs" />
     <Compile Include="ViewModel\HomeViewModel.cs" />
-    <Compile Include="Model\Category.cs">
-      <DependentUpon>Exchange_App_Model.tt</DependentUpon>
-    </Compile>
     <Compile Include="Model\DataProvider.cs" />
-    <Compile Include="Model\Exchange_App_Model.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Exchange_App_Model.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\Exchange_App_Model.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Exchange_App_Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\Exchange_App_Model.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Exchange_App_Model.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Model\Image.cs">
-      <DependentUpon>Exchange_App_Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\OrderDetail.cs">
-      <DependentUpon>Exchange_App_Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\Product.cs">
-      <DependentUpon>Exchange_App_Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\Role.cs">
-      <DependentUpon>Exchange_App_Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\User.cs">
-      <DependentUpon>Exchange_App_Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\User_Order.cs">
-      <DependentUpon>Exchange_App_Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\WishItem.cs">
-      <DependentUpon>Exchange_App_Model.tt</DependentUpon>
-    </Compile>
     <Compile Include="RegisterWindow.xaml.cs">
       <DependentUpon>RegisterWindow.xaml</DependentUpon>
     </Compile>
@@ -315,12 +306,12 @@
     <Resource Include="Fonts\Poppins-Regular.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <EntityDeploy Include="Model\Exchange_App_Model.edmx">
+    <EntityDeploy Include="Model\ExchangeApp.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Exchange_App_Model.Designer.cs</LastGenOutput>
+      <LastGenOutput>ExchangeApp.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="Model\Exchange_App_Model.edmx.diagram">
-      <DependentUpon>Exchange_App_Model.edmx</DependentUpon>
+    <None Include="Model\ExchangeApp.edmx.diagram">
+      <DependentUpon>ExchangeApp.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -335,18 +326,22 @@
     <Content Include="INIT_DATABASE.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Model\Exchange_App_Model.Context.tt">
+    <Content Include="Model\ExchangeApp.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Exchange_App_Model.edmx</DependentUpon>
-      <LastGenOutput>Exchange_App_Model.Context.cs</LastGenOutput>
+      <DependentUpon>ExchangeApp.edmx</DependentUpon>
+      <LastGenOutput>ExchangeApp.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Model\Exchange_App_Model.tt">
+    <Content Include="Model\ExchangeApp.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Exchange_App_Model.edmx</DependentUpon>
-      <LastGenOutput>Exchange_App_Model.cs</LastGenOutput>
+      <DependentUpon>ExchangeApp.edmx</DependentUpon>
+      <LastGenOutput>ExchangeApp.cs</LastGenOutput>
     </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <PackageReference Include="EntityFramework">
+      <Version>6.2.0</Version>
+    </PackageReference>
+  </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
