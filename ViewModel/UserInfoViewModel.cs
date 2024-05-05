@@ -144,11 +144,35 @@ namespace Exchange_App.ViewModel
             {
                 IsEditEnable = "False";
             });
+                         bool ValidatePassword(string password)
+            {
+                if (password == null || password.Length < 6)
+                {
+                    return false;
+                }
 
+                const string specialChars = "!@#$%^&*()-_=+[{]};':\",<.>/?|\\";
+                bool hasSpecialChar = false;
+
+                foreach (char c in password)
+                {
+                    if (specialChars.IndexOf(c) >= 0)
+                    {
+                        hasSpecialChar = true;
+                        break;
+                    }
+                }
+
+                return hasSpecialChar;
+            }
             SaveCommand = new RelayCommand<object>((p) => { return true; }, (p) =>
             {
                 try
                 {
+                    if(ValidatePassword(Password))
+                    {
+                        throw new Exception("Password at least 6 characters and 1 special chars");
+                    }
                     if (Password != ConfirmPassword)
                     {
                         throw new Exception("Password and Confirm Password must be the same!");

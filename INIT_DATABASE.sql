@@ -1,13 +1,4 @@
-﻿SELECT * FROM PRODUCT;
-SELECT * FROM Users;
-SELECT * FROM Category;
-SELECT * FROM OrderDetail;
-SELECT * FROM User_Order;
-
-DROP DATABASE ExchangeBee;
-CREATE DATABASE ExchangeBee;
-USE ExchangeBee;
-GO
+﻿
 
 create table Role(
     RoleID int IDENTITY(1,1) constraint PK_Role PRIMARY KEY,
@@ -1144,4 +1135,8 @@ PRINT( @data)
 
 INSERT INTO Product(Quantity, Info_des, Status_des, Original_price, Sell_price, UploadedDate, ProductName, CatID, UserID, View_count)
 VALUES(10, 'This is a product', 'New', 100000, 120000, GETDATE(), 'Product 1', 1, 1, 0);
+
+
+
+-- TRY LOGIN WITH Users
 

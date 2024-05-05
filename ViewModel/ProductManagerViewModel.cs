@@ -732,12 +732,14 @@ namespace Exchange_App.ViewModel
                       {
                           DataProvider.Ins.DB.PROC_AddImageByProductID(path.Path, newProductID);
                       }
+                      GetProductsByUserID(CurrentUser.UserID);
                       MessageBox.Show("Add product successfully!");
                       HideProductCommand.Execute(true);
                   }
                   catch (Exception ex)
                   {
-                      MessageBox.Show(ex.Message);
+                      var err = ex.InnerException.Message.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+                      MessageBox.Show(err.FirstOrDefault().ToString());
                   }
               }
             );
@@ -836,7 +838,7 @@ namespace Exchange_App.ViewModel
                   catch (Exception ex)
                   {
                       // get only first line of error message
-                      var err = ex.InnerException.Message.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+                         var err = ex.InnerException.Message.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
                       MessageBox.Show(err.FirstOrDefault().ToString());
                   }
 

@@ -21,6 +21,12 @@ namespace Exchange_App.Model
             : base("name=ExchangeBeeEntities")
         {
         }
+
+        public ExchangeBeeEntities(string connStr) :base(connStr)
+        {
+
+        }
+
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
