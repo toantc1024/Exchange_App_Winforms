@@ -93,7 +93,7 @@
                     materialDesign:ElevationAssist.Elevation="Dp0"
                     Background="DodgerBlue"
                     BorderBrush="DodgerBlue"
-                    Command="{Binding ShowAddProductCommand}"
+                    Command="{Binding ShowCategoryManagerCommand}"
                     CommandParameter="AddProduct">
                     <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
                         <TextBlock VerticalAlignment="Center" Foreground="White">
@@ -106,7 +106,7 @@
                             Kind="Tag" />
                     </StackPanel>
                 </Button>
-                <Separator Width="5" Visibility="Visible" />
+                <Separator Width="5" Visibility="Hidden" />
 
             </StackPanel>
 
@@ -118,13 +118,26 @@
                     <DataTemplate>
                         <Border
                             x:Name="Border"
+                            Margin="10,5,5,5"
                             Padding="8"
-                            BorderBrush="{DynamicResource MaterialDesignDivider}"
-                            BorderThickness="0,0,0,1"
+                            materialDesign:ElevationAssist.Elevation="Dp2"
+                            BorderBrush="LightGray"
+                            BorderThickness="0.5"
+                            CornerRadius="5"
                             Cursor="Hand">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="BorderBrush" Value="Orange" />
+                                            <Setter Property="Background" Value="LightYellow" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="MouseLeftButtonDown">
-                                    <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MyProducts}}, Path=DataContext.ShowEditProductCommand}" CommandParameter="{Binding}" />
+                                    <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MyProducts}}, Path=DataContext.ShowEditProductCommand}" CommandParameter="{Binding ProductID}" />
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
                             <Grid>

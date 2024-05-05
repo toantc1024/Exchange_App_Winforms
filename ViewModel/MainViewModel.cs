@@ -6,6 +6,7 @@ using Exchange_App.View;
 using Exchange_App.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,6 +20,7 @@ namespace Exchange_App.ViewModel
     {
         private BaseViewModel _selectedViewModel;
 
+        private string _isAdminRole;
         public BaseViewModel SelectedViewModel
         {
             get { return _selectedViewModel; }
@@ -35,8 +37,21 @@ namespace Exchange_App.ViewModel
         public ICommand LoadedWindowCommand { get; set; }
         public ICommand SetCount { get; set; }
         public ICommand LogoutCommand { get; set; }
+        public string IsAdminRole { get => _isAdminRole; set {
+                _isAdminRole=value;
+                OnPropertyChanged();
+            }
+        }
+
         public MainViewModel(User user)
         {
+            if(user.RoleID == 2)
+            {
+                IsAdminRole = "Hidden";
+            } else
+            {
+                IsAdminRole = "Visible";
+            }
             CurrentUser = user;
             SelectedViewModel = new HomeViewModel(CurrentUser);
 
@@ -88,7 +103,11 @@ namespace Exchange_App.ViewModel
                     } else if ((string)o == "User")
                     {
                         SelectedViewModel = new UserInfoViewModel(CurrentUser);
-                    } 
+                    } else if((string)o == "UserManager")
+                    {
+                        SelectedViewModel = new UserManagerViewModel(CurrentUser);
+
+                    }
                 }
 
             );

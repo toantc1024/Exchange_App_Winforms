@@ -11,18 +11,11 @@ namespace Exchange_App.Model
 {
     using System;
     
-    public partial class GetProductByUser_Result
+    public partial class FUNC_GetOrderDetail_Result
     {
-        public int ProductID { get; set; }
+        public int OrderDetailID { get; set; }
+        public Nullable<int> OrderID { get; set; }
+        public Nullable<int> ProductID { get; set; }
         public int Quantity { get; set; }
-        public string Info_des { get; set; }
-        public string Status_des { get; set; }
-        public double Original_price { get; set; }
-        public double Sell_price { get; set; }
-        public System.DateTime UploadedDate { get; set; }
-        public string ProductName { get; set; }
-        public Nullable<int> CatID { get; set; }
-        public Nullable<int> UserID { get; set; }
-        public int View_count { get; set; }
     }
 }

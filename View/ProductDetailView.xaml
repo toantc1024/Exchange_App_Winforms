@@ -6,6 +6,7 @@
     xmlns:local="clr-namespace:Exchange_App.View"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:tools="clr-namespace:Exchange_App.Tools"
     d:DesignHeight="450"
     d:DesignWidth="800"
     Background="{DynamicResource MaterialDesignPaper}"
@@ -17,6 +18,10 @@
     TextOptions.TextRenderingMode="Auto"
     mc:Ignorable="d">
     <Grid>
+        <Grid.Resources>
+            <tools:WishListContentConverter x:Key="wishListContent" />
+            <tools:WishListControlBackgroundConverter x:Key="wishListBackground" />
+        </Grid.Resources>
         <materialDesign:Card Margin="5">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -175,13 +180,11 @@
                             <Button
                                 materialDesign:ButtonAssist.CornerRadius="10"
                                 materialDesign:ElevationAssist.Elevation="Dp0"
-                                Background="Red"
+                                Background="{Binding IsAddedToWishList, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource wishListBackground}}"
                                 Command="{Binding AddToWishlistCommand}"
                                 Foreground="White">
                                 <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-                                    <TextBlock VerticalAlignment="Center">
-                                        Add to wishlist
-                                    </TextBlock>
+                                    <TextBlock VerticalAlignment="Center" Text="{Binding IsAddedToWishList, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource wishListContent}}" />
                                     <Separator Width="5" Visibility="Hidden" />
                                     <materialDesign:PackIcon VerticalAlignment="Center" Kind="Heart" />
 

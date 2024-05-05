@@ -28,6 +28,16 @@ namespace Exchange_App.CustomUserControls
 
         #region Dependency Properties
 
+        // ShowCategoryManager ICommand Dependency Property
+        public static readonly DependencyProperty ShowCategoryManagerCommandProperty =
+                DependencyProperty.Register("ShowCategoryManagerCommand", typeof(ICommand), typeof(MyProducts), new PropertyMetadata(null));
+
+        public ICommand ShowCategoryManagerCommand
+        {
+            get { return (ICommand)GetValue(ShowCategoryManagerCommandProperty); }
+            set { SetValue(ShowCategoryManagerCommandProperty, value); }
+        }
+
         // ChangeView ICommand Dependency Property
 
         public static readonly DependencyProperty ShowAddProductCommandProperty =

@@ -1,10 +1,16 @@
 ﻿using Exchange_App.Model;
+using Exchange_App.Repositories.Implementations;
 using Exchange_App.View;
+using MaterialDesignThemes.Wpf;
 using Microsoft.Win32;
 using System;
 using System.CodeDom;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
+using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,6 +24,14 @@ namespace Exchange_App.ViewModel
     internal class ProductManagerViewModel : BaseViewModel
     {
         #region Variables
+
+        private int _selectedImages = 0;
+
+        private Boolean _isShowDeleteModal = false;
+        private Boolean _isShowDeleteAllImage = false;
+
+        private string _currentImagePath;
+        private int _currentImageIndex;
         private List<Category> _categories;
 
         private BaseViewModel _currentContentPreview;
@@ -29,6 +43,7 @@ namespace Exchange_App.ViewModel
 
         private string _isShowEditProduct;
         private string _isShowAddProduct;
+        private Boolean _isSelectAllImages;
 
         private int _productID;
         private string _productName;
@@ -40,7 +55,7 @@ namespace Exchange_App.ViewModel
         private int _userID;
         private string _status_des;
         private string _info_des;
-        private ObservableCollection<string> _pathes;
+        private ObservableCollection<ImagePath> _pathes;
 
         private bool _isShowPreviewModal;
 
@@ -50,6 +65,16 @@ namespace Exchange_App.ViewModel
 
         #region Commands
 
+        public ICommand SelectImageUpdateCommand { get; set; }
+        public ICommand RemoveAllImageCommand { get; set; }
+        public ICommand RemoveImageFromPathCommand
+        {
+            get;set;
+        }
+        public ICommand ShowCategoryManagerCommand
+        {
+            get;set;
+        }
         public ICommand SortByAlphabetAscCommand
         {
             get;set;
@@ -104,6 +129,8 @@ namespace Exchange_App.ViewModel
             set;
         }
 
+        public ICommand ShowDeleteImageCommand { get; set; }
+
         public ICommand ShowAddProductCommand
         {
             get;
@@ -134,13 +161,45 @@ namespace Exchange_App.ViewModel
             set;
         }
 
+
+        public ICommand ShowDeleteAllImageCommand
+        {
+            get;set;
+        }
+
+        public ICommand SelectAllCommand
+        {
+            get;set;
+        }
+
+
         #endregion
 
         #region Properties
 
         #region Products
 
-        public ObservableCollection<string> Pathes
+        internal class ImagePath
+        {
+            private string _path;
+            private Boolean _isChecked;
+
+            public ImagePath()
+            {
+                
+            }
+
+            public ImagePath(string path, bool isChecked)
+            {
+                Path=path;
+                IsChecked=isChecked;
+            }
+
+            public string Path { get => _path; set => _path = value; }
+            public bool IsChecked { get => _isChecked; set => _isChecked=value; }
+        }
+
+        public ObservableCollection<ImagePath> Pathes
         {
             get
             {
@@ -148,8 +207,11 @@ namespace Exchange_App.ViewModel
             }
             set
             {
+               
                 _pathes = value;
+                SelectedImages = value.Aggregate(0, (acc, item) => acc + (item.IsChecked ? 1 : 0));
                 OnPropertyChanged();
+
             }
         }
         public string ProductName
@@ -246,6 +308,7 @@ namespace Exchange_App.ViewModel
             }
         }
 
+     
         public int UserID
         {
             get
@@ -309,7 +372,7 @@ namespace Exchange_App.ViewModel
             {
                 return _isShowEditProduct;
             }
-            set
+            set 
             {
                 _isShowEditProduct = value;
                 OnPropertyChanged();
@@ -372,6 +435,18 @@ namespace Exchange_App.ViewModel
             }
         }
 
+        private List<Product> _allProducts;
+
+        public List<Product> AllProducts
+        {
+            get => _allProducts;
+            set
+            {
+                _allProducts = value;
+                OnPropertyChanged();
+            }
+        }
+
         public bool IsShowPreviewModal
         {
             get => _isShowPreviewModal;
@@ -392,6 +467,45 @@ namespace Exchange_App.ViewModel
             }
         }
 
+        public bool IsShowDeleteModal { get => _isShowDeleteModal; set {
+
+                _isShowDeleteModal=value;
+                OnPropertyChanged();
+            } }
+
+        public string CurrentImagePath { get => _currentImagePath; set {
+                _currentImagePath = value;
+                OnPropertyChanged();
+            } }
+        public int CurrentImageIndex { get => _currentImageIndex; set {
+                _currentImageIndex=value;
+                OnPropertyChanged();
+            } }
+
+        public bool IsShowDeleteAllImage { get => _isShowDeleteAllImage; set
+            {
+                _isShowDeleteAllImage=value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int SelectedImages { 
+            get => _selectedImages; 
+            set {
+                _selectedImages=value;
+                OnPropertyChanged();            
+            } 
+        }
+
+        public bool IsSelectAllImages { 
+            get => _isSelectAllImages; 
+            set 
+            {
+                _isSelectAllImages=value;
+                OnPropertyChanged();
+            } 
+        }
+
         #endregion
 
         public ProductManagerViewModel(User user)
@@ -401,9 +515,75 @@ namespace Exchange_App.ViewModel
             IsShowAddProduct = "Hidden";
             IsShowEditProduct = "Hidden";
             ShowAddProduct = "Hidden";
-            GetProducts();
+            ProductRepository productRepository = new ProductRepository();
+            ImageRepository imageRepository = new ImageRepository();
+            AllProducts = Products = productRepository.GetAllProductsByUserId(user.UserID);
             Categories = DataProvider.Ins.DB.Categories.ToList();
             #endregion
+
+            SelectAllCommand = new RelayCommand<CheckBox>((p) =>
+            {
+                return true;
+            }, (p) =>
+            {
+                var newPathes = new ObservableCollection<ImagePath>();
+                foreach (var item in Pathes)
+                {
+                    newPathes.Add(new ImagePath { Path = item.Path, IsChecked = (bool)p.IsChecked });
+                }
+                Pathes = newPathes;
+            });
+
+            ShowCategoryManagerCommand = new RelayCommand<object>((p) =>
+            {
+                return true;
+            }, (p) =>
+            {
+                CategoriesManagerView categoriesManagerView = new CategoriesManagerView();
+                categoriesManagerView.ShowDialog();
+                Categories = DataProvider.Ins.DB.Categories.ToList();
+            });
+
+            RemoveAllImageCommand = new RelayCommand<object>((p) =>
+            {
+                return true;
+            }, (p) =>
+            {
+                Pathes = new ObservableCollection<ImagePath>();
+                IsShowDeleteAllImage = false;
+            });
+
+            ShowDeleteAllImageCommand = new RelayCommand<object>((p) =>
+            {
+                return true;
+            }, (p) =>
+            {
+                IsShowDeleteAllImage = true;
+            });
+
+
+            RemoveImageFromPathCommand = new RelayCommand<object>((p) =>
+            {
+                return true;
+            }, (p) =>
+            {
+                int count = 0;
+                var newPathes = new ObservableCollection<ImagePath>();
+                foreach(var item in Pathes)
+                {
+                    if(!item.IsChecked)
+                    {
+                        newPathes.Add(item);
+                    } else
+                    {
+
+                        count = count + 1;
+                    }
+                }
+                SelectedImages = count;
+                Pathes = newPathes;
+                IsShowDeleteAllImage = false;
+            });
 
             SortAlphabetCommand = new RelayCommand<ListBox>((p) =>
             {
@@ -495,6 +675,18 @@ namespace Exchange_App.ViewModel
 
               });
 
+            ShowDeleteImageCommand = new RelayCommand<int>(
+                (p) =>
+                {
+                    return true;
+                }, (p) =>
+                {
+                    CurrentImageIndex = p;
+                    CurrentImagePath = Pathes[p].Path;
+                    IsShowDeleteModal = true;
+                }
+                );
+
             HideProductCommand = new RelayCommand<object>(
               (p) => {
                   return true;
@@ -516,15 +708,13 @@ namespace Exchange_App.ViewModel
                   ofd.ShowDialog();
                   if (ofd.FileNames.Count() > 0 || ofd.FileName.Count() > 0)
                   {
-
                       // clear array string[]
-                      Pathes = new ObservableCollection<string>();
+                      //Pathes = new ObservableCollection<ImagePath>();
 
                       foreach (string file in ofd.FileNames)
                       {
-                          Pathes.Add(file);
+                          Pathes.Add(new ImagePath { Path = file, IsChecked = false});
                       }
-
                   }
               });
 
@@ -535,42 +725,50 @@ namespace Exchange_App.ViewModel
               (p) => {
                   try
                   {
-
-                      // add product to database and get productID
-                      Product product = DataProvider.Ins.DB.Products.Add(new Product
-                      {
-                          ProductName = ProductName,
-                          Sell_price = Sell_price,
-                          Original_price = Original_price,
-                          UploadedDate = DateTime.Now,
-                          Info_des = Info_des,
-                          Quantity = Quantity,
-                          Status_des = Status_des,
-                          UserID = CurrentUser.UserID,
-                          CatID = SelectedCategory.CatID
-                      });
-
-                      // add product 
+                      var obj = productRepository.DbContext.PROC_AddProduct(Quantity, Info_des, Status_des, Original_price, Sell_price, ProductName, SelectedCategory.CatID, CurrentUser.UserID);
+                      var newProductID = obj.FirstOrDefault();
+                      
                       foreach (var path in Pathes)
                       {
-                          DataProvider.Ins.DB.Images.Add(new Model.Image
-                          {
-                              ProductID =
-                        product.ProductID,
-                              ImageURL = path,
-                          });
+                          DataProvider.Ins.DB.PROC_AddImageByProductID(path.Path, newProductID);
                       }
-
-                      DataProvider.Ins.DB.SaveChanges();
+                      GetProductsByUserID(CurrentUser.UserID);
                       MessageBox.Show("Add product successfully!");
-
+                      HideProductCommand.Execute(true);
                   }
                   catch (Exception ex)
                   {
-                      MessageBox.Show(ex.Message);
+                      var err = ex.InnerException.Message.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+                      MessageBox.Show(err.FirstOrDefault().ToString());
                   }
               }
             );
+
+
+            SelectImageUpdateCommand = new RelayCommand<object>(
+                (p) =>
+                {
+                    return true;
+                }, (p) =>
+                {
+                    SelectedImages = Pathes.Aggregate(0, (acc, item) => acc + (item.IsChecked ? 1 : 0));
+
+                    if(SelectedImages == Pathes.Count)
+                    {
+                        IsSelectAllImages = true;
+                    } else
+                    {
+                        IsSelectAllImages = false;
+                    }
+
+
+                });
+
+            async void GetProductsByUserID(int UserID)
+            {
+                Products = AllProducts = await Task.Run(() => productRepository.DbContext.FUNC_SearchProductByUserID(UserID).ToList());
+
+            }
 
             DeleteProductCommand = new RelayCommand<Product>((p) => {
                 return true;
@@ -582,7 +780,8 @@ namespace Exchange_App.ViewModel
                     if (result == MessageBoxResult.Yes)
                     {
                         // delete product
-                        DataProvider.Ins.DB.Images.RemoveRange(DataProvider.Ins.DB.Images.Where(x => x.ProductID == p.ProductID));
+                         
+                        productRepository.DbContext.PROC_RemoveImagesByProductID(p.ProductID);
 
                         // set null for all order details
                         foreach (var od in DataProvider.Ins.DB.OrderDetails.Where(x => x.ProductID == p.ProductID))
@@ -592,14 +791,15 @@ namespace Exchange_App.ViewModel
 
                         // delete product
 
-                        DataProvider.Ins.DB.Products.Remove(p);
+                        productRepository.DbContext.PROC_DeleteProduct(p.ProductID);
+
+                        GetProductsByUserID(CurrentUser.UserID);
+
                         // casecade forgein key
 
-                        DataProvider.Ins.DB.SaveChanges();
                         MessageBox.Show("Delete product successfully!");
-                        GetProducts();
+                        //GetProducts();
                     }
-
                 }
                 catch (Exception ex)
                 {
@@ -618,40 +818,33 @@ namespace Exchange_App.ViewModel
               }
             );
 
+
+
             UpdateProductCommand = new RelayCommand<object>(
               (p) => {
                   return true;
               },
               (p) => {
-                  var product = DataProvider.Ins.DB.Products.SingleOrDefault(b => b.ProductID == ProductID);
-
-                  product.ProductName = ProductName;
-                  product.CatID = SelectedCategory.CatID;
-                  product.Info_des = Info_des;
-                  product.Status_des = Status_des;
-                  product.Sell_price = Sell_price;
-                  product.Original_price = Original_price;
-                  product.Quantity = Quantity;
-
-                  // remove all images from ProductID in Images
-                  DataProvider.Ins.DB.Images.RemoveRange(DataProvider.Ins.DB.Images.Where(x => x.ProductID == ProductID));
-
-                  // add new images
-                  foreach (var path in Pathes)
+                try
                   {
-                      DataProvider.Ins.DB.Images.Add(new Model.Image
+                      productRepository.DbContext.PROC_UpdateProduct(ProductID, Quantity, Info_des, Status_des, Original_price, Sell_price, ProductName, SelectedCategory.CatID);
+                      imageRepository.DeleteImagesByProductId(ProductID);
+                      foreach(var path in Pathes)
                       {
-                          ProductID = ProductID,
-                          ImageURL = path,
-                      });
+                          imageRepository.AddImage(new Model.Image { ProductID = ProductID, ImageURL = path.Path }); 
+                      }
+                      MessageBox.Show("Edit successfully!");
                   }
-
-                  // save changes
-                  DataProvider.Ins.DB.SaveChanges();
-                  MessageBox.Show("Edit successfully!");
+                  catch (Exception ex)
+                  {
+                      // get only first line of error message
+                         var err = ex.InnerException.Message.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+                      MessageBox.Show(err.FirstOrDefault().ToString());
+                  }
 
               }
             );
+            
 
             GetProductListCommand = new RelayCommand<TextBox>((p) => {
                 if (p != null)
@@ -659,34 +852,36 @@ namespace Exchange_App.ViewModel
                     return true;
                 }
                 return false;
-            }, (p) => { 
-                string searchKey = p.Text;
-                Products = DataProvider.Ins.DB.Products.Where(x => x.ProductName.Contains(searchKey)).ToList();
-
-
+            }, (p) => {
+                Products = AllProducts.Where(x => x.ProductName.Contains(p.Text)).ToList();
             });
 
-            ShowEditProductCommand = new RelayCommand<Product>(
+            ShowEditProductCommand = new RelayCommand<int>(
               (p) => {
                   return true;
               },
               (p) => {
+                  
+                  Product product = productRepository.GetProductById(p);
+                  ProductName = product.ProductName;
+                  Sell_price = product.Sell_price;
+                  Original_price = product.Original_price   ;
 
-                  ProductName = p.ProductName;
-                  Sell_price = p.Sell_price;
-                  Original_price = p.Original_price;
-
-                  Pathes = new ObservableCollection<string>();
-                  foreach (var image in p.Images.ToList())
+                  var newPathes = new ObservableCollection<ImagePath>();
+                  var images =  product.Images.ToList();
+                  foreach (var image in images)
                   {
-                      Pathes.Add(image.ImageURL);
+                      newPathes.Add(new ImagePath {  IsChecked = false, Path = image.ImageURL});
                   }
 
-                  Quantity = p.Quantity;
-                  Status_des = p.Status_des;
-                  Info_des = p.Info_des;
-                  SelectedCategory = Categories.Where(x => x.CatID == p.CatID).FirstOrDefault();
-                  ProductID = p.ProductID;
+                  Pathes = newPathes;
+
+                  Quantity = product.Quantity;
+                  Status_des = product.Status_des;
+                  Info_des = product.Info_des;
+                  SelectedCategory = Categories.Where(x => x.CatID == product.CatID).FirstOrDefault();
+                  ProductID = product.ProductID;
+
 
                   ShowView("Edit");
               }
@@ -696,12 +891,6 @@ namespace Exchange_App.ViewModel
 
         #region Methods
 
-        public void GetProducts()
-        {
-            // get all products by user
-            Products = DataProvider.Ins.DB.Products.Where(x => x.UserID == CurrentUser.UserID).ToList();
-
-        }
         public void ShowView(string view)
         {
             if (view == "Add")
@@ -727,7 +916,7 @@ namespace Exchange_App.ViewModel
             SelectedCategory = null;
             Status_des = "";
             Info_des = "";
-            Pathes = new ObservableCollection<string>();
+            Pathes = new ObservableCollection<ImagePath>();
 
         }
 

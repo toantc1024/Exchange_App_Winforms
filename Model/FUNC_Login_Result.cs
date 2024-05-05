@@ -11,7 +11,7 @@ namespace Exchange_App.Model
 {
     using System;
     
-    public partial class LoginAccount_Result
+    public partial class FUNC_Login_Result
     {
         public int UserID { get; set; }
         public string Name { get; set; }

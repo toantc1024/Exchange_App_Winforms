@@ -72,7 +72,8 @@ namespace Exchange_App.ViewModel
             set;
         }
 
-        private readonly ClickCommand _locationItemChangedCommand;
+        private readonly ClickCommand 
+            _locationItemChangedCommand;
         public ClickCommand LocationItemChangedCommand
         {
             get
@@ -191,7 +192,6 @@ namespace Exchange_App.ViewModel
                   {
                       OrderQuantity -= 1;
                       CalculateOrderPrice();
-
                   }
               });
 
@@ -201,36 +201,20 @@ namespace Exchange_App.ViewModel
               },
               (p) => {
                   // check if the product is still available
-                  if (SelectedProduct.Quantity == 0)
+                  try
                   {
-                      MessageBox.Show("This product is out of stock");
-                      return;
+                      DataProvider.Ins.DB.PROC_AddUserOrder(CurrentUser.UserID, SelectedProduct.ProductID, OrderQuantity);
+                      SelectedProduct.Quantity -= OrderQuantity;
+                      DataProvider.Ins.DB.SaveChanges();
+                      MessageBox.Show("Order placed successfully");
+                  } catch (Exception ex)
+                  {
+                      var err = ex.InnerException.Message.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+                      MessageBox.Show(err.FirstOrDefault().ToString());
+                  } finally
+                  {
+                      HideCheckoutCommand.Execute(null);
                   }
-
-
-                  User_Order order =
-              DataProvider.Ins.DB.User_Order.Add(new User_Order
-                  {
-                      UserID = CurrentUser.UserID,
-                      OrderDate = DateTime.Now,
-                      Status = "Pending"
-                  });
-
-                  OrderDetail orderDetail = DataProvider.Ins.DB.OrderDetails.Add(new OrderDetail
-                  {
-                      OrderID = order.OrderID,
-                      ProductID = SelectedProduct.ProductID,
-                      Quantity = OrderQuantity,
-                  });
-
-                  SelectedProduct.Quantity -= OrderQuantity;
-                  
-
-                  DataProvider.Ins.DB.SaveChanges() ;
-
-                  MessageBox.Show("Order placed successfully");
-
-                  HideCheckoutCommand.Execute(null);
               }
 
             );

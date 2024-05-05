@@ -1,4 +1,6 @@
 ﻿using Exchange_App.Model;
+using Exchange_App.Repositories.Implementations;
+using Exchange_App.Tools;
 using Exchange_App.View;
 using System;
 using System.Collections.Generic;
@@ -23,11 +25,13 @@ namespace Exchange_App.ViewModel
 
         #region Properties
 
+        private bool _isAddedToWishList;
+
         public string ShowSellPrice
         {
             get
             {
-                return _selectedProduct.ShowSellPrice;
+                return VNCurrencyConveter.ConvertDoubleToCurrency(_selectedProduct.Sell_price);
             }
         }
 
@@ -70,7 +74,7 @@ namespace Exchange_App.ViewModel
         {
             get
             {
-                return _selectedProduct.ShowOriginalPrice;
+                return VNCurrencyConveter.ConvertDoubleToCurrency(_selectedProduct.Original_price);
             }
         }
 
@@ -95,7 +99,7 @@ namespace Exchange_App.ViewModel
             }
         }
 
-        public Model.Product SelectedProduct
+        public Model.Product SelectedProduct    
         {
             get
             {
@@ -151,6 +155,7 @@ namespace Exchange_App.ViewModel
         }
         #endregion
 
+
         #region Commands
 
         public ICommand ShowCheckoutCommand
@@ -182,6 +187,9 @@ namespace Exchange_App.ViewModel
             get;
             set;
         }
+        public bool IsAddedToWishList { get => _isAddedToWishList; set {
+                _isAddedToWishList=value; OnPropertyChanged();
+            } }
 
         #endregion
 
@@ -190,53 +198,28 @@ namespace Exchange_App.ViewModel
             #region Initialize
             ShowCheckoutCommand = showCheckoutCommand;
             SelectedProduct = product;
-            CurrentUser = user;
+            CurrentUser = user; 
 
-            //BuyCommand = new RelayCommand<object>(
-            //  (p) => {
-            //      return true;
-            //  },
-            //  (p) => {
-            //      if (SelectedProduct.User.UserID == CurrentUser.UserID)
-            //      {
-            //          MessageBox.Show("You can't buy your own product");
-            //          return;
-            //      }
-
-            //      // Check if product is out of stock
-            //      if (DataProvider.Ins.DB.Products.Where(x => x.ProductID == SelectedProduct.ProductID).FirstOrDefault().Quantity == 0)
-            //      {
-            //          MessageBox.Show("This product is out of stock");
-            //          return;
-            //      }
-
-            //      // Create new window for checkout
-            //      // Update Product quantity from database
-            //      SelectedProduct = DataProvider.Ins.DB.Products.Where(x => x.ProductID == SelectedProduct.ProductID).FirstOrDefault();
-
-            //      Quantity = SelectedProduct.Quantity;
-            //  }
-            //);
-
+            WishItemRepository wishItemRepository = new WishItemRepository();
+            IsAddedToWishList =  wishItemRepository.CheckWishItem(product.ProductID, CurrentUser.UserID);
+            
             AddToWishlistCommand = new RelayCommand<object>(
               (p) => {
                   return true;
               },
               (p) => {
-                  if (DataProvider.Ins.DB.WishItems.Where(x => x.ProductID == SelectedProduct.ProductID && x.UserID == CurrentUser.UserID).Count() > 0)
+                  try
                   {
-                      MessageBox.Show("This product is already in your wishlist");
-                      return;
+                      DataProvider.Ins.DB.PROC_AddWishItem(SelectedProduct.ProductID, CurrentUser.UserID);
+                      IsAddedToWishList = true;
+                      MessageBox.Show("Add to wishlist success");
                   }
-
-                  DataProvider.Ins.DB.WishItems.Add(new Model.WishItem
+                  catch (Exception ex)  
                   {
-                        ProductID = SelectedProduct.ProductID,
-                        UserID = CurrentUser.UserID
-                    });
-
-                  DataProvider.Ins.DB.SaveChanges();
-                  MessageBox.Show("Add to wishlist successfully");
+                                 // get only first line of error message
+                      var err = ex.InnerException.Message.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+                      MessageBox.Show(err.FirstOrDefault().ToString());
+                  }
               }
             );
 

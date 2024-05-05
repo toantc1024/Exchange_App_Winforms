@@ -60,7 +60,13 @@ namespace Exchange_App.CustomUserControls
         {
             get
             {
-                return Product.GetPreviewImage;
+                if (Product.Images.Count > 0)
+                {
+                    return Product.Images.FirstOrDefault().ImageURL;
+                } else
+                {
+                    return "https://via.placeholder.com/150";
+                }
             }
         }
 

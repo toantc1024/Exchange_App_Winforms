@@ -1,7 +1,9 @@
 ﻿using Exchange_App.Model;
 using Exchange_App.Tools;
 using System;
+using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -13,7 +15,8 @@ namespace Exchange_App.ViewModel
         public bool IsLogin { get; set; }
         private User _currentUser;
 
-        private string _isLoading = "Hidden";
+
+        private Boolean _isLoading = false;
 
         private string _Username;
 
@@ -33,7 +36,7 @@ namespace Exchange_App.ViewModel
 
 
         public User CurrentUser { get => _currentUser; set => _currentUser=value; }
-        public string IsLoading
+        public Boolean IsLoading
         {
             get => _isLoading; set
             {
@@ -53,7 +56,7 @@ namespace Exchange_App.ViewModel
             {
                 return _loginCommand ?? (new ClickCommand(obj =>
                 {
-                    IsLoading = "Visible";
+                   IsLoading = true;
                     Login();
                 }));
             }
@@ -92,29 +95,30 @@ namespace Exchange_App.ViewModel
 
         #region Methods
 
-        public void Login()
+        // create async method to login
+
+        async Task LoginAsync()
         {
             try
             {
-                IsLoading = "Visible";
                 if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password))
                 {
                     throw new Exception("Username or Password is empty");
                 }
 
-                string passEncode = PasswordEncryption.MD5Hash(PasswordEncryption.Base64Encode(Password));
-                User user = DataProvider.Ins.DB.LoginAccount(Username, passEncode).SingleOrDefault();
+                string passEncode = await Task.Run(() => PasswordEncryption.MD5Hash(PasswordEncryption.Base64Encode(Password)));
+                // thay connstring ->> 
 
+
+                User user = await DataProvider.Ins.DB.Users.Where(x => x.Username == Username && x.Password == passEncode).FirstOrDefaultAsync();
                 if (user != null)
                 {
-                    // clear password
                     Password = "";
-                    // clear username
                     Username = "";
                     CurrentUser = user;
-                    IsLogin = true;
                     MainWindow mainWindow = new MainWindow(user);
                     mainWindow.Show();
+                    IsLoading = false;
                     App.Current.MainWindow = mainWindow;
                     App.Current.Windows[0].Close();
                 }
@@ -126,20 +130,20 @@ namespace Exchange_App.ViewModel
             catch (Exception ex)
             {
                 IsLogin = false;
-                IsLoading = "Hidden";
+                IsLoading = false;
                 MessageBox.Show(ex.Message);
             }
             finally
             {
+            }
+        }
 
-                IsLoading = "Hidden";
-
+            public async void Login()
+            {
+                // convert code to async
+                await LoginAsync();
             }
 
-
-
-
-        }
 
 
         #endregion

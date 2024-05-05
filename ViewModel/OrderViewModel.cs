@@ -131,8 +131,10 @@ namespace Exchange_App.ViewModel
 
         public OrderViewModel(User user)
         {
+
+
             CurrentUser = user;
-            Orders = CurrentUser.User_Order.ToList();
+            Orders = DataProvider.Ins.DB.FUNC_getAllOrders().ToList();
 
             SortAlphabetCommand = new RelayCommand<ListBox>(p =>
             {
@@ -192,7 +194,14 @@ namespace Exchange_App.ViewModel
             }, p =>
             {
                 string keyword = p.Text;
-                Orders = CurrentUser.User_Order.Where(x => x.OrderName.Contains(keyword)).ToList();
+                if(CurrentUser.RoleID == 2)
+                {
+                    Orders = DataProvider.Ins.DB.FUNC_getAllOrders().Where(x => x.OrderName.Contains(keyword)).ToList();
+                } else
+                {
+                    Orders = CurrentUser.User_Order.Where(x => x.OrderName.Contains(keyword)).ToList();
+
+                }
             });
 
             HideOrderDetail = new RelayCommand<object>(p =>

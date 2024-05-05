@@ -12,12 +12,14 @@ namespace Exchange_App.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class View_Users
+    public partial class View_users
     {
         public int UserID { get; set; }
         public string Name { get; set; }
         public string Username { get; set; }
+        public string Password { get; set; }
         public string Phone { get; set; }
+        public bool IsActive { get; set; }
         public string Address { get; set; }
         public System.DateTime Birthdate { get; set; }
         public Nullable<int> RoleID { get; set; }
