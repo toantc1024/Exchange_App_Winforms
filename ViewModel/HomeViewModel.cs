@@ -270,6 +270,17 @@ namespace Exchange_App.ViewModel
             SelectedCount = CategoriesFilter.Count;
             // define Aggregates to find maximum price
 
+            HideProductDetailCommand = new RelayCommand<object>(
+                               (p) =>
+                               {
+                                   return true;
+                               },
+                                              (p) =>
+                                              {
+                                                  IsShowContent = "Hidden";
+                                              }
+                                                             );
+
             SortByDate = new RelayCommand<object>(
                 (p) =>
                 {
@@ -412,7 +423,7 @@ namespace Exchange_App.ViewModel
                     IsShowContent = "Visible";
 
                     SelectedProduct = DataProvider.Ins.DB.Products.SingleOrDefault(x => x.ProductID == p);
-                    Content = new ProductDetailsViewModel(SelectedProduct, CurrentUser, ShowCheckoutCommand);
+                    Content = new ProductDetailsViewModel(SelectedProduct, CurrentUser, ShowCheckoutCommand, SelectProductCommand);
                 }
                 );
 
@@ -439,7 +450,7 @@ namespace Exchange_App.ViewModel
                   Products = DataProvider.Ins.DB.Products.ToList();
 
                   IsShowContent = "Visible";
-                  Content = new ProductDetailsViewModel(p, CurrentUser, ShowCheckoutCommand);
+                  Content = new ProductDetailsViewModel(p, CurrentUser, ShowCheckoutCommand, SelectProductCommand);
               }
             );
         

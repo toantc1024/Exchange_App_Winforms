@@ -21,7 +21,7 @@ using System.Windows.Input;
 
 namespace Exchange_App.ViewModel
 {
-    internal class ProductManagerViewModel : BaseViewModel
+    public class ProductManagerViewModel : BaseViewModel
     {
         #region Variables
 
@@ -655,21 +655,21 @@ namespace Exchange_App.ViewModel
               },
               (p) => {
 
-                  IsShowPreviewModal = true;
-                  Product product = new Product
-                  {
-                      ProductName = ProductName,
-                      Sell_price = Sell_price,
-                      Original_price = Original_price,
-                      UploadedDate = DateTime.Now,
-                      Info_des = Info_des,
-                      Quantity = Quantity,
-                      Status_des = Status_des,
-                      UserID = CurrentUser.UserID,
-                      CatID = SelectedCategory.CatID,
-                      ProductID = ProductID
-                  };
-                  CurrentContentPreview = new ProductDetailsViewModel(product, CurrentUser, HideProductCommand);
+                  //IsShowPreviewModal = true;
+                  //Product product = new Product
+                  //{
+                  //    ProductName = ProductName,
+                  //    Sell_price = Sell_price,
+                  //    Original_price = Original_price,
+                  //    UploadedDate = DateTime.Now,
+                  //    Info_des = Info_des,
+                  //    Quantity = Quantity,
+                  //    Status_des = Status_des,
+                  //    UserID = CurrentUser.UserID,
+                  //    CatID = SelectedCategory.CatID,
+                  //    ProductID = ProductID
+                  //};
+                  //CurrentContentPreview = new ProductDetailsViewModel(product, CurrentUser, HideProductCommand, );
 
               });
 

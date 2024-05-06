@@ -31,6 +31,9 @@
             <DataTemplate DataType="{x:Type viewmodel:UserInfoViewModel}">
                 <view:UserInfoView />
             </DataTemplate>
+            <!--<DataTemplate DataType="{x:Type viewmodel:DashboardViewModel}">
+                <view:DashboardView />
+            </DataTemplate>-->
 
 
 

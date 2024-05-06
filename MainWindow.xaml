@@ -76,11 +76,10 @@
                     CommandParameter="ProductManager"
                     Foreground="White">
                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <materialDesign:PackIcon HorizontalAlignment="Center" Kind="AppBadge" />
-                        <TextBlock HorizontalAlignment="Center" FontSize="8">Products</TextBlock>
+                        <materialDesign:PackIcon HorizontalAlignment="Center" Kind="ViewDashboard" />
+                        <TextBlock HorizontalAlignment="Center" FontSize="8">Dashboard</TextBlock>
                     </StackPanel>
                 </Button>
-
 
                 <Button
                     Height="60"

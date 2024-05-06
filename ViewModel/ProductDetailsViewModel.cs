@@ -4,6 +4,7 @@ using Exchange_App.Tools;
 using Exchange_App.View;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Security.Policy;
@@ -27,9 +28,46 @@ namespace Exchange_App.ViewModel
         #endregion
 
         #region Properties
+        private ObservableCollection<Product> _recommendProducts;
+        private ObservableCollection<Product> _totalRecommendProducts;
+        private int _recommendCurrentIndex = 0;
+
+        private void UpdateCarousel()
+        {
+            int count = TotalRecommendProducts.Count;
+            // Clear items and add items based on current index
+            RecommendProducts.Clear();
+            // For simplicity, always show 5 items
+            // You may need to adjust this logic based on your requirements            
+            for (int i = 0; i < 4; i++)
+            {
+                int index = (_recommendCurrentIndex + i) % count;
+                RecommendProducts.Add(TotalRecommendProducts[index]);
+            }
+        }
 
         private bool _isAddedToWishList;
 
+
+        public ObservableCollection<Product> RecommendProducts
+        {
+            get => _recommendProducts;
+            set
+            {
+                _recommendProducts = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<Product> TotalRecommendProducts
+        {
+            get => _totalRecommendProducts;
+            set
+            {
+                _totalRecommendProducts = value;
+                OnPropertyChanged();
+            }
+        }
 
         public Model.Product SelectedProduct    
         {
@@ -141,6 +179,24 @@ namespace Exchange_App.ViewModel
             get;
             set;
         }
+
+        public ICommand PreviousProductCommand
+        {
+            get;
+            set;
+        }
+
+        public ICommand NextProductCommand
+        {
+            get;
+            set;
+        }
+
+        public ICommand SelectProductCommand
+        {
+            get;set;
+        }
+
         public bool IsAddedToWishList { get => _isAddedToWishList; set {
                 _isAddedToWishList=value; OnPropertyChanged();
             } }
@@ -159,11 +215,12 @@ namespace Exchange_App.ViewModel
                 _discount=value;OnPropertyChanged();
             } }
 
+      
         #endregion
 
 
 
-        public ProductDetailsViewModel(Model.Product product, Model.User user, ICommand showCheckoutCommand)
+        public ProductDetailsViewModel(Model.Product product, Model.User user, ICommand showCheckoutCommand, ICommand selectProductCommand)
         {
             #region Initialize
             ShowCheckoutCommandMultiple = new RelayCommand<object>(
@@ -180,6 +237,9 @@ namespace Exchange_App.ViewModel
                                               }
                                                              );
             SelectedProduct = product;
+            SelectProductCommand = selectProductCommand;
+            TotalRecommendProducts = new ObservableCollection<Product>(DataProvider.Ins.DB.Products.Where(p => p.CatID == SelectedProduct.CatID && p.ProductID != SelectedProduct.ProductID).Take(20));
+            RecommendProducts = new ObservableCollection<Product>(DataProvider.Ins.DB.Products.Where(p => p.CatID == SelectedProduct.CatID  && p.ProductID != SelectedProduct.ProductID).Take(4));
             CurrentUser = user;
 
             IsAddedToWishList = false;
@@ -190,6 +250,38 @@ namespace Exchange_App.ViewModel
                     IsAddedToWishList = true;
                 }
             });
+
+            PreviousProductCommand = new RelayCommand<object>(
+        (p) =>
+        {
+            return true;
+        },
+        (p) => {
+            _recommendCurrentIndex--;
+            if (_recommendCurrentIndex < 0)
+            {
+                _recommendCurrentIndex = TotalRecommendProducts.Count - 1;
+            }
+            UpdateCarousel();
+            OnPropertyChanged("RecommendProducts");
+        }
+    );
+
+            NextProductCommand = new RelayCommand<object>(
+                (p) =>
+                {
+                    return true;
+                },
+                (p) => {
+                    _recommendCurrentIndex++;
+                    if (_recommendCurrentIndex >= TotalRecommendProducts.Count)
+                    {
+                        _recommendCurrentIndex = 0;
+                    }
+                    UpdateCarousel();
+                    OnPropertyChanged("RecommendProducts");
+                }
+            );
 
             UpdateQuantityCommand = new RelayCommand<string>((p) =>
             {
@@ -251,8 +343,10 @@ namespace Exchange_App.ViewModel
                   OnPropertyChanged("CurrentImage");
               }
             );
+         
 
             #endregion
         }
+
     }
 }

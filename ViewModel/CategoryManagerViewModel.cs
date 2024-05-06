@@ -38,8 +38,7 @@ namespace Exchange_App.ViewModel
 
         public CategoryManagerViewModel()
         {
-            CategoryRepository categoryRepository = new CategoryRepository();
-            Categories = categoryRepository.GetAllCategories();
+            Categories = DataProvider.Ins.DB.Categories.ToList();
 
             ShowDelCategoryCommand = new RelayCommand<Category>((p) =>
             {
@@ -77,10 +76,11 @@ namespace Exchange_App.ViewModel
                 try
                 {
                     var catName = p.Text;
+                    DataProvider.Ins.DB.Categories.Add(new Category { CatName = catName });
+                    DataProvider.Ins.DB.SaveChanges();
                     await Task.Run(() =>
                     {
-                        //categoryRepository.CreateCategory(catName);
-                        Categories = categoryRepository.GetAllCategories();
+                        Categories = DataProvider.Ins.DB.Categories.ToList();
                     });
                     p.Text = "";
                     IsAddCategoryVisible=false;
@@ -100,10 +100,13 @@ namespace Exchange_App.ViewModel
                     var newCatName = p.Text;
                     await Task.Run(() =>
                     {
-                        categoryRepository.UpdateCategory(SelectedCategory.CatID, SelectedCategory.CatName);
+                            DataProvider.Ins.DB.Categories.Where(x => x.CatID == SelectedCategory.CatID).FirstOrDefault().CatName = newCatName;
                     });
-
-                    Categories = categoryRepository.GetAllCategories();
+                    await Task.Run(() =>
+                    {
+                        Categories = DataProvider.Ins.DB.Categories.ToList();
+                    });
+                    DataProvider.Ins.DB.SaveChanges();
 
                     IsEditCategoryVisible = false;
                     SelectedCategory = null;
@@ -124,8 +127,9 @@ namespace Exchange_App.ViewModel
             {
                 try
                 {
-                    categoryRepository.DeleteCategory(SelectedCategory.CatID);
-                    Categories = categoryRepository.GetAllCategories();
+                    DataProvider.Ins.DB.Categories.Remove(SelectedCategory);
+                    DataProvider.Ins.DB.SaveChanges();
+                    Categories = DataProvider.Ins.DB.Categories.ToList();
                     IsDeleteCategoryVisible = false;
                 } catch (Exception ex)
                 {

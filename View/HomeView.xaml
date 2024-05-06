@@ -130,15 +130,15 @@
 
                 <Grid Visibility="{Binding IsShowCheckout, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource visibilityInverseConverter}}">
                     <Button
-                        Width="20"
-                        Height="20"
+                        Width="25"
+                        Height="25"
                         Margin="5"
                         Padding="0"
                         HorizontalAlignment="Left"
                         HorizontalContentAlignment="Center"
                         VerticalContentAlignment="Center"
                         Panel.ZIndex="9999"
-                        materialDesign:ButtonAssist.CornerRadius="50"
+                        materialDesign:ButtonAssist.CornerRadius="5"
                         materialDesign:ElevationAssist.Elevation="Dp0"
                         Background="DarkOrange"
                         BorderThickness="0"
