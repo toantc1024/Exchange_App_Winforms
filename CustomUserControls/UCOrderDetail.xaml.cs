@@ -26,12 +26,12 @@ namespace Exchange_App.CustomUserControls
         }
 
         // Dependency Properties
-        public static readonly DependencyProperty OrderDetailProperty =
-                DependencyProperty.Register("OrderDetail", typeof(Model.OrderDetail), typeof(UCOrderDetail), new PropertyMetadata(null));
-        public Model.OrderDetail OrderDetail
-        {
-            get { return (Model.OrderDetail)GetValue(OrderDetailProperty); }
-            set { SetValue(OrderDetailProperty, value); }
-        }
+        //public static readonly DependencyProperty OrderDetailProperty =
+        //        DependencyProperty.Register("OrderDetail", typeof(Model.OrderDetail), typeof(UCOrderDetail), new PropertyMetadata(null));
+        //public Model.OrderDetail OrderDetail
+        //{
+        //    get { return (Model.OrderDetail)GetValue(OrderDetailProperty); }
+        //    set { SetValue(OrderDetailProperty, value); }
+        //}
     }
 }

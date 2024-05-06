@@ -515,9 +515,7 @@ namespace Exchange_App.ViewModel
             IsShowAddProduct = "Hidden";
             IsShowEditProduct = "Hidden";
             ShowAddProduct = "Hidden";
-            ProductRepository productRepository = new ProductRepository();
-            ImageRepository imageRepository = new ImageRepository();
-            AllProducts = Products = productRepository.GetAllProductsByUserId(user.UserID);
+            GetProductsByUserID(user.UserID);
             Categories = DataProvider.Ins.DB.Categories.ToList();
             #endregion
 
@@ -725,15 +723,26 @@ namespace Exchange_App.ViewModel
               (p) => {
                   try
                   {
-                      var obj = productRepository.DbContext.PROC_AddProduct(Quantity, Info_des, Status_des, Original_price, Sell_price, ProductName, SelectedCategory.CatID, CurrentUser.UserID);
-                      var newProductID = obj.FirstOrDefault();
-                      
+                      var obj = DataProvider.Ins.DB.Products.Add(new Product
+                      {
+                          ProductName = ProductName,
+                          Sell_price = Sell_price,
+                          Original_price = Original_price,
+                          UploadedDate = DateTime.Now,
+                          Info_des = Info_des,
+                          Quantity = Quantity,
+                          Status_des = Status_des,
+                          UserID = CurrentUser.UserID,
+                          CatID = SelectedCategory.CatID,
+                          View_count = 0
+                      });
+                     
                       foreach (var path in Pathes)
                       {
-                          DataProvider.Ins.DB.PROC_AddImageByProductID(path.Path, newProductID);
+                          DataProvider.Ins.DB.Images.Add(new Model.Image { ProductID = obj.ProductID, ImageURL = path.Path });
                       }
+                      DataProvider.Ins.DB.SaveChanges();
                       GetProductsByUserID(CurrentUser.UserID);
-                      MessageBox.Show("Add product successfully!");
                       HideProductCommand.Execute(true);
                   }
                   catch (Exception ex)
@@ -764,10 +773,9 @@ namespace Exchange_App.ViewModel
 
                 });
 
-            async void GetProductsByUserID(int UserID)
+             void GetProductsByUserID(int UserID)
             {
-                Products = AllProducts = await Task.Run(() => productRepository.DbContext.FUNC_SearchProductByUserID(UserID).ToList());
-
+                Products = AllProducts = DataProvider.Ins.DB.Products.Where(x => x.UserID == UserID).ToList();
             }
 
             DeleteProductCommand = new RelayCommand<Product>((p) => {
@@ -780,25 +788,28 @@ namespace Exchange_App.ViewModel
                     if (result == MessageBoxResult.Yes)
                     {
                         // delete product
-                         
-                        productRepository.DbContext.PROC_RemoveImagesByProductID(p.ProductID);
 
-                        // set null for all order details
-                        foreach (var od in DataProvider.Ins.DB.OrderDetails.Where(x => x.ProductID == p.ProductID))
+                        // remove all images by product id
+                        DataProvider.Ins.DB.Images.RemoveRange(DataProvider.Ins.DB.Images.Where(x => x.ProductID == p.ProductID));
+
+
+                        var wishItems = DataProvider.Ins.DB.WishItems.Where(x => x.ProductID == p.ProductID).ToList();
+                        if (wishItems.Count > 0)
                         {
-                            od.ProductID = null;
+                            throw new Exception("Product is in wishlist, cannot delete!");
                         }
 
-                        // delete product
+                        var User_Orders = DataProvider.Ins.DB.User_Order.Where(x => x.ProductID == p.ProductID).ToList();
 
-                        productRepository.DbContext.PROC_DeleteProduct(p.ProductID);
+                        if (User_Orders.Count > 0)
+                        {
+                            throw new Exception("Product is in order, cannot delete!");
+                        }
 
+                        DataProvider.Ins.DB.Products.Remove(p);
+                        DataProvider.Ins.DB.SaveChanges();
                         GetProductsByUserID(CurrentUser.UserID);
-
-                        // casecade forgein key
-
                         MessageBox.Show("Delete product successfully!");
-                        //GetProducts();
                     }
                 }
                 catch (Exception ex)
@@ -827,12 +838,22 @@ namespace Exchange_App.ViewModel
               (p) => {
                 try
                   {
-                      productRepository.DbContext.PROC_UpdateProduct(ProductID, Quantity, Info_des, Status_des, Original_price, Sell_price, ProductName, SelectedCategory.CatID);
-                      imageRepository.DeleteImagesByProductId(ProductID);
-                      foreach(var path in Pathes)
+                      /// 
+                      var product = DataProvider.Ins.DB.Products.Where(x => x.ProductID == ProductID).FirstOrDefault();
+                      product.ProductName = ProductName;
+                      product.Sell_price = Sell_price;
+                      product.Original_price = Original_price;
+                      product.Quantity = Quantity;
+                      product.Status_des = Status_des;
+                      product.Info_des = Info_des;
+                      product.CatID = SelectedCategory.CatID;
+                      DataProvider.Ins.DB.Images.RemoveRange(DataProvider.Ins.DB.Images.Where(x => x.ProductID == ProductID));
+                      foreach (var path in Pathes)
                       {
-                          imageRepository.AddImage(new Model.Image { ProductID = ProductID, ImageURL = path.Path }); 
+                          DataProvider.Ins.DB.Images.Add(new Model.Image { ProductID = ProductID, ImageURL = path.Path });
                       }
+                      DataProvider.Ins.DB.SaveChanges();
+                      GetProductsByUserID(CurrentUser.UserID);    
                       MessageBox.Show("Edit successfully!");
                   }
                   catch (Exception ex)
@@ -862,10 +883,10 @@ namespace Exchange_App.ViewModel
               },
               (p) => {
                   
-                  Product product = productRepository.GetProductById(p);
+                  Product product = DataProvider.Ins.DB.Products.Where(x => x.ProductID == p).FirstOrDefault();
                   ProductName = product.ProductName;
                   Sell_price = product.Sell_price;
-                  Original_price = product.Original_price   ;
+                  Original_price = product.Original_price;
 
                   var newPathes = new ObservableCollection<ImagePath>();
                   var images =  product.Images.ToList();
@@ -881,8 +902,6 @@ namespace Exchange_App.ViewModel
                   Info_des = product.Info_des;
                   SelectedCategory = Categories.Where(x => x.CatID == product.CatID).FirstOrDefault();
                   ProductID = product.ProductID;
-
-
                   ShowView("Edit");
               }
             );

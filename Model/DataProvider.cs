@@ -17,11 +17,11 @@ namespace Exchange_App.Model
         }
 
 
-        public ExchangeBeeEntities DB { get; set; }
+        public StuffExchangeAppEntities DB { get; set; }
 
         private DataProvider()
         {
-            DB = new ExchangeBeeEntities();
+            DB = new StuffExchangeAppEntities();
         }
     }
 }

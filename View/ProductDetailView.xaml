@@ -20,6 +20,13 @@
     mc:Ignorable="d">
     <Grid>
         <Grid.Resources>
+            <tools:CurrencyToStringConverter x:Key="currencyConverter" />
+            <tools:UploadedDateConveter x:Key="uploadedDateConverter" />
+            <tools:QuantityColorConverter x:Key="quantityColorConverter" />
+            <tools:VisibilityInverseConverter x:Key="visibilityInverseConverter" />
+            <tools:QuantityTextConverter x:Key="quantityTextConverter" />
+            <tools:ProductPreviewImageConverter x:Key="previewImageConverter" />
+
             <tools:SoldItemConverter x:Key="soldItemConverter" />
             <tools:StringToListConverter x:Key="stringToListConverter" />
             <tools:DiscountToStringConverter x:Key="discountConverter" />
@@ -239,7 +246,7 @@
                                         BorderThickness="0.5"
                                         CornerRadius="10">
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="Car" />
+                                            <TextBlock Text="{Binding SelectedProduct.Category.CatName}" />
                                             <Separator Width="5" Visibility="Hidden" />
                                             <StackPanel VerticalAlignment="Center">
                                                 <materialDesign:PackIcon Kind="Tag" />
@@ -371,7 +378,18 @@
                                                 +
                                             </Button>
                                         </StackPanel>
+                                        <Separator Width="5" Visibility="Hidden" />
+                                        <StackPanel VerticalAlignment="Center" Orientation="Vertical">
+                                            <StackPanel Orientation="Vertical">
+                                                <TextBlock
+                                                    VerticalAlignment="Center"
+                                                    FontSize="15"
+                                                    FontWeight="Bold"
+                                                    Foreground="{Binding SelectedProduct.Quantity, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource quantityColorConverter}}"
+                                                    Text="{Binding SelectedProduct.Quantity, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource quantityTextConverter}}" />
+                                            </StackPanel>
 
+                                        </StackPanel>
                                     </StackPanel>
                                 </DockPanel>
 
@@ -386,8 +404,7 @@
                                         Background="DarkOrange"
                                         BorderBrush="DarkOrange"
                                         BorderThickness="0.2"
-                                        Command="{Binding ShowCheckoutCommand}"
-                                        CommandParameter="{Binding SelectedProduct}"
+                                        Command="{Binding ShowCheckoutCommandMultiple}"
                                         Foreground="White">
                                         <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
                                             <TextBlock VerticalAlignment="Center">

@@ -17,7 +17,7 @@ namespace Exchange_App.ViewModel
         private string _isShowOrderDetail = "Hidden";
         private User _currentUser;
         private User_Order _currentOrder;
-        private OrderDetail _currentOrderDetail;
+        //private OrderDetail _currentOrderDetail;
         private List<User_Order> _orders;
 
         #endregion
@@ -29,8 +29,7 @@ namespace Exchange_App.ViewModel
         {
             get
             {
-                
-                return CurrentOrder.OrderName;
+                return "";
             }
         }
 
@@ -43,15 +42,6 @@ namespace Exchange_App.ViewModel
 
         }
 
-        public OrderDetail CurrentOrderDetail
-        {
-            get { return _currentOrderDetail; }
-            set
-            {
-                _currentOrderDetail = value;
-                OnPropertyChanged();
-            }
-        }
         public string IsShowOrderDetail
         {
             get => _isShowOrderDetail;
@@ -134,7 +124,7 @@ namespace Exchange_App.ViewModel
 
 
             CurrentUser = user;
-            Orders = DataProvider.Ins.DB.FUNC_getAllOrders().ToList();
+            Orders = DataProvider.Ins.DB.User_Order.Where(x => x.UserID == CurrentUser.UserID).ToList();
 
             SortAlphabetCommand = new RelayCommand<ListBox>(p =>
             {
@@ -145,10 +135,10 @@ namespace Exchange_App.ViewModel
                 if(type ==0)
                 {
                     // sort desc
-                    Orders = Orders.OrderByDescending(x => x.OrderName).ToList();
+                    Orders = Orders.OrderByDescending(x => x.Product.ProductName).ToList();
                 } else
                 {
-                    Orders = Orders.OrderBy(x => x.OrderName).ToList();
+                    Orders = Orders.OrderBy(x => x.Product.ProductName).ToList();
                 }
             });
 
@@ -157,7 +147,7 @@ namespace Exchange_App.ViewModel
                 return true;
             }, p =>
             {
-                    Orders = Orders.OrderByDescending(x => x.Total).ToList();
+                Orders = Orders.OrderByDescending(x => x.Product.Sell_price*x.Quantity).ToList();
             });
 
             SortProductByDateCommand = new RelayCommand<object>(p =>
@@ -169,21 +159,7 @@ namespace Exchange_App.ViewModel
             });
 
 
-            ShowOrderDetailsCommand = new RelayCommand<User_Order>(p =>
-            {
-                if(p == null)
-                {
-                    return false;
-                }
-                return true;
-            }, p =>
-            {
-                
-                CurrentOrder = p;
-                CurrentOrderDetail = p.OrderDetails.FirstOrDefault();
-                IsShowOrderDetail = "Visible";
-            });
-
+          
             OnSearchCommand = new RelayCommand<TextBox>(p =>
             {
                 if(p == null)
@@ -194,13 +170,13 @@ namespace Exchange_App.ViewModel
             }, p =>
             {
                 string keyword = p.Text;
-                if(CurrentUser.RoleID == 2)
+                if (CurrentUser.RoleID == 2)
                 {
-                    Orders = DataProvider.Ins.DB.FUNC_getAllOrders().Where(x => x.OrderName.Contains(keyword)).ToList();
-                } else
+                    Orders = DataProvider.Ins.DB.User_Order.Where(x => x.Product.ProductName.Contains(keyword)).ToList();
+                }
+                else
                 {
-                    Orders = CurrentUser.User_Order.Where(x => x.OrderName.Contains(keyword)).ToList();
-
+                    Orders = CurrentUser.User_Order.Where(x => x.Product.ProductName.Contains(keyword)).ToList();
                 }
             });
 

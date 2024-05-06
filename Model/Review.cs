@@ -10,12 +10,16 @@
 namespace Exchange_App.Model
 {
     using System;
+    using System.Collections.Generic;
     
-    public partial class FUNC_GetOrderDetail_Result
+    public partial class Review
     {
-        public int OrderDetailID { get; set; }
-        public Nullable<int> OrderID { get; set; }
-        public Nullable<int> ProductID { get; set; }
-        public int Quantity { get; set; }
+        public int ReviewID { get; set; }
+        public int Rating { get; set; }
+        public string Comment { get; set; }
+        public Nullable<int> UserID { get; set; }
+        public System.DateTime ReviewDate { get; set; }
+    
+        public virtual User User { get; set; }
     }
 }

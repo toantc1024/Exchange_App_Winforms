@@ -103,10 +103,6 @@ namespace Exchange_App.ViewModel
                     } else if ((string)o == "User")
                     {
                         SelectedViewModel = new UserInfoViewModel(CurrentUser);
-                    } else if((string)o == "UserManager")
-                    {
-                        SelectedViewModel = new UserManagerViewModel(CurrentUser);
-
                     }
                 }
 

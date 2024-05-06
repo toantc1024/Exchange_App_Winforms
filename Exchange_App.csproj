@@ -109,111 +109,55 @@
       <DependentUpon>UCReview.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\Category.cs">
-      <DependentUpon>ExchangeBee.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\ExchangeBee.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ExchangeBee.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\ExchangeBee.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ExchangeBee.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\ExchangeBee.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ExchangeBee.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Model\FUNC_getAllOrders_Result.cs">
-      <DependentUpon>ExchangeBee.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\FUNC_getAllUsers_Result.cs">
-      <DependentUpon>ExchangeBee.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\FUNC_GetImagesByProductID_Result.cs">
-      <DependentUpon>ExchangeBee.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\FUNC_GetOrderDetail_Result.cs">
-      <DependentUpon>ExchangeBee.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\FUNC_GetOrdersByUserID_Result.cs">
-      <DependentUpon>ExchangeBee.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\FUNC_GetProductByCategories_Result.cs">
-      <DependentUpon>ExchangeBee.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\FUNC_GetProductByName_Result.cs">
-      <DependentUpon>ExchangeBee.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\FUNC_GetUserInformationById_Result.cs">
-      <DependentUpon>ExchangeBee.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\FUNC_Login_Result.cs">
-      <DependentUpon>ExchangeBee.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\FUNC_SearchProductByName_Result.cs">
-      <DependentUpon>ExchangeBee.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\FUNC_SearchProductByUserID_Result.cs">
-      <DependentUpon>ExchangeBee.tt</DependentUpon>
+      <DependentUpon>StuffExchangeApp.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Image.cs">
-      <DependentUpon>ExchangeBee.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\OrderDetail.cs">
-      <DependentUpon>ExchangeBee.tt</DependentUpon>
+      <DependentUpon>StuffExchangeApp.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Product.cs">
-      <DependentUpon>ExchangeBee.tt</DependentUpon>
+      <DependentUpon>StuffExchangeApp.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Review.cs">
+      <DependentUpon>StuffExchangeApp.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Role.cs">
-      <DependentUpon>ExchangeBee.tt</DependentUpon>
+      <DependentUpon>StuffExchangeApp.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\StuffExchangeApp.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StuffExchangeApp.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\StuffExchangeApp.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StuffExchangeApp.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\StuffExchangeApp.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StuffExchangeApp.edmx</DependentUpon>
     </Compile>
     <Compile Include="Model\User.cs">
-      <DependentUpon>ExchangeBee.tt</DependentUpon>
+      <DependentUpon>StuffExchangeApp.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\User_Order.cs">
-      <DependentUpon>ExchangeBee.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\View_category.cs">
-      <DependentUpon>ExchangeBee.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\View_orderdetail.cs">
-      <DependentUpon>ExchangeBee.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\View_products.cs">
-      <DependentUpon>ExchangeBee.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\View_product_images.cs">
-      <DependentUpon>ExchangeBee.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\View_users.cs">
-      <DependentUpon>ExchangeBee.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\View_user_order.cs">
-      <DependentUpon>ExchangeBee.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\View_wishitem.cs">
-      <DependentUpon>ExchangeBee.tt</DependentUpon>
+      <DependentUpon>StuffExchangeApp.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\WishItem.cs">
-      <DependentUpon>ExchangeBee.tt</DependentUpon>
+      <DependentUpon>StuffExchangeApp.tt</DependentUpon>
     </Compile>
     <Compile Include="Repositories\connectStr.cs" />
     <Compile Include="Repositories\Implementations\BaseRepository.cs" />
     <Compile Include="Repositories\Implementations\CategoryRepository.cs" />
     <Compile Include="Repositories\Implementations\ImageRepository.cs" />
     <Compile Include="Repositories\Implementations\ProductRepository.cs" />
+    <Compile Include="Repositories\Implementations\UserRepository.cs" />
     <Compile Include="Repositories\Implementations\WishItemRepository.cs" />
-    <Compile Include="Repositories\Interfaces\ICategoryRepository.cs" />
-    <Compile Include="Repositories\Interfaces\IImageRepository.cs" />
-    <Compile Include="Repositories\Interfaces\IProductsRepository.cs" />
-    <Compile Include="Repositories\Interfaces\IWishItemRepository.cs" />
     <Compile Include="Tools\ControlConverter.cs" />
     <Compile Include="Tools\CurrencyConverter.cs" />
     <Compile Include="Tools\InformationConverter.cs" />
+    <Compile Include="Tools\OrderConverter.cs" />
     <Compile Include="Tools\ProductConverter.cs" />
     <Compile Include="Tools\WishlistConverter.cs" />
     <Compile Include="ValidationRules\NotEmptyRule.cs" />
@@ -236,7 +180,6 @@
     <Compile Include="ViewModel\ProductManagerViewModel.cs" />
     <Compile Include="ViewModel\RegisterViewModel.cs" />
     <Compile Include="ViewModel\UserInfoViewModel.cs" />
-    <Compile Include="ViewModel\UserManagerViewModel.cs" />
     <Compile Include="View\AddCategoryView.xaml.cs">
       <DependentUpon>AddCategoryView.xaml</DependentUpon>
     </Compile>
@@ -263,9 +206,6 @@
     </Compile>
     <Compile Include="View\UserInfoView.xaml.cs">
       <DependentUpon>UserInfoView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\UserManagerView.xaml.cs">
-      <DependentUpon>UserManagerView.xaml</DependentUpon>
     </Compile>
     <Page Include="AuthWindow.xaml">
       <SubType>Designer</SubType>
@@ -366,10 +306,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\UserManagerView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -392,12 +328,12 @@
     <Resource Include="Fonts\Poppins-Regular.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <EntityDeploy Include="Model\ExchangeBee.edmx">
+    <EntityDeploy Include="Model\StuffExchangeApp.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>ExchangeBee.Designer.cs</LastGenOutput>
+      <LastGenOutput>StuffExchangeApp.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="Model\ExchangeBee.edmx.diagram">
-      <DependentUpon>ExchangeBee.edmx</DependentUpon>
+    <None Include="Model\StuffExchangeApp.edmx.diagram">
+      <DependentUpon>StuffExchangeApp.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -412,15 +348,15 @@
     <Content Include="INIT_DATABASE.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Model\ExchangeBee.Context.tt">
+    <Content Include="Model\StuffExchangeApp.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ExchangeBee.edmx</DependentUpon>
-      <LastGenOutput>ExchangeBee.Context.cs</LastGenOutput>
+      <DependentUpon>StuffExchangeApp.edmx</DependentUpon>
+      <LastGenOutput>StuffExchangeApp.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Model\ExchangeBee.tt">
+    <Content Include="Model\StuffExchangeApp.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ExchangeBee.edmx</DependentUpon>
-      <LastGenOutput>ExchangeBee.cs</LastGenOutput>
+      <DependentUpon>StuffExchangeApp.edmx</DependentUpon>
+      <LastGenOutput>StuffExchangeApp.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <ItemGroup />

@@ -1,4 +1,5 @@
 ﻿using Exchange_App.Model;
+using Exchange_App.Repositories.Implementations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,6 +52,7 @@ namespace Exchange_App.ViewModel
 
         public AddCategoryViewModel()
         {
+            CategoryRepository categoryRepository = new CategoryRepository();   
             AddCategoryCommand = new RelayCommand<Window>(
               (p) => {
                   return true;
@@ -58,7 +60,7 @@ namespace Exchange_App.ViewModel
 
                   try
                   {
-                       DataProvider.Ins.DB.PROC_AddCat(CategoryName);
+                      categoryRepository.CreateCategory(new Category() { CatName = CategoryName });
                       MessageBox.Show("Add Category Success");
                   }
                   catch (Exception ex)

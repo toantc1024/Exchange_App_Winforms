@@ -34,6 +34,22 @@ namespace Exchange_App.Tools
             return null;
         }
     }
+    public class VisibilityInverseConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if(value =="Visible")
+            {
+                return "Hidden";
+            }
+            return "Visible";
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return null;
+        }
+    }
 
 
 }

@@ -17,6 +17,11 @@ using System.Windows.Input;
 
 namespace Exchange_App.ViewModel
 {
+    public class MultipleParams
+    {
+        public Product currentProduct;
+        public int quantity;
+    }
     public class HomeViewModel : BaseViewModel
     {
         #region Variables
@@ -249,6 +254,7 @@ namespace Exchange_App.ViewModel
         }
 
 
+  
         public HomeViewModel(User currentUser)
         {
             CurrentUser = currentUser;
@@ -291,14 +297,14 @@ namespace Exchange_App.ViewModel
            (p) =>
            {
                // Sort products 
-               if (SelectedOrderType == 0)
-               {
-                   Products = Products.OrderByDescending(x => x.OrderDetails.Count()).OrderByDescending(x => x.View_count).ToList();
-               }
-               else
-               {
-                   Products = Products.OrderBy(x => x.OrderDetails.Count()).OrderByDescending(x => x.View_count).ToList();
-               }
+               //if (SelectedOrderType == 0)
+               //{
+               //    Products = Products.OrderByDescending(x => x.OrderDetails.Count()).OrderByDescending(x => x.View_count).ToList();
+               //}
+               //else
+               //{
+               //    Products = Products.OrderBy(x => x.OrderDetails.Count()).OrderByDescending(x => x.View_count).ToList();
+               //}
                // Sort products 
            });
             ProductQuery = new RelayCommand<string>(
@@ -315,7 +321,8 @@ namespace Exchange_App.ViewModel
                     {
                         if(item.IsChecked)
                         {
-                            var productsByCatID = productRepository.GetProductsByCategoryID(item.Category.CatID);
+                            var productsByCatID = item.Category.Products.ToList();
+
                             products.AddRange(productsByCatID);
                         }
                     }
@@ -372,17 +379,11 @@ namespace Exchange_App.ViewModel
                     SelectedCount = count;
                 });
 
-            HideProductDetailCommand = new RelayCommand<object>(
-              (p) => {
-                  return true;
-              },
-              (p) => {
-                  IsShowContent = "Hidden";
-                  SelectedProduct = null;
-              }
-            );
-                
-            ShowCheckoutCommand = new RelayCommand<Product>(
+
+
+
+
+        ShowCheckoutCommand = new RelayCommand<MultipleParams>(
                 
         (p) =>
         {
@@ -395,11 +396,11 @@ namespace Exchange_App.ViewModel
                        (p) =>
                        {
                     IsShowCheckout = "Visible";
-                    Content = new CheckoutViewModel(currentUser, p, HideCheckoutCommand);
+                    Content = new CheckoutViewModel(currentUser, p.currentProduct, HideCheckoutCommand, p.quantity);
                 }
                        );
 
-            HideCheckoutCommand = new RelayCommand<object>(
+            HideCheckoutCommand = new RelayCommand<int>(
                 (p) =>
                 {
                     return true;
@@ -410,8 +411,7 @@ namespace Exchange_App.ViewModel
                     IsShowCheckout = "Hidden";
                     IsShowContent = "Visible";
 
-                    var productID = SelectedProduct.ProductID;
-                    SelectedProduct = productRepository.GetProductById(productID);
+                    SelectedProduct = DataProvider.Ins.DB.Products.SingleOrDefault(x => x.ProductID == p);
                     Content = new ProductDetailsViewModel(SelectedProduct, CurrentUser, ShowCheckoutCommand);
                 }
                 );
@@ -428,15 +428,15 @@ namespace Exchange_App.ViewModel
                   // Increaase product view count
                   if(CurrentUser.UserID != p.UserID)
                   {
+                      var result = DataProvider.Ins.DB.Products.SingleOrDefault(b => b.ProductID == p.ProductID);
                       // increase view_coutn
-                      var result = productRepository.DbContext.Products.SingleOrDefault(b => b.ProductID == p.ProductID);
                       result.View_count += 1;
-                      productRepository.DbContext.SaveChanges();
-                     SelectedProduct =  result;
+                      DataProvider.Ins.DB.SaveChanges();
+                      SelectedProduct =  result;
 
                   }
 
-                  Products=  productRepository.DbContext.FUNC_GetProductByName(string.Empty).ToList();
+                  Products = DataProvider.Ins.DB.Products.ToList();
 
                   IsShowContent = "Visible";
                   Content = new ProductDetailsViewModel(p, CurrentUser, ShowCheckoutCommand);
@@ -458,13 +458,13 @@ namespace Exchange_App.ViewModel
          {
 
              string keyword = p.Text;
-             Products=  productRepository.DbContext.FUNC_GetProductByName(keyword).ToList();
+             Products=  DataProvider.Ins.DB.Products.Where(x => x.ProductName.Contains(keyword)).ToList();
          });
 
             // run a async task 
             async Task getDataAsync()
             {
-                Products  = await Task.Run(() => productRepository.DbContext.FUNC_GetProductByName(string.Empty).ToList());
+                Products  = await Task.Run(() => DataProvider.Ins.DB.Products.ToList());
             }
 
             async void getData()

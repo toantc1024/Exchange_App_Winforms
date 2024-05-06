@@ -135,6 +135,12 @@ namespace Exchange_App.ViewModel
             get;
             set;
         }
+
+        public ICommand ShowCheckoutCommandMultiple
+        {
+            get;
+            set;
+        }
         public bool IsAddedToWishList { get => _isAddedToWishList; set {
                 _isAddedToWishList=value; OnPropertyChanged();
             } }
@@ -160,13 +166,30 @@ namespace Exchange_App.ViewModel
         public ProductDetailsViewModel(Model.Product product, Model.User user, ICommand showCheckoutCommand)
         {
             #region Initialize
-            ShowCheckoutCommand = showCheckoutCommand;
+            ShowCheckoutCommandMultiple = new RelayCommand<object>(
+                               (p) =>
+                               {
+                                   return true;
+                               },
+                                              (p) =>
+                                              {
+                                                  MultipleParams multipleParams = new MultipleParams();
+                                                  multipleParams.currentProduct = product;
+                                                  multipleParams.quantity = Quantity;
+                                                  showCheckoutCommand.Execute(multipleParams);
+                                              }
+                                                             );
             SelectedProduct = product;
-            CurrentUser = user; 
+            CurrentUser = user;
 
-            WishItemRepository wishItemRepository = new WishItemRepository();
-            IsAddedToWishList =  wishItemRepository.CheckWishItem(product.ProductID, CurrentUser.UserID);
-
+            IsAddedToWishList = false;
+            DataProvider.Ins.DB.WishItems.ToList().ForEach(wishItem =>
+            {
+                if (wishItem.ProductID == SelectedProduct.ProductID && wishItem.UserID == CurrentUser.UserID)
+                {
+                    IsAddedToWishList = true;
+                }
+            });
 
             UpdateQuantityCommand = new RelayCommand<string>((p) =>
             {
@@ -195,8 +218,9 @@ namespace Exchange_App.ViewModel
               (p) => {
                   try
                   {
-                      DataProvider.Ins.DB.PROC_AddWishItem(SelectedProduct.ProductID, CurrentUser.UserID);
+                      DataProvider.Ins.DB.WishItems.Add(new WishItem() { ProductID = SelectedProduct.ProductID, UserID = CurrentUser.UserID });
                       IsAddedToWishList = true;
+                      DataProvider.Ins.DB.SaveChanges();
                       MessageBox.Show("Add to wishlist success");
                   }
                   catch (Exception ex)  

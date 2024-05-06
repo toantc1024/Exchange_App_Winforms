@@ -18,8 +18,8 @@ namespace Exchange_App.Model
         public Product()
         {
             this.Images = new HashSet<Image>();
-            this.OrderDetails = new HashSet<OrderDetail>();
             this.WishItems = new HashSet<WishItem>();
+            this.User_Order = new HashSet<User_Order>();
         }
     
         public int ProductID { get; set; }
@@ -35,12 +35,13 @@ namespace Exchange_App.Model
         public int View_count { get; set; }
     
         public virtual Category Category { get; set; }
+        public virtual Category Category1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Image> Images { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<OrderDetail> OrderDetails { get; set; }
         public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<WishItem> WishItems { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<User_Order> User_Order { get; set; }
     }
 }

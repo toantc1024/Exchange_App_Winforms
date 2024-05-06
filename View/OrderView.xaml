@@ -9,10 +9,11 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:tool="clr-namespace:Exchange_App.Tools"
     xmlns:uc="clr-namespace:Exchange_App.CustomUserControls"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
+    d:DesignHeight="621.6"
+    d:DesignWidth="761.6"
     mc:Ignorable="d">
     <UserControl.Resources>
+        <tool:ShowTotalConverter x:Key="showTotalConverter" />
         <tool:CurrencyToStringConverter x:Key="currencyConverter" />
     </UserControl.Resources>
     <Grid Background="White">
@@ -136,9 +137,9 @@
                                             <ColumnDefinition Width="auto" />
                                         </Grid.ColumnDefinitions>
                                         <StackPanel Margin="8,0,0,0">
-                                            <TextBlock FontWeight="Bold" Text="{Binding OrderName}" />
+                                            <TextBlock FontWeight="Bold" Text="{Binding Product.ProductName}" />
                                             <TextBlock Text="{Binding OrderDate}" />
-                                            <TextBlock Text="{Binding ShowTotal}" />
+                                            <TextBlock Foreground="DarkOrange" Text="{Binding Total, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource currencyConverter}}" />
                                         </StackPanel>
                                     </Grid>
                                 </Border>
@@ -164,37 +165,7 @@
                     <RowDefinition />
                 </Grid.RowDefinitions>
 
-                <StackPanel Background="White" Orientation="Horizontal">
-                    <Button
-                        Width="20"
-                        Height="20"
-                        Margin="5"
-                        Padding="0"
-                        HorizontalAlignment="Left"
-                        HorizontalContentAlignment="Center"
-                        VerticalContentAlignment="Center"
-                        materialDesign:ButtonAssist.CornerRadius="50"
-                        materialDesign:ElevationAssist.Elevation="Dp0"
-                        Background="DarkOrange"
-                        BorderThickness="0"
-                        Command="{Binding HideOrderDetail}">
 
-                        <materialDesign:PackIcon
-                            Width="15"
-                            Height="15"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Foreground="White"
-                            Kind="ArrowLeft" />
-                    </Button>
-                    <Separator Width="5" Visibility="Hidden" />
-                    <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-                        <TextBlock>Order</TextBlock>
-                        <Separator Width="5" Visibility="Hidden" />
-
-                        <TextBlock Text="{Binding CurrentOrder.OrderName}" />
-                    </StackPanel>
-                </StackPanel>
 
 
                 <ScrollViewer Grid.Row="1" Margin="10">
@@ -217,7 +188,7 @@
                                             FontSize="20"
                                             FontWeight="Bold"
                                             Foreground="White">
-                                            Order Detail
+                                            Let's finish your exchange!
                                         </TextBlock>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
@@ -356,6 +327,10 @@
                                                     </Grid>
                                                 </StackPanel>
                                             </Grid>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Button>Order</Button>
+                                                <Button>Cancel</Button>
+                                            </StackPanel>
                                         </StackPanel>
 
                                     </Border>

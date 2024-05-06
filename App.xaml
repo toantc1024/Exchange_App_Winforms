@@ -24,10 +24,6 @@
                 <view:ProductDetailView />
             </DataTemplate>
 
-            <DataTemplate DataType="{x:Type viewmodel:UserManagerViewModel}">
-                <view:UserManagerView />
-            </DataTemplate>
-
             <DataTemplate DataType="{x:Type viewmodel:OrderViewModel}">
                 <view:OrderView />
             </DataTemplate>
