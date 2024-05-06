@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Exchange_App.Model;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -8,6 +9,20 @@ using System.Windows.Data;
 
 namespace Exchange_App.Tools
 {
+    public class SoldItemConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+          Product p = value as Product;
+            p.OrderDetails = p.OrderDetails;
+            return p.OrderDetails.Count;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return null;
+        }
+    }
     public class QuantityColorConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

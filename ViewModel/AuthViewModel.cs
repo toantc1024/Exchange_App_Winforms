@@ -13,6 +13,7 @@ namespace Exchange_App.ViewModel
     {
         #region Properties
         public bool IsLogin { get; set; }
+        private bool _isWrongPassword;
         private User _currentUser;
 
 
@@ -23,7 +24,7 @@ namespace Exchange_App.ViewModel
         public string Username
         {
             get { return _Username; }
-            set { _Username = value; OnPropertyChanged(); }
+            set { IsWrongPassword = false; _Username = value; OnPropertyChanged(); }
         }
 
         private string _Password;
@@ -31,7 +32,7 @@ namespace Exchange_App.ViewModel
         public string Password
         {
             get { return _Password; }
-            set { _Password = value; OnPropertyChanged(); }
+            set { IsWrongPassword = false;  _Password = value; OnPropertyChanged(); }
         }
 
 
@@ -90,6 +91,12 @@ namespace Exchange_App.ViewModel
             }
         }
 
+        public bool IsWrongPassword { get => _isWrongPassword; set {
+                _isWrongPassword=value;
+                OnPropertyChanged();
+            }
+        }
+
 
         #endregion
 
@@ -131,7 +138,7 @@ namespace Exchange_App.ViewModel
             {
                 IsLogin = false;
                 IsLoading = false;
-                MessageBox.Show(ex.Message);
+                IsWrongPassword = true;
             }
             finally
             {

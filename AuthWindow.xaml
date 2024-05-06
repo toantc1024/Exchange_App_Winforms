@@ -124,6 +124,15 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </PasswordBox>
+                    <StackPanel>
+                        <TextBlock
+                            Margin="1"
+                            HorizontalAlignment="Center"
+                            Foreground="Red"
+                            Visibility="{Binding IsWrongPassword, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource visiblityConverter}}">
+                            Wrong username or password
+                        </TextBlock>
+                    </StackPanel>
                     <StackPanel
                         Margin="0,10,0,0"
                         HorizontalAlignment="Center"

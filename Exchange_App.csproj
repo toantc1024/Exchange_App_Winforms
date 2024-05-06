@@ -105,6 +105,9 @@
     <Compile Include="CustomUserControls\UCOrderDetail.xaml.cs">
       <DependentUpon>UCOrderDetail.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CustomUserControls\UCReview.xaml.cs">
+      <DependentUpon>UCReview.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Model\Category.cs">
       <DependentUpon>ExchangeBee.tt</DependentUpon>
     </Compile>
@@ -210,6 +213,7 @@
     <Compile Include="Repositories\Interfaces\IWishItemRepository.cs" />
     <Compile Include="Tools\ControlConverter.cs" />
     <Compile Include="Tools\CurrencyConverter.cs" />
+    <Compile Include="Tools\InformationConverter.cs" />
     <Compile Include="Tools\ProductConverter.cs" />
     <Compile Include="Tools\WishlistConverter.cs" />
     <Compile Include="ValidationRules\NotEmptyRule.cs" />
@@ -296,6 +300,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CustomUserControls\UCOrderDetail.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomUserControls\UCReview.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

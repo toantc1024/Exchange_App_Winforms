@@ -21,71 +21,29 @@ namespace Exchange_App.ViewModel
         private Model.Product _selectedProduct;
         private Model.User _currentUser;
         private int _currentImageIndex = 0;
+        private int _quantity = 1; 
+        private  double _discount;
+
         #endregion
 
         #region Properties
 
         private bool _isAddedToWishList;
 
-        public string ShowSellPrice
+
+        public Model.Product SelectedProduct    
         {
             get
             {
-                return VNCurrencyConveter.ConvertDoubleToCurrency(_selectedProduct.Sell_price);
-            }
-        }
-
-        public List<string> Status_des
-        {
-            get
-            {
-                // init string array
-                // get n of line from product.status
-                List<string> status = _selectedProduct.Status_des.Split(';').ToList();
-                return status;
-
-            }
-        }
-
-        public List<string> Info_des
-        {
-            get
-            {
-                List<string> infos = _selectedProduct.Info_des.Split(';').ToList();
-                return infos;
-
-            }
-        }
-
-        public int Quantity
-        {
-            get
-            {
-                return _selectedProduct.Quantity;
+                return _selectedProduct;
             }
             set
             {
-                _selectedProduct.Quantity = value;
-                OnPropertyChanged();
+                _selectedProduct = value;
+                Discount = 100*(value.Original_price - value.Sell_price) / value.Original_price;
+                OnPropertyChanged("SelectedProduct");
             }
         }
-
-        public string ShowOriginalPrice
-        {
-            get
-            {
-                return VNCurrencyConveter.ConvertDoubleToCurrency(_selectedProduct.Original_price);
-            }
-        }
-
-        public string ProductName
-        {
-            get
-            {
-                return _selectedProduct.ProductName;
-            }
-        }
-
         public string CurrentImage
         {
             get
@@ -99,23 +57,6 @@ namespace Exchange_App.ViewModel
             }
         }
 
-        public Model.Product SelectedProduct    
-        {
-            get
-            {
-                return _selectedProduct;
-            }
-            set
-            {
-                _selectedProduct = value;
-                OnPropertyChanged("SelectedProduct");
-            }
-        }
-
-        public string ShopName
-        {
-            get => _selectedProduct.User.Name;
-        }
 
         public Model.User CurrentUser
         {
@@ -151,12 +92,19 @@ namespace Exchange_App.ViewModel
                 {
                     _currentImageIndex = value;
                 }
+                OnPropertyChanged();
             }
         }
         #endregion
 
 
         #region Commands
+
+
+        public ICommand UpdateQuantityCommand
+        {
+            get;set;
+        }
 
         public ICommand ShowCheckoutCommand
         {
@@ -191,7 +139,23 @@ namespace Exchange_App.ViewModel
                 _isAddedToWishList=value; OnPropertyChanged();
             } }
 
+        public int Quantity { get => _quantity; set {
+              if(value <= 0 || value > SelectedProduct.Quantity)
+                {
+                    MessageBox.Show("Quantity not exceed");
+                } else
+                {
+                    _quantity=value; OnPropertyChanged();
+                }
+            } }
+
+        public double Discount { get => _discount; set {
+                _discount=value;OnPropertyChanged();
+            } }
+
         #endregion
+
+
 
         public ProductDetailsViewModel(Model.Product product, Model.User user, ICommand showCheckoutCommand)
         {
@@ -202,7 +166,28 @@ namespace Exchange_App.ViewModel
 
             WishItemRepository wishItemRepository = new WishItemRepository();
             IsAddedToWishList =  wishItemRepository.CheckWishItem(product.ProductID, CurrentUser.UserID);
-            
+
+
+            UpdateQuantityCommand = new RelayCommand<string>((p) =>
+            {
+                if (p != null) return true;
+                return false;
+
+            },
+            (p) =>
+            {
+                int delta = 0;
+                if(p == "plus")
+                {
+                    delta = 1;
+                }
+                else if(p == "minus")
+                {
+                    delta = -1;
+                }
+                Quantity += delta;
+            });
+
             AddToWishlistCommand = new RelayCommand<object>(
               (p) => {
                   return true;

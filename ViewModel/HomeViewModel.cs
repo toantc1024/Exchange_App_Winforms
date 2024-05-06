@@ -5,6 +5,7 @@ using Exchange_App.Tools;
 using Exchange_App.View;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Security.Policy;
 using System.Text;
@@ -428,11 +429,15 @@ namespace Exchange_App.ViewModel
                   if(CurrentUser.UserID != p.UserID)
                   {
                       // increase view_coutn
-                      p.View_count += 1;
-                      DataProvider.Ins.DB.SaveChanges();
+                      var result = productRepository.DbContext.Products.SingleOrDefault(b => b.ProductID == p.ProductID);
+                      result.View_count += 1;
+                      productRepository.DbContext.SaveChanges();
+                     SelectedProduct =  result;
+
                   }
 
-                  SelectedProduct = p;
+                  Products=  productRepository.DbContext.FUNC_GetProductByName(string.Empty).ToList();
+
                   IsShowContent = "Visible";
                   Content = new ProductDetailsViewModel(p, CurrentUser, ShowCheckoutCommand);
               }

@@ -269,8 +269,7 @@ namespace Exchange_App.ViewModel
                   }
                   catch (Exception ex)
                   {
-                      var err = ex.InnerException.Message.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
-                      MessageBox.Show(err.FirstOrDefault().ToString());
+                      MessageBox.Show(ex.Message);
                   }
 
               });
