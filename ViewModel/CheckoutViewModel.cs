@@ -1,4 +1,4 @@
-﻿using Exchange_App.Model;
+﻿    using Exchange_App.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -152,12 +152,13 @@ namespace Exchange_App.ViewModel
         }
 
         #endregion
-        public CheckoutViewModel(User currentUser, Product selectedProduct, ICommand hideCheckoutCommand)
+        public CheckoutViewModel(User currentUser, Product selectedProduct, ICommand hideCheckoutCommand, int defaultQuantity)
         {
             #region Initialize
             CurrentUser = currentUser;
             SelectedProduct = selectedProduct;
             HideCheckoutCommand = hideCheckoutCommand;
+            OrderQuantity = defaultQuantity;
             CalculateOrderPrice();
             #endregion
 
@@ -197,24 +198,35 @@ namespace Exchange_App.ViewModel
 
             PlaceOrder = new RelayCommand<object>(
               (p) => {
+                 if(p== null)
+                  {
+                      return false;
+                  }
                   return true;
               },
               (p) => {
                   // check if the product is still available
                   try
                   {
-                      DataProvider.Ins.DB.PROC_AddUserOrder(CurrentUser.UserID, SelectedProduct.ProductID, OrderQuantity);
-                      SelectedProduct.Quantity -= OrderQuantity;
+                      DataProvider.Ins.DB.User_Order.Add(new User_Order
+                      {
+                          UserID = CurrentUser.UserID,
+                          ProductID = SelectedProduct.ProductID,
+                          Quantity = OrderQuantity,
+                          OrderDate = DateTime.Now,
+                          OrderStatus = "Pending"
+                      });
+                      DataProvider.Ins.DB.Products.Where(x => x.ProductID == SelectedProduct.ProductID).FirstOrDefault().Quantity -= OrderQuantity;
+
                       DataProvider.Ins.DB.SaveChanges();
-                      MessageBox.Show("Order placed successfully");
+                      MessageBox.Show("Order successfully!");
+                      HideCheckoutCommand.Execute(SelectedProduct.ProductID);
+
                   } catch (Exception ex)
                   {
                       var err = ex.InnerException.Message.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
                       MessageBox.Show(err.FirstOrDefault().ToString());
-                  } finally
-                  {
-                      HideCheckoutCommand.Execute(null);
-                  }
+                  } 
               }
 
             );

@@ -13,9 +13,9 @@ namespace Exchange_App.Tools
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-          Product p = value as Product;
-            p.OrderDetails = p.OrderDetails;
-            return p.OrderDetails.Count;
+            Product p = value as Product;
+            var sold = DataProvider.Ins.DB.User_Order.Where(x => x.ProductID == p.ProductID).ToList();
+            return sold.Count;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

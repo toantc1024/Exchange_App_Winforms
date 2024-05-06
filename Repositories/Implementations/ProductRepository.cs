@@ -1,5 +1,4 @@
 ﻿using Exchange_App.Model;
-using Exchange_App.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -9,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Exchange_App.Repositories.Implementations
 {
-    public class ProductRepository : BaseRepository, IProductsRepository
+    public class ProductRepository : BaseRepository
     {
         public void AddNewProduct(Model.Product product)
         {
@@ -42,7 +41,7 @@ namespace Exchange_App.Repositories.Implementations
 
         public List<Model.Product> GetProductsByCategoryID(int CatId)
         {
-            var products = DbContext.FUNC_GetProductByCategories(CatId).ToList();
+            var products = new List<Model.Product>();
             return products;
         }
         public List<Model.Product> GetProductsByKeyword(string keyword)

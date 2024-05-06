@@ -20,6 +20,7 @@
             <tools:CurrencyToStringConverter x:Key="currencyConverter" />
             <tools:UploadedDateConveter x:Key="uploadedDateConverter" />
             <tools:QuantityColorConverter x:Key="quantityColorConverter" />
+            <tools:VisibilityInverseConverter x:Key="visibilityInverseConverter" />
             <tools:QuantityTextConverter x:Key="quantityTextConverter" />
             <tools:ProductPreviewImageConverter x:Key="previewImageConverter" />
             <DataTemplate DataType="{x:Type viewmodel:CheckoutViewModel}">
@@ -127,7 +128,7 @@
             </Grid.RowDefinitions>
             <StackPanel Background="White" Orientation="Horizontal">
 
-                <Grid>
+                <Grid Visibility="{Binding IsShowCheckout, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource visibilityInverseConverter}}">
                     <Button
                         Width="20"
                         Height="20"
@@ -152,30 +153,6 @@
                             Kind="ArrowLeft" />
                     </Button>
 
-                    <Button
-                        Width="20"
-                        Height="20"
-                        Margin="5"
-                        Padding="0"
-                        HorizontalAlignment="Left"
-                        HorizontalContentAlignment="Center"
-                        VerticalContentAlignment="Center"
-                        Panel.ZIndex="100000"
-                        materialDesign:ButtonAssist.CornerRadius="50"
-                        materialDesign:ElevationAssist.Elevation="Dp0"
-                        Background="DarkOrange"
-                        BorderThickness="0"
-                        Command="{Binding HideCheckoutCommand}"
-                        Visibility="{Binding IsShowCheckout}">
-
-                        <materialDesign:PackIcon
-                            Width="15"
-                            Height="15"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Foreground="White"
-                            Kind="ArrowLeft" />
-                    </Button>
                 </Grid>
                 <TextBlock
                     VerticalAlignment="Center"

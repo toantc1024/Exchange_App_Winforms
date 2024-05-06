@@ -254,14 +254,9 @@ namespace Exchange_App.ViewModel
                           IsActive = true,
                       };
 
-
-                      // Write validation function later!
-                      DataProvider.Ins.DB.PROC_CreateAccount(user.Name, user.Username, user.Password, user.Phone, user.Address, user.Birthdate, user.RoleID);
-
+                      DataProvider.Ins.DB.Users.Add(user);
                       DataProvider.Ins.DB.SaveChanges();
-
                       MessageBox.Show("Register successfully! Please login to continue.");
-
                       AuthWindow aw = new AuthWindow();
                       aw.Show();
                       p.Close();

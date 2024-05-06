@@ -1,5 +1,4 @@
-﻿using Exchange_App.Repositories.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Exchange_App.Repositories.Implementations
 {
-    internal class WishItemRepository :BaseRepository, IWishItemRepository
+    internal class WishItemRepository :BaseRepository
     {
         public WishItemRepository()
         {

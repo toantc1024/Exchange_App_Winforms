@@ -181,7 +181,7 @@ namespace Exchange_App.ViewModel
                     {
                         CurrentUser.Password = PasswordEncryption.MD5Hash(PasswordEncryption.Base64Encode(Password));
                     }
-                    DataProvider.Ins.DB.PROC_UpdateUserInformation(CurrentUser.UserID, CurrentUser.Name, CurrentUser.Username, CurrentUser.Password, CurrentUser.Phone, CurrentUser.Address, CurrentUser.Birthdate);
+                    DataProvider.Ins.DB.SaveChanges();
                     MessageBox.Show("Save successfully");
                     DisableEditCommand.Execute(null);
                 }

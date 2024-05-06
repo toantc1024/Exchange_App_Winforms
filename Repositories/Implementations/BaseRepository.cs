@@ -8,17 +8,17 @@ using System.Threading.Tasks;
 
 namespace Exchange_App.Repositories.Implementations
 {
-    public class BaseRepository 
+    public class BaseRepository  
     {
 
 
 
-        private ExchangeBeeEntities dbContext = new ExchangeBeeEntities();
+        private StuffExchangeAppEntities dbContext = DataProvider.Ins.DB;
 
         public BaseRepository()
         {
             //dbContext.Database.Connection.ConnectionString = "Data Source=DESKTOP-1VJ6V2G;Initial Catalog=ExchangeBee;Integrated Security=True";
         }
-        public ExchangeBeeEntities DbContext { get => dbContext; set => dbContext=value; }
+        public StuffExchangeAppEntities DbContext { get => dbContext; set => dbContext=value; }
     }
 }

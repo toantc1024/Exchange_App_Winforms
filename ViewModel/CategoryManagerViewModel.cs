@@ -79,7 +79,7 @@ namespace Exchange_App.ViewModel
                     var catName = p.Text;
                     await Task.Run(() =>
                     {
-                        categoryRepository.CreateCategory(catName);
+                        //categoryRepository.CreateCategory(catName);
                         Categories = categoryRepository.GetAllCategories();
                     });
                     p.Text = "";
