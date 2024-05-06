@@ -41,7 +41,7 @@
 
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="70" />
+                <ColumnDefinition Width="80" />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
@@ -61,7 +61,7 @@
                         <materialDesign:PackIcon HorizontalAlignment="Center" Kind="Home" />
                         <TextBlock
                             HorizontalAlignment="Center"
-                            FontSize="6"
+                            FontSize="8"
                             Text="Home" />
                     </StackPanel>
                 </Button>
@@ -77,25 +77,11 @@
                     Foreground="White">
                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                         <materialDesign:PackIcon HorizontalAlignment="Center" Kind="AppBadge" />
-                        <TextBlock HorizontalAlignment="Center" FontSize="6">Products</TextBlock>
+                        <TextBlock HorizontalAlignment="Center" FontSize="8">Products</TextBlock>
                     </StackPanel>
                 </Button>
 
-                <Button
-                    Height="60"
-                    Margin="5"
-                    materialDesign:ButtonAssist.CornerRadius="10"
-                    materialDesign:ElevationAssist.Elevation="Dp0"
-                    Background="Orange"
-                    BorderBrush="Transparent"
-                    Command="{Binding UpdateViewCommand}"
-                    CommandParameter="ProductManager"
-                    Foreground="White">
-                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <materialDesign:PackIcon HorizontalAlignment="Center" Kind="Tag" />
-                        <TextBlock HorizontalAlignment="Center" FontSize="6">Orders</TextBlock>
-                    </StackPanel>
-                </Button>
+
                 <Button
                     Height="60"
                     Margin="5"
@@ -108,29 +94,17 @@
                     Foreground="White">
                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                         <materialDesign:PackIcon HorizontalAlignment="Center" Kind="Truck" />
-                        <TextBlock HorizontalAlignment="Center" FontSize="6">Deliver</TextBlock>
-                    </StackPanel>
-                </Button>
-                <Button
-                    Height="60"
-                    Margin="5"
-                    materialDesign:ButtonAssist.CornerRadius="10"
-                    materialDesign:ElevationAssist.Elevation="Dp0"
-                    Background="Orange"
-                    BorderBrush="Transparent"
-                    Command="{Binding UpdateViewCommand}"
-                    CommandParameter="UserManager"
-                    Foreground="White">
-                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <materialDesign:PackIcon HorizontalAlignment="Center" Kind="Database" />
-                        <TextBlock
-                            HorizontalAlignment="Center"
-                            FontSize="6"
-                            Text="All user" />
+                        <TextBlock HorizontalAlignment="Center" FontSize="8">Deliver</TextBlock>
                     </StackPanel>
                 </Button>
 
 
+
+
+
+            </StackPanel>
+
+            <StackPanel VerticalAlignment="Bottom">
                 <Button
                     Height="60"
                     Margin="5"
@@ -145,15 +119,10 @@
                         <materialDesign:PackIcon HorizontalAlignment="Center" Kind="User" />
                         <TextBlock
                             HorizontalAlignment="Center"
-                            FontSize="6"
+                            FontSize="8"
                             Text="{Binding CurrentUser.Name}" />
                     </StackPanel>
                 </Button>
-
-
-            </StackPanel>
-
-            <StackPanel VerticalAlignment="Bottom">
                 <Button
                     Height="50"
                     Margin="5"
