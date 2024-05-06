@@ -317,7 +317,6 @@ BEGIN
    IF @DuplicateCount > 1
    BEGIN
        RAISERROR('Category name already exists', 16, 1);
-       ROLLBACK TRANSACTION;
        RETURN;
    END;
 
@@ -329,7 +328,6 @@ BEGIN
    )
    BEGIN
        RAISERROR('Category name must not be empty', 16, 1);
-       ROLLBACK TRANSACTION;
        RETURN;
    END;
 END;
@@ -362,7 +360,6 @@ BEGIN
    )
    BEGIN
        RAISERROR ('The category being referenced by the product', 16, 1)
-       ROLLBACK
    END
 END
 
@@ -394,7 +391,6 @@ BEGIN
     IF @Quantity > @CurrentQuantity
     BEGIN
         RAISERROR('Số lượng đặt hàng vượt quá số lượng hiện có của sản phẩm', 16, 1);
-        ROLLBACK TRANSACTION;
     END
 END;
 
@@ -416,7 +412,6 @@ BEGIN
 	IF @ImageURL = ''
 	BEGIN
 		RAISERROR('ImageURL không được để trống', 16, 1);
-		ROLLBACK TRANSACTION;
 	END
 END;
 
