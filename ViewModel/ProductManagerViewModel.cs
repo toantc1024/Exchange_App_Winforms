@@ -21,7 +21,7 @@ using System.Windows.Input;
 
 namespace Exchange_App.ViewModel
 {
-    internal class ProductManagerViewModel : BaseViewModel
+    public class ProductManagerViewModel : BaseViewModel
     {
         #region Variables
 
@@ -69,28 +69,28 @@ namespace Exchange_App.ViewModel
         public ICommand RemoveAllImageCommand { get; set; }
         public ICommand RemoveImageFromPathCommand
         {
-            get;set;
+            get; set;
         }
         public ICommand ShowCategoryManagerCommand
         {
-            get;set;
+            get; set;
         }
         public ICommand SortByAlphabetAscCommand
         {
-            get;set;
+            get; set;
         }
         public ICommand SortByAlphabetDescCommand
         {
-            get;set;
+            get; set;
         }
         public ICommand SortProductByPriceCommand
         {
-            get;set;
+            get; set;
         }
 
         public ICommand SortProductByDateCommand
         {
-            get;set;
+            get; set;
         }
 
         public ICommand SortAlphabetCommand
@@ -164,12 +164,12 @@ namespace Exchange_App.ViewModel
 
         public ICommand ShowDeleteAllImageCommand
         {
-            get;set;
+            get; set;
         }
 
         public ICommand SelectAllCommand
         {
-            get;set;
+            get; set;
         }
 
 
@@ -179,14 +179,14 @@ namespace Exchange_App.ViewModel
 
         #region Products
 
-        internal class ImagePath
+        public class ImagePath
         {
             private string _path;
             private Boolean _isChecked;
 
             public ImagePath()
             {
-                
+
             }
 
             public ImagePath(string path, bool isChecked)
@@ -207,7 +207,7 @@ namespace Exchange_App.ViewModel
             }
             set
             {
-               
+
                 _pathes = value;
                 SelectedImages = value.Aggregate(0, (acc, item) => acc + (item.IsChecked ? 1 : 0));
                 OnPropertyChanged();
@@ -308,7 +308,7 @@ namespace Exchange_App.ViewModel
             }
         }
 
-     
+
         public int UserID
         {
             get
@@ -372,7 +372,7 @@ namespace Exchange_App.ViewModel
             {
                 return _isShowEditProduct;
             }
-            set 
+            set
             {
                 _isShowEditProduct = value;
                 OnPropertyChanged();
@@ -467,43 +467,60 @@ namespace Exchange_App.ViewModel
             }
         }
 
-        public bool IsShowDeleteModal { get => _isShowDeleteModal; set {
+        public bool IsShowDeleteModal
+        {
+            get => _isShowDeleteModal; set
+            {
 
                 _isShowDeleteModal=value;
                 OnPropertyChanged();
-            } }
+            }
+        }
 
-        public string CurrentImagePath { get => _currentImagePath; set {
+        public string CurrentImagePath
+        {
+            get => _currentImagePath; set
+            {
                 _currentImagePath = value;
                 OnPropertyChanged();
-            } }
-        public int CurrentImageIndex { get => _currentImageIndex; set {
+            }
+        }
+        public int CurrentImageIndex
+        {
+            get => _currentImageIndex; set
+            {
                 _currentImageIndex=value;
                 OnPropertyChanged();
-            } }
+            }
+        }
 
-        public bool IsShowDeleteAllImage { get => _isShowDeleteAllImage; set
+        public bool IsShowDeleteAllImage
+        {
+            get => _isShowDeleteAllImage; set
             {
                 _isShowDeleteAllImage=value;
                 OnPropertyChanged();
             }
         }
 
-        public int SelectedImages { 
-            get => _selectedImages; 
-            set {
+        public int SelectedImages
+        {
+            get => _selectedImages;
+            set
+            {
                 _selectedImages=value;
-                OnPropertyChanged();            
-            } 
+                OnPropertyChanged();
+            }
         }
 
-        public bool IsSelectAllImages { 
-            get => _isSelectAllImages; 
-            set 
+        public bool IsSelectAllImages
+        {
+            get => _isSelectAllImages;
+            set
             {
                 _isSelectAllImages=value;
                 OnPropertyChanged();
-            } 
+            }
         }
 
         #endregion
@@ -567,12 +584,13 @@ namespace Exchange_App.ViewModel
             {
                 int count = 0;
                 var newPathes = new ObservableCollection<ImagePath>();
-                foreach(var item in Pathes)
+                foreach (var item in Pathes)
                 {
-                    if(!item.IsChecked)
+                    if (!item.IsChecked)
                     {
                         newPathes.Add(item);
-                    } else
+                    }
+                    else
                     {
 
                         count = count + 1;
@@ -593,7 +611,8 @@ namespace Exchange_App.ViewModel
                 if (k == 0)
                 {
                     SortByAlphabetAscCommand.Execute(null);
-                } else
+                }
+                else
                 {
                     SortByAlphabetDescCommand.Execute(null);
                 }
@@ -606,7 +625,7 @@ namespace Exchange_App.ViewModel
             }, (p) =>
             {
                 // sort product by date
-                Products = Products.OrderByDescending(x => x.UploadedDate).ToList();    
+                Products = Products.OrderByDescending(x => x.UploadedDate).ToList();
             });
 
             SortByAlphabetDescCommand = new RelayCommand<object>((p) =>
@@ -655,21 +674,21 @@ namespace Exchange_App.ViewModel
               },
               (p) => {
 
-                  IsShowPreviewModal = true;
-                  Product product = new Product
-                  {
-                      ProductName = ProductName,
-                      Sell_price = Sell_price,
-                      Original_price = Original_price,
-                      UploadedDate = DateTime.Now,
-                      Info_des = Info_des,
-                      Quantity = Quantity,
-                      Status_des = Status_des,
-                      UserID = CurrentUser.UserID,
-                      CatID = SelectedCategory.CatID,
-                      ProductID = ProductID
-                  };
-                  CurrentContentPreview = new ProductDetailsViewModel(product, CurrentUser, HideProductCommand);
+                  //IsShowPreviewModal = true;
+                  //Product product = new Product
+                  //{
+                  //    ProductName = ProductName,
+                  //    Sell_price = Sell_price,
+                  //    Original_price = Original_price,
+                  //    UploadedDate = DateTime.Now,
+                  //    Info_des = Info_des,
+                  //    Quantity = Quantity,
+                  //    Status_des = Status_des,
+                  //    UserID = CurrentUser.UserID,
+                  //    CatID = SelectedCategory.CatID,
+                  //    ProductID = ProductID
+                  //};
+                  //CurrentContentPreview = new ProductDetailsViewModel(product, CurrentUser, HideProductCommand, );
 
               });
 
@@ -711,7 +730,7 @@ namespace Exchange_App.ViewModel
 
                       foreach (string file in ofd.FileNames)
                       {
-                          Pathes.Add(new ImagePath { Path = file, IsChecked = false});
+                          Pathes.Add(new ImagePath { Path = file, IsChecked = false });
                       }
                   }
               });
@@ -736,7 +755,7 @@ namespace Exchange_App.ViewModel
                           CatID = SelectedCategory.CatID,
                           View_count = 0
                       });
-                     
+
                       foreach (var path in Pathes)
                       {
                           DataProvider.Ins.DB.Images.Add(new Model.Image { ProductID = obj.ProductID, ImageURL = path.Path });
@@ -762,10 +781,11 @@ namespace Exchange_App.ViewModel
                 {
                     SelectedImages = Pathes.Aggregate(0, (acc, item) => acc + (item.IsChecked ? 1 : 0));
 
-                    if(SelectedImages == Pathes.Count)
+                    if (SelectedImages == Pathes.Count)
                     {
                         IsSelectAllImages = true;
-                    } else
+                    }
+                    else
                     {
                         IsSelectAllImages = false;
                     }
@@ -773,7 +793,7 @@ namespace Exchange_App.ViewModel
 
                 });
 
-             void GetProductsByUserID(int UserID)
+            void GetProductsByUserID(int UserID)
             {
                 Products = AllProducts = DataProvider.Ins.DB.Products.Where(x => x.UserID == UserID).ToList();
             }
@@ -836,7 +856,7 @@ namespace Exchange_App.ViewModel
                   return true;
               },
               (p) => {
-                try
+                  try
                   {
                       /// 
                       var product = DataProvider.Ins.DB.Products.Where(x => x.ProductID == ProductID).FirstOrDefault();
@@ -853,19 +873,19 @@ namespace Exchange_App.ViewModel
                           DataProvider.Ins.DB.Images.Add(new Model.Image { ProductID = ProductID, ImageURL = path.Path });
                       }
                       DataProvider.Ins.DB.SaveChanges();
-                      GetProductsByUserID(CurrentUser.UserID);    
+                      GetProductsByUserID(CurrentUser.UserID);
                       MessageBox.Show("Edit successfully!");
                   }
                   catch (Exception ex)
                   {
                       // get only first line of error message
-                         var err = ex.InnerException.Message.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+                      var err = ex.InnerException.Message.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
                       MessageBox.Show(err.FirstOrDefault().ToString());
                   }
 
               }
             );
-            
+
 
             GetProductListCommand = new RelayCommand<TextBox>((p) => {
                 if (p != null)
@@ -882,17 +902,17 @@ namespace Exchange_App.ViewModel
                   return true;
               },
               (p) => {
-                  
+
                   Product product = DataProvider.Ins.DB.Products.Where(x => x.ProductID == p).FirstOrDefault();
                   ProductName = product.ProductName;
                   Sell_price = product.Sell_price;
                   Original_price = product.Original_price;
 
                   var newPathes = new ObservableCollection<ImagePath>();
-                  var images =  product.Images.ToList();
+                  var images = product.Images.ToList();
                   foreach (var image in images)
                   {
-                      newPathes.Add(new ImagePath {  IsChecked = false, Path = image.ImageURL});
+                      newPathes.Add(new ImagePath { IsChecked = false, Path = image.ImageURL });
                   }
 
                   Pathes = newPathes;
