@@ -1,4 +1,5 @@
-﻿
+﻿create database ExchangeBee;
+use ExchangeBee;
 
 create table Role(
     RoleID int IDENTITY(1,1) constraint PK_Role PRIMARY KEY,
@@ -232,7 +233,7 @@ END
 
 GO
 
-
+DROP TRIGGER TRG_ProductInsert;
 CREATE TRIGGER TRG_ProductInsert
 ON Product
 FOR INSERT, UPDATE
@@ -242,28 +243,28 @@ BEGIN
 IF EXISTS (SELECT 1 FROM inserted WHERE Info_des = '')
 BEGIN
     RAISERROR ('Info_des không được để trống.', 16, 1);
-    ROLLBACK TRANSACTION;
+    --ROLLBACK TRANSACTION;
     RETURN;
 END;
 -- Status_des không được để trống
 IF EXISTS (SELECT 1 FROM inserted WHERE Status_des = '')
 BEGIN
     RAISERROR ('Status_des không được để trống.', 16, 1);
-ROLLBACK TRANSACTION;
+--ROLLBACK TRANSACTION;
 RETURN;
 END;
 -- Product Name không được để trống
 IF EXISTS (SELECT 1 FROM inserted WHERE ProductName = '')
 BEGIN
     RAISERROR ('Product Name không được để trống.', 16, 1);
-ROLLBACK TRANSACTION;
+--ROLLBACK TRANSACTION;
 RETURN;
 END;
   -- Kiểm tra giá trị Original_price và Sell_price
   IF EXISTS (SELECT 1 FROM inserted WHERE Original_price <= 0 OR Sell_price <= 0)
   BEGIN
       RAISERROR ('Original_price và Sell_price phải lớn hơn 0.', 16, 1);
-      ROLLBACK TRANSACTION;
+      --ROLLBACK TRANSACTION;
       RETURN;
   END;
 
