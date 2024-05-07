@@ -208,6 +208,11 @@ namespace Exchange_App.ViewModel
                   // check if the product is still available
                   try
                   {
+                      // check if UserID == Product.UserID
+                      if (CurrentUser.UserID == SelectedProduct.UserID)
+                      {
+                          throw new Exception("You can't order your own product");
+                      }
                       DataProvider.Ins.DB.User_Order.Add(new User_Order
                       {
                           UserID = CurrentUser.UserID,

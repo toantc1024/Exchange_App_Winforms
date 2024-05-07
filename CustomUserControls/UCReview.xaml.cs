@@ -24,5 +24,14 @@ namespace Exchange_App.CustomUserControls
         {
             InitializeComponent();
         }
+
+        // dependency property Review
+        public static readonly DependencyProperty ReviewProperty = DependencyProperty.Register("Review", typeof(Model.Review), typeof(UCReview));
+
+        public Model.Review Review
+        {
+            get { return (Model.Review)GetValue(ReviewProperty); }
+            set { SetValue(ReviewProperty, value); }
+        }
     }
 }

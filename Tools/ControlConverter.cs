@@ -1,4 +1,5 @@
 ﻿
+using Exchange_App.Model;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -9,6 +10,49 @@ using System.Windows.Data;
 
 namespace Exchange_App.Tools
 {
+    public class WriteReviewUserOrderConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value == null)
+            {
+                return "Hidden";
+            }
+                if (((User_Order)value).OrderStatus  == "Delivered")
+            {
+                return "Visible";
+            }
+            return "Hidden";
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return null;
+        }
+    }
+
+    public class CancelUserOrderConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if(value == null)
+            {
+                return "Hidden";
+
+            }
+            if (((User_Order)value).OrderStatus == "Pending")
+            {
+                return "Visible";
+            }
+            return "Hidden";
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return null;
+        }
+    }
+
     public class VisiblityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

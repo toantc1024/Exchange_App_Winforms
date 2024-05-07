@@ -15,11 +15,14 @@ namespace Exchange_App.Model
     public partial class Review
     {
         public int ReviewID { get; set; }
-        public int Rating { get; set; }
+        public double Rating { get; set; }
         public string Comment { get; set; }
         public Nullable<int> UserID { get; set; }
         public System.DateTime ReviewDate { get; set; }
+        public double Quality { get; set; }
+        public Nullable<int> TargetUserID { get; set; }
     
         public virtual User User { get; set; }
+        public virtual User User1 { get; set; }
     }
 }

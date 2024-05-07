@@ -36,6 +36,9 @@
                 <view:ProductManagerView />
             </DataTemplate>
 
+            <DataTemplate DataType="{x:Type viewmodel:OrderManageViewModel}">
+                <view:OrderManageView />
+            </DataTemplate>
 
             <ResourceDictionary.MergedDictionaries>
                 <materialDesign:BundledTheme

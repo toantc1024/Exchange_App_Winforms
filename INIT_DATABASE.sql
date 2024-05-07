@@ -53,13 +53,21 @@ CREATE TABLE Images(
     ProductID INT not null references Product(ProductID),
     ImageURL VARCHAR(255) not null
 );
+
+
+
 CREATE TABLE Review (
     ReviewID int IDENTITY(1,1) CONSTRAINT PK_Review PRIMARY KEY,
-    Rating int NOT NULL,
+    Rating float DEFAULT 0 NOT NULL,
+    Quality float  DEFAULT 0 NOT NULL,
     Comment varchar(255) NOT NULL,
     UserID int REFERENCES Users(UserID),
+    TargetUserID int REFERENCES Users(UserID),
     ReviewDate date NOT NULL
 );
+
+
+
 
 
 create table User_Order(
@@ -90,3 +98,5 @@ INSERT INTO Role(Rolename) VALUES ('User');
 
 
     
+
+SELECT * FROM Review;

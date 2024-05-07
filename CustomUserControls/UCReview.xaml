@@ -6,22 +6,4 @@
     xmlns:local="clr-namespace:Exchange_App.CustomUserControls"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
-    <materialDesign:Card>
-        <StackPanel Margin="5">
-            <DockPanel VerticalAlignment="Center">
-                <StackPanel VerticalAlignment="Center">
-                    <TextBlock>Anne Lee</TextBlock>
-                </StackPanel>
-                <materialDesign:RatingBar
-                    x:Name="ReadOnlyRatingBar"
-                    HorizontalAlignment="Right"
-                    IsReadOnly="True"
-                    Value="4" />
-            </DockPanel>
-            <StackPanel>
-                <TextBlock Foreground="Gray">This product was great butt</TextBlock>
-            </StackPanel>
-        </StackPanel>
-    </materialDesign:Card>
-</UserControl>
+    mc:Ignorable="d" />

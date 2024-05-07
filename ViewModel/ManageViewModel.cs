@@ -13,6 +13,7 @@ namespace Exchange_App.ViewModel
 
 
         private ProductManagerViewModel _productManagerViewModel;
+        private OrderManageViewModel _orderManageViewModel;
 
         public User CurrentUser { get => _currentUser; set {
                 _currentUser=value;
@@ -26,10 +27,20 @@ namespace Exchange_App.ViewModel
                 OnPropertyChanged();
             } }
 
+        public OrderManageViewModel OrderManagerContent
+        {
+            get => _orderManageViewModel; set
+            {
+                _orderManageViewModel=value;
+                OnPropertyChanged();
+            }
+        }
+
         public ManageViewModel(User user)
         {
             CurrentUser = user;
             ProductManagerContent = new ProductManagerViewModel(CurrentUser);
+            OrderManagerContent = new OrderManageViewModel(CurrentUser);
         }
     }
 }

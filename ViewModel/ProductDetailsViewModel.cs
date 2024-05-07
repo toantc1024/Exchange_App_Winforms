@@ -28,6 +28,7 @@ namespace Exchange_App.ViewModel
         #endregion
 
         #region Properties
+        private ObservableCollection<Review> _reviews;
         private ObservableCollection<Product> _recommendProducts;
         private ObservableCollection<Product> _totalRecommendProducts;
         private int _recommendCurrentIndex = 0;
@@ -228,6 +229,10 @@ namespace Exchange_App.ViewModel
             }
         }
 
+        public ObservableCollection<Review> Reviews { get => _reviews; set {
+                _reviews=value; OnPropertyChanged();
+            } }
+
 
         #endregion
 
@@ -250,10 +255,11 @@ namespace Exchange_App.ViewModel
                                               }
                                                              );
             SelectedProduct = product;
+            CurrentUser = user;
             SelectProductCommand = selectProductCommand;
+            Reviews = new ObservableCollection<Review>(user.Reviews1.Take(5));
             TotalRecommendProducts = new ObservableCollection<Product>(DataProvider.Ins.DB.Products.Where(p => p.CatID == SelectedProduct.CatID && p.ProductID != SelectedProduct.ProductID).Take(20));
             RecommendProducts = new ObservableCollection<Product>(DataProvider.Ins.DB.Products.Where(p => p.CatID == SelectedProduct.CatID  && p.ProductID != SelectedProduct.ProductID).Take(4));
-            CurrentUser = user;
 
             IsAddedToWishList = false;
             DataProvider.Ins.DB.WishItems.ToList().ForEach(wishItem =>

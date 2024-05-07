@@ -41,9 +41,11 @@
             <PropertyRef Name="ReviewID" />
           </Key>
           <Property Name="ReviewID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Rating" Type="int" Nullable="false" />
+          <Property Name="Rating" Type="float" Nullable="false" />
+          <Property Name="Quality" Type="float" Nullable="false" />
           <Property Name="Comment" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="UserID" Type="int" />
+          <Property Name="TargetUserID" Type="int" />
           <Property Name="ReviewDate" Type="date" Nullable="false" />
         </EntityType>
         <EntityType Name="Role">
@@ -123,7 +125,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Review__UserID__4BAC3F29">
+        <Association Name="FK__Review__TargetUs__6EF57B66">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Review" Type="Self.Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Review">
+              <PropertyRef Name="TargetUserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Review__UserID__6E01572D">
           <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
           <End Role="Review" Type="Self.Review" Multiplicity="*" />
           <ReferentialConstraint>
@@ -228,7 +242,11 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="Product" EntitySet="Product" />
           </AssociationSet>
-          <AssociationSet Name="FK__Review__UserID__4BAC3F29" Association="Self.FK__Review__UserID__4BAC3F29">
+          <AssociationSet Name="FK__Review__TargetUs__6EF57B66" Association="Self.FK__Review__TargetUs__6EF57B66">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Review" EntitySet="Review" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Review__UserID__6E01572D" Association="Self.FK__Review__UserID__6E01572D">
             <End Role="Users" EntitySet="Users" />
             <End Role="Review" EntitySet="Review" />
           </AssociationSet>
@@ -306,11 +324,14 @@
             <PropertyRef Name="ReviewID" />
           </Key>
           <Property Name="ReviewID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Rating" Type="Int32" Nullable="false" />
+          <Property Name="Rating" Type="Double" Nullable="false" />
           <Property Name="Comment" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="UserID" Type="Int32" />
           <Property Name="ReviewDate" Type="DateTime" Nullable="false" Precision="0" />
           <NavigationProperty Name="User" Relationship="Self.FK__Review__UserID__4BAC3F29" FromRole="Review" ToRole="Users" />
+          <Property Name="Quality" Type="Double" Nullable="false" />
+          <Property Name="TargetUserID" Type="Int32" />
+          <NavigationProperty Name="User1" Relationship="StuffExchangeAppModel.FK__Review__TargetUs__693CA210" FromRole="Review" ToRole="User" />
         </EntityType>
         <EntityType Name="Role">
           <Key>
@@ -339,6 +360,7 @@
           <NavigationProperty Name="Role" Relationship="Self.FK__Users__RoleID__3A81B327" FromRole="Users" ToRole="Role" />
           <NavigationProperty Name="WishItems" Relationship="Self.FK__WishItem__UserID__5441852A" FromRole="Users" ToRole="WishItem" />
           <NavigationProperty Name="User_Order" Relationship="StuffExchangeAppModel.FK__User_Orde__UserI__571DF1D5" FromRole="User" ToRole="User_Order" />
+          <NavigationProperty Name="Reviews1" Relationship="StuffExchangeAppModel.FK__Review__TargetUs__693CA210" FromRole="User" ToRole="Review" />
         </EntityType>
         <EntityType Name="WishItem">
           <Key>
@@ -495,6 +517,10 @@
             <End Role="User" EntitySet="Users" />
             <End Role="User_Order" EntitySet="User_Order" />
           </AssociationSet>
+          <AssociationSet Name="FK__Review__TargetUs__693CA210" Association="StuffExchangeAppModel.FK__Review__TargetUs__693CA210">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Review" EntitySet="Reviews" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="User_Order">
           <Key>
@@ -530,6 +556,18 @@
             </Principal>
             <Dependent Role="User_Order">
               <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Review__TargetUs__693CA210">
+          <End Type="StuffExchangeAppModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="StuffExchangeAppModel.Review" Role="Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Review">
+              <PropertyRef Name="TargetUserID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -576,6 +614,8 @@
           <EntitySetMapping Name="Reviews">
             <EntityTypeMapping TypeName="StuffExchangeAppModel.Review">
               <MappingFragment StoreEntitySet="Review">
+                <ScalarProperty Name="TargetUserID" ColumnName="TargetUserID" />
+                <ScalarProperty Name="Quality" ColumnName="Quality" />
                 <ScalarProperty Name="ReviewID" ColumnName="ReviewID" />
                 <ScalarProperty Name="Rating" ColumnName="Rating" />
                 <ScalarProperty Name="Comment" ColumnName="Comment" />

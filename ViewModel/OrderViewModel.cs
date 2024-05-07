@@ -1,4 +1,5 @@
 ﻿using Exchange_App.Model;
+using Exchange_App.View;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -79,6 +80,11 @@ namespace Exchange_App.ViewModel
             set;
         }
 
+        public ICommand ShowReviewCommand
+        {
+            get;set;
+        }
+
         public ICommand ShowOrderDetailsCommand
         {
             get;
@@ -108,6 +114,19 @@ namespace Exchange_App.ViewModel
 
             CurrentUser = user;
             Orders = DataProvider.Ins.DB.User_Order.Where(x => x.UserID == CurrentUser.UserID).ToList();
+
+            ShowReviewCommand = new RelayCommand<object>(
+                (p) =>
+                {
+                    return true;
+                }, (p) =>
+                {
+
+                    ReviewView reviewView = new ReviewView();
+                    reviewView.DataContext = new ReviewViewModel(CurrentUser, CurrentOrder.Product);
+                    reviewView.ShowDialog();
+
+                });
 
             SortAlphabetCommand = new RelayCommand<ListBox>(p =>
             {

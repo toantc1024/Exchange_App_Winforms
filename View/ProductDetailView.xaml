@@ -489,30 +489,57 @@
                                         </DockPanel>
                                     </StackPanel>
                                 </materialDesign:Card>
+                                <materialDesign:Card Margin="5">
+                                    <StackPanel Margin="5">
+                                        <TextBlock
+                                            Margin="5"
+                                            FontSize="16"
+                                            FontWeight="Light"
+                                            Foreground="DarkOrange">
+                                            Reviews
+                                        </TextBlock>
+                                        <ScrollViewer>
+                                            <StackPanel>
+                                                <ItemsControl ItemsSource="{Binding Reviews}">
+                                                    <ItemsControl.ItemsPanel>
+                                                        <ItemsPanelTemplate>
+                                                            <WrapPanel />
+                                                        </ItemsPanelTemplate>
+                                                    </ItemsControl.ItemsPanel>
 
+                                                    <ItemsControl.ItemTemplate>
+                                                        <!--  Define DataTemplate for Product  -->
+                                                        <DataTemplate>
+                                                            <materialDesign:Card>
+                                                                <StackPanel Margin="5">
+                                                                    <DockPanel VerticalAlignment="Center">
+                                                                        <StackPanel VerticalAlignment="Center">
+                                                                            <TextBlock Text="{Binding User.Name}" />
+                                                                        </StackPanel>
+                                                                        <materialDesign:RatingBar
+                                                                            x:Name="ReadOnlyRatingBar"
+                                                                            HorizontalAlignment="Right"
+                                                                            IsReadOnly="True"
+                                                                            Value="{Binding Rating}" />
+                                                                    </DockPanel>
+                                                                    <StackPanel>
+                                                                        <TextBlock Foreground="Gray" Text="{Binding Comment}" />
+                                                                    </StackPanel>
+                                                                </StackPanel>
+                                                            </materialDesign:Card>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </StackPanel>
+                                        </ScrollViewer>
+                                    </StackPanel>
+                                </materialDesign:Card>
                             </StackPanel>
                         </TabItem>
 
                     </TabControl>
                 </materialDesign:Card>
-                <materialDesign:Card Margin="5">
-                    <StackPanel Margin="5">
-                        <TextBlock
-                            Margin="5"
-                            FontSize="16"
-                            FontWeight="Light"
-                            Foreground="DarkOrange">
-                            Reviews
-                        </TextBlock>
-                        <ScrollViewer>
-                            <StackPanel>
-                                <uc:UCReview />
-                                <uc:UCReview />
-                                <uc:UCReview />
-                            </StackPanel>
-                        </ScrollViewer>
-                    </StackPanel>
-                </materialDesign:Card>
+
                 <materialDesign:Card Margin="5,0,5,5">
                     <StackPanel Margin="5">
                         <TextBlock

@@ -14,20 +14,6 @@ namespace Exchange_App.Model
     
     public partial class User_Order
     {
-        public double Total
-        {
-            get
-            {
-                return Product.Sell_price * Quantity;
-            }
-            set
-            {
-                ;
-            }
-        }
-
-
-
         public int OrderID { get; set; }
         public Nullable<int> UserID { get; set; }
         public System.DateTime OrderDate { get; set; }
