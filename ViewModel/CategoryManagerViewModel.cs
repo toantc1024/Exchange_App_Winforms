@@ -38,8 +38,7 @@ namespace Exchange_App.ViewModel
 
         public CategoryManagerViewModel()
         {
-            CategoryRepository categoryRepository = new CategoryRepository();
-            Categories = categoryRepository.GetAllCategories();
+            Categories = DataProvider.Ins.DB.Categories.ToList();
 
             ShowDelCategoryCommand = new RelayCommand<Category>((p) =>
             {
@@ -79,9 +78,14 @@ namespace Exchange_App.ViewModel
                     var catName = p.Text;
                     await Task.Run(() =>
                     {
-                        //categoryRepository.CreateCategory(catName);
-                        Categories = categoryRepository.GetAllCategories();
+                        DataProvider.Ins.DB.Categories.Add(
+                            new Category()
+                            {
+                                CatName = catName
+                            });
+                        DataProvider.Ins.DB.SaveChanges();
                     });
+                    Categories = DataProvider.Ins.DB.Categories.ToList();
                     p.Text = "";
                     IsAddCategoryVisible=false;
                 } catch (Exception ex)
@@ -100,14 +104,18 @@ namespace Exchange_App.ViewModel
                     var newCatName = p.Text;
                     await Task.Run(() =>
                     {
-                        categoryRepository.UpdateCategory(SelectedCategory.CatID, SelectedCategory.CatName);
+                        Category category = DataProvider.Ins.DB.Categories.FirstOrDefault(x => x.CatID == SelectedCategory.CatID);
+                        if (category != null)
+                            category.CatName = newCatName;
+                        DataProvider.Ins.DB.SaveChanges();
                     });
 
-                    Categories = categoryRepository.GetAllCategories();
 
                     IsEditCategoryVisible = false;
                     SelectedCategory = null;
-                } catch (Exception ex)
+                    Categories = DataProvider.Ins.DB.Categories.ToList();
+                }
+                catch (Exception ex)
                 {
                     MessageBox.Show(ex.InnerException.Message);
                 }
@@ -119,15 +127,17 @@ namespace Exchange_App.ViewModel
             {
                 return true;
             },
-
             (p) =>
             {
                 try
                 {
-                    categoryRepository.DeleteCategory(SelectedCategory.CatID);
-                    Categories = categoryRepository.GetAllCategories();
+                    Category category = DataProvider.Ins.DB.Categories.FirstOrDefault(x => x.CatID == SelectedCategory.CatID);
+                    DataProvider.Ins.DB.Categories.Remove(SelectedCategory);
+                    DataProvider.Ins.DB.SaveChanges();
                     IsDeleteCategoryVisible = false;
-                } catch (Exception ex)
+                    Categories = DataProvider.Ins.DB.Categories.ToList();
+                }
+                catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
                 }
