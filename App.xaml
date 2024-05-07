@@ -16,8 +16,8 @@
                 <view:HomeView />
             </DataTemplate>
 
-            <DataTemplate DataType="{x:Type viewmodel:ProductManagerViewModel}">
-                <view:ProductManagerView />
+            <DataTemplate DataType="{x:Type viewmodel:ManageViewModel}">
+                <view:ManageView />
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type viewmodel:ProductDetailsViewModel}">
@@ -32,6 +32,9 @@
                 <view:UserInfoView />
             </DataTemplate>
 
+            <DataTemplate DataType="{x:Type viewmodel:ProductManagerViewModel}">
+                <view:ProductManagerView />
+            </DataTemplate>
 
 
             <ResourceDictionary.MergedDictionaries>

@@ -96,7 +96,7 @@ namespace Exchange_App.ViewModel
                         SelectedViewModel = new HomeViewModel(CurrentUser);
                     } else if ((string)o == "ProductManager")
                     {
-                        SelectedViewModel = new ProductManagerViewModel(CurrentUser);
+                        SelectedViewModel = new ManageViewModel(CurrentUser);
                     } else if ((string)o == "Order")
                     {
                         SelectedViewModel = new OrderViewModel(CurrentUser);

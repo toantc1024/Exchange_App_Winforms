@@ -19,37 +19,8 @@
             <tools:VisiblityHiddenOnZeroConverter x:Key="HiddenOnZeroConvetter" />
         </Grid.Resources>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto" />
-            <RowDefinition />
-        </Grid.RowDefinitions>
 
 
-        <Grid Background="DarkOrange">
-            <StackPanel
-                Grid.Row="0"
-                Margin="10"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Orientation="Horizontal">
-                <materialDesign:PackIcon
-                    Width="20"
-                    Height="20"
-                    Margin="0,0,10,0"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Foreground="White"
-                    Kind="AppBadge" />
-                <TextBlock
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    FontSize="20"
-                    FontWeight="Bold"
-                    Foreground="White"
-                    Text="My Products" />
-                <TextBlock />
-            </StackPanel>
-        </Grid>
         <uc:MyProducts
             Grid.Row="1"
             DeleteProductCommand="{Binding DeleteProductCommand}"

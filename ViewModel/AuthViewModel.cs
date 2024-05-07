@@ -134,7 +134,7 @@ namespace Exchange_App.ViewModel
                     throw new Exception("Username or Password is incorrect");
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 IsLogin = false;
                 IsLoading = false;

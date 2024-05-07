@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Exchange_App.View
 {
     /// <summary>
-    /// Interaction logic for DashboardView.xaml
+    /// Interaction logic for ManageView.xaml
     /// </summary>
-    public partial class DashboardView : UserControl
+    public partial class ManageView : UserControl
     {
-        public DashboardView()
+        public ManageView()
         {
             InitializeComponent();
         }

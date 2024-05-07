@@ -38,11 +38,13 @@ namespace Exchange_App.Tools
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if(value =="Visible")
+            switch (value)
             {
-                return "Hidden";
+                case "Visible":
+                    return "Hidden";
+                default:
+                    return "Visible";
             }
-            return "Visible";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
