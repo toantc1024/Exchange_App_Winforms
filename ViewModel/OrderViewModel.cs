@@ -17,7 +17,6 @@ namespace Exchange_App.ViewModel
         private string _isShowOrderDetail = "Hidden";
         private User _currentUser;
         private User_Order _currentOrder;
-        //private OrderDetail _currentOrderDetail;
         private List<User_Order> _orders;
 
         #endregion
@@ -25,22 +24,6 @@ namespace Exchange_App.ViewModel
         #region Properties
         
 
-        public string currentOrderName
-        {
-            get
-            {
-                return "";
-            }
-        }
-
-        public DateTime currentOrderDate
-        {
-            get
-            {
-                return CurrentOrder.OrderDate;
-            }
-
-        }
 
         public string IsShowOrderDetail
         {
@@ -159,7 +142,16 @@ namespace Exchange_App.ViewModel
             });
 
 
-          
+            ShowOrderDetailsCommand = new RelayCommand<User_Order>(p =>
+            {
+                return true;
+            }, p =>
+            {
+                
+                CurrentOrder = p;
+                IsShowOrderDetail = "Visible";
+            }); 
+
             OnSearchCommand = new RelayCommand<TextBox>(p =>
             {
                 if(p == null)
