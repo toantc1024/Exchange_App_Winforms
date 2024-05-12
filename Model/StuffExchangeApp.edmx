@@ -5,6 +5,15 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="StuffExchangeAppModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Cart">
+          <Key>
+            <PropertyRef Name="CartID" />
+          </Key>
+          <Property Name="CartID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" />
+          <Property Name="ProductID" Type="int" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="Category">
           <Key>
             <PropertyRef Name="CatID" />
@@ -20,6 +29,15 @@
           <Property Name="ProductID" Type="int" Nullable="false" />
           <Property Name="ImageURL" Type="varchar" MaxLength="255" Nullable="false" />
         </EntityType>
+        <EntityType Name="OrderDetail">
+          <Key>
+            <PropertyRef Name="OrderDetailID" />
+          </Key>
+          <Property Name="OrderDetailID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrderID" Type="int" />
+          <Property Name="ProductID" Type="int" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="Product">
           <Key>
             <PropertyRef Name="ProductID" />
@@ -32,6 +50,7 @@
           <Property Name="Sell_price" Type="float" Nullable="false" />
           <Property Name="UploadedDate" Type="date" Nullable="false" />
           <Property Name="ProductName" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="IsVerified" Type="bit" Nullable="false" />
           <Property Name="CatID" Type="int" />
           <Property Name="UserID" Type="int" />
           <Property Name="View_count" Type="int" Nullable="false" />
@@ -63,8 +82,17 @@
           <Property Name="UserID" Type="int" />
           <Property Name="OrderDate" Type="date" Nullable="false" />
           <Property Name="ProductID" Type="int" />
-          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="TotalPrice" Type="float" Nullable="false" />
           <Property Name="OrderStatus" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserClickCategory">
+          <Key>
+            <PropertyRef Name="UserClickCategoryID" />
+          </Key>
+          <Property Name="UserClickCategoryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" />
+          <Property Name="CatID" Type="int" />
+          <Property Name="ClickCount" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -89,7 +117,31 @@
           <Property Name="ProductID" Type="int" />
           <Property Name="UserID" Type="int" />
         </EntityType>
-        <Association Name="FK__Images__ProductI__48CFD27E">
+        <Association Name="FK__Cart__ProductID__57DD0BE4">
+          <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="Cart" Type="Self.Cart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="Cart">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Cart__UserID__56E8E7AB">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Cart" Type="Self.Cart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Cart">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Images__ProductI__540C7B00">
           <End Role="Product" Type="Self.Product" Multiplicity="1" />
           <End Role="Images" Type="Self.Images" Multiplicity="*" />
           <ReferentialConstraint>
@@ -101,7 +153,31 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Product__CatID__3F466844">
+        <Association Name="FK__OrderDeta__Order__65370702">
+          <End Role="User_Order" Type="Self.User_Order" Multiplicity="0..1" />
+          <End Role="OrderDetail" Type="Self.OrderDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User_Order">
+              <PropertyRef Name="OrderID" />
+            </Principal>
+            <Dependent Role="OrderDetail">
+              <PropertyRef Name="OrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderDeta__Produ__662B2B3B">
+          <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="OrderDetail" Type="Self.OrderDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="OrderDetail">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Product__CatID__4A8310C6">
           <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
           <End Role="Product" Type="Self.Product" Multiplicity="*" />
           <ReferentialConstraint>
@@ -113,7 +189,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Product__UserID__403A8C7D">
+        <Association Name="FK__Product__UserID__4B7734FF">
           <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
           <End Role="Product" Type="Self.Product" Multiplicity="*" />
           <ReferentialConstraint>
@@ -125,7 +201,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Review__TargetUs__6EF57B66">
+        <Association Name="FK__Review__TargetUs__5E8A0973">
           <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
           <End Role="Review" Type="Self.Review" Multiplicity="*" />
           <ReferentialConstraint>
@@ -137,7 +213,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Review__UserID__6E01572D">
+        <Association Name="FK__Review__UserID__5D95E53A">
           <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
           <End Role="Review" Type="Self.Review" Multiplicity="*" />
           <ReferentialConstraint>
@@ -149,7 +225,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__User_Orde__Produ__5812160E">
+        <Association Name="FK__User_Orde__Produ__625A9A57">
           <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
           <End Role="User_Order" Type="Self.User_Order" Multiplicity="*" />
           <ReferentialConstraint>
@@ -161,7 +237,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__User_Orde__UserI__571DF1D5">
+        <Association Name="FK__User_Orde__UserI__6166761E">
           <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
           <End Role="User_Order" Type="Self.User_Order" Multiplicity="*" />
           <ReferentialConstraint>
@@ -173,7 +249,31 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Users__RoleID__3A81B327">
+        <Association Name="FK__UserClick__CatID__6DCC4D03">
+          <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
+          <End Role="UserClickCategory" Type="Self.UserClickCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="CatID" />
+            </Principal>
+            <Dependent Role="UserClickCategory">
+              <PropertyRef Name="CatID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserClick__UserI__6CD828CA">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="UserClickCategory" Type="Self.UserClickCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UserClickCategory">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Users__RoleID__44CA3770">
           <End Role="Role" Type="Self.Role" Multiplicity="0..1" />
           <End Role="Users" Type="Self.Users" Multiplicity="*" />
           <ReferentialConstraint>
@@ -185,7 +285,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__WishItem__UserID__5441852A">
+        <Association Name="FK__WishItem__UserID__69FBBC1F">
           <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
           <End Role="WishItem" Type="Self.WishItem" Multiplicity="*" />
           <ReferentialConstraint>
@@ -222,47 +322,74 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="StuffExchangeAppModelStoreContainer">
+          <EntitySet Name="Cart" EntityType="Self.Cart" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Images" EntityType="Self.Images" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrderDetail" EntityType="Self.OrderDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Review" EntityType="Self.Review" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User_Order" EntityType="Self.User_Order" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserClickCategory" EntityType="Self.UserClickCategory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WishItem" EntityType="Self.WishItem" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__Images__ProductI__48CFD27E" Association="Self.FK__Images__ProductI__48CFD27E">
+          <AssociationSet Name="FK__Cart__ProductID__57DD0BE4" Association="Self.FK__Cart__ProductID__57DD0BE4">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="Cart" EntitySet="Cart" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Cart__UserID__56E8E7AB" Association="Self.FK__Cart__UserID__56E8E7AB">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Cart" EntitySet="Cart" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Images__ProductI__540C7B00" Association="Self.FK__Images__ProductI__540C7B00">
             <End Role="Product" EntitySet="Product" />
             <End Role="Images" EntitySet="Images" />
           </AssociationSet>
-          <AssociationSet Name="FK__Product__CatID__3F466844" Association="Self.FK__Product__CatID__3F466844">
+          <AssociationSet Name="FK__OrderDeta__Order__65370702" Association="Self.FK__OrderDeta__Order__65370702">
+            <End Role="User_Order" EntitySet="User_Order" />
+            <End Role="OrderDetail" EntitySet="OrderDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderDeta__Produ__662B2B3B" Association="Self.FK__OrderDeta__Produ__662B2B3B">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="OrderDetail" EntitySet="OrderDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Product__CatID__4A8310C6" Association="Self.FK__Product__CatID__4A8310C6">
             <End Role="Category" EntitySet="Category" />
             <End Role="Product" EntitySet="Product" />
           </AssociationSet>
-          <AssociationSet Name="FK__Product__UserID__403A8C7D" Association="Self.FK__Product__UserID__403A8C7D">
+          <AssociationSet Name="FK__Product__UserID__4B7734FF" Association="Self.FK__Product__UserID__4B7734FF">
             <End Role="Users" EntitySet="Users" />
             <End Role="Product" EntitySet="Product" />
           </AssociationSet>
-          <AssociationSet Name="FK__Review__TargetUs__6EF57B66" Association="Self.FK__Review__TargetUs__6EF57B66">
+          <AssociationSet Name="FK__Review__TargetUs__5E8A0973" Association="Self.FK__Review__TargetUs__5E8A0973">
             <End Role="Users" EntitySet="Users" />
             <End Role="Review" EntitySet="Review" />
           </AssociationSet>
-          <AssociationSet Name="FK__Review__UserID__6E01572D" Association="Self.FK__Review__UserID__6E01572D">
+          <AssociationSet Name="FK__Review__UserID__5D95E53A" Association="Self.FK__Review__UserID__5D95E53A">
             <End Role="Users" EntitySet="Users" />
             <End Role="Review" EntitySet="Review" />
           </AssociationSet>
-          <AssociationSet Name="FK__User_Orde__Produ__5812160E" Association="Self.FK__User_Orde__Produ__5812160E">
+          <AssociationSet Name="FK__User_Orde__Produ__625A9A57" Association="Self.FK__User_Orde__Produ__625A9A57">
             <End Role="Product" EntitySet="Product" />
             <End Role="User_Order" EntitySet="User_Order" />
           </AssociationSet>
-          <AssociationSet Name="FK__User_Orde__UserI__571DF1D5" Association="Self.FK__User_Orde__UserI__571DF1D5">
+          <AssociationSet Name="FK__User_Orde__UserI__6166761E" Association="Self.FK__User_Orde__UserI__6166761E">
             <End Role="Users" EntitySet="Users" />
             <End Role="User_Order" EntitySet="User_Order" />
           </AssociationSet>
-          <AssociationSet Name="FK__Users__RoleID__3A81B327" Association="Self.FK__Users__RoleID__3A81B327">
+          <AssociationSet Name="FK__UserClick__CatID__6DCC4D03" Association="Self.FK__UserClick__CatID__6DCC4D03">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="UserClickCategory" EntitySet="UserClickCategory" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserClick__UserI__6CD828CA" Association="Self.FK__UserClick__UserI__6CD828CA">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserClickCategory" EntitySet="UserClickCategory" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Users__RoleID__44CA3770" Association="Self.FK__Users__RoleID__44CA3770">
             <End Role="Role" EntitySet="Role" />
             <End Role="Users" EntitySet="Users" />
           </AssociationSet>
-          <AssociationSet Name="FK__WishItem__UserID__5441852A" Association="Self.FK__WishItem__UserID__5441852A">
+          <AssociationSet Name="FK__WishItem__UserID__69FBBC1F" Association="Self.FK__WishItem__UserID__69FBBC1F">
             <End Role="Users" EntitySet="Users" />
             <End Role="WishItem" EntitySet="WishItem" />
           </AssociationSet>
@@ -279,13 +406,25 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="StuffExchangeAppModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Cart">
+          <Key>
+            <PropertyRef Name="CartID" />
+          </Key>
+          <Property Name="CartID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="ProductID" Type="Int32" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Product" Relationship="Self.FK__Cart__ProductID__2645B050" FromRole="Cart" ToRole="Product" />
+          <NavigationProperty Name="User" Relationship="Self.FK__Cart__UserID__25518C17" FromRole="Cart" ToRole="Users" />
+        </EntityType>
         <EntityType Name="Category">
           <Key>
             <PropertyRef Name="CatID" />
           </Key>
           <Property Name="CatID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CatName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Products" Relationship="Self.FK__Product__CatID__3F466844" FromRole="Category" ToRole="Product" />
+          <NavigationProperty Name="Products" Relationship="Self.FK__Product__CatID__18EBB532" FromRole="Category" ToRole="Product" />
+          <NavigationProperty Name="UserClickCategories" Relationship="Self.FK__UserClick__CatID__3C34F16F" FromRole="Category" ToRole="UserClickCategory" />
           <NavigationProperty Name="Products1" Relationship="Self.FK_Product_category" FromRole="Category" ToRole="Product" />
         </EntityType>
         <EntityType Name="Image">
@@ -295,7 +434,18 @@
           <Property Name="ImageID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ProductID" Type="Int32" Nullable="false" />
           <Property Name="ImageURL" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Product" Relationship="Self.FK__Images__ProductI__48CFD27E" FromRole="Images" ToRole="Product" />
+          <NavigationProperty Name="Product" Relationship="Self.FK__Images__ProductI__22751F6C" FromRole="Images" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="OrderDetail">
+          <Key>
+            <PropertyRef Name="OrderDetailID" />
+          </Key>
+          <Property Name="OrderDetailID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderID" Type="Int32" />
+          <Property Name="ProductID" Type="Int32" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="User_Order" Relationship="Self.FK__OrderDeta__Order__339FAB6E" FromRole="OrderDetail" ToRole="User_Order" />
+          <NavigationProperty Name="Product" Relationship="Self.FK__OrderDeta__Produ__3493CFA7" FromRole="OrderDetail" ToRole="Product" />
         </EntityType>
         <EntityType Name="Product">
           <Key>
@@ -312,12 +462,15 @@
           <Property Name="CatID" Type="Int32" />
           <Property Name="UserID" Type="Int32" />
           <Property Name="View_count" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Category" Relationship="Self.FK__Product__CatID__3F466844" FromRole="Product" ToRole="Category" />
+          <NavigationProperty Name="Carts" Relationship="Self.FK__Cart__ProductID__2645B050" FromRole="Product" ToRole="Cart" />
+          <NavigationProperty Name="Category" Relationship="Self.FK__Product__CatID__18EBB532" FromRole="Product" ToRole="Category" />
           <NavigationProperty Name="Category1" Relationship="Self.FK_Product_category" FromRole="Product" ToRole="Category" />
-          <NavigationProperty Name="Images" Relationship="Self.FK__Images__ProductI__48CFD27E" FromRole="Product" ToRole="Images" />
-          <NavigationProperty Name="User" Relationship="Self.FK__Product__UserID__403A8C7D" FromRole="Product" ToRole="Users" />
+          <NavigationProperty Name="Images" Relationship="Self.FK__Images__ProductI__22751F6C" FromRole="Product" ToRole="Images" />
+          <NavigationProperty Name="OrderDetails" Relationship="Self.FK__OrderDeta__Produ__3493CFA7" FromRole="Product" ToRole="OrderDetail" />
+          <NavigationProperty Name="User" Relationship="Self.FK__Product__UserID__19DFD96B" FromRole="Product" ToRole="Users" />
+          <NavigationProperty Name="User_Order" Relationship="Self.FK__User_Orde__Produ__30C33EC3" FromRole="Product" ToRole="User_Order" />
           <NavigationProperty Name="WishItems" Relationship="Self.FK_CartDetail_ProductID" FromRole="Product" ToRole="WishItem" />
-          <NavigationProperty Name="User_Order" Relationship="StuffExchangeAppModel.FK__User_Orde__Produ__5812160E" FromRole="Product" ToRole="User_Order" />
+          <Property Name="IsVerified" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="Review">
           <Key>
@@ -325,13 +478,13 @@
           </Key>
           <Property Name="ReviewID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Rating" Type="Double" Nullable="false" />
+          <Property Name="Quality" Type="Double" Nullable="false" />
           <Property Name="Comment" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="UserID" Type="Int32" />
-          <Property Name="ReviewDate" Type="DateTime" Nullable="false" Precision="0" />
-          <NavigationProperty Name="User" Relationship="Self.FK__Review__UserID__4BAC3F29" FromRole="Review" ToRole="Users" />
-          <Property Name="Quality" Type="Double" Nullable="false" />
           <Property Name="TargetUserID" Type="Int32" />
-          <NavigationProperty Name="User1" Relationship="StuffExchangeAppModel.FK__Review__TargetUs__693CA210" FromRole="Review" ToRole="User" />
+          <Property Name="ReviewDate" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="User" Relationship="Self.FK__Review__TargetUs__2CF2ADDF" FromRole="Review" ToRole="Users" />
+          <NavigationProperty Name="User1" Relationship="Self.FK__Review__UserID__2BFE89A6" FromRole="Review" ToRole="Users" />
         </EntityType>
         <EntityType Name="Role">
           <Key>
@@ -339,7 +492,32 @@
           </Key>
           <Property Name="RoleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Rolename" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Users" Relationship="Self.FK__Users__RoleID__3A81B327" FromRole="Role" ToRole="Users" />
+          <NavigationProperty Name="Users" Relationship="Self.FK__Users__RoleID__06CD04F7" FromRole="Role" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="User_Order">
+          <Key>
+            <PropertyRef Name="OrderID" />
+          </Key>
+          <Property Name="OrderID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="OrderDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ProductID" Type="Int32" />
+          <Property Name="TotalPrice" Type="Double" Nullable="false" />
+          <Property Name="OrderStatus" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="OrderDetails" Relationship="Self.FK__OrderDeta__Order__339FAB6E" FromRole="User_Order" ToRole="OrderDetail" />
+          <NavigationProperty Name="Product" Relationship="Self.FK__User_Orde__Produ__30C33EC3" FromRole="User_Order" ToRole="Product" />
+          <NavigationProperty Name="User" Relationship="Self.FK__User_Orde__UserI__2FCF1A8A" FromRole="User_Order" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="UserClickCategory">
+          <Key>
+            <PropertyRef Name="UserClickCategoryID" />
+          </Key>
+          <Property Name="UserClickCategoryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="CatID" Type="Int32" />
+          <Property Name="ClickCount" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Category" Relationship="Self.FK__UserClick__CatID__3C34F16F" FromRole="UserClickCategory" ToRole="Category" />
+          <NavigationProperty Name="User" Relationship="Self.FK__UserClick__UserI__3B40CD36" FromRole="UserClickCategory" ToRole="Users" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -355,12 +533,14 @@
           <Property Name="Birthdate" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="RoleID" Type="Int32" />
           <Property Name="Location" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Products" Relationship="Self.FK__Product__UserID__403A8C7D" FromRole="Users" ToRole="Product" />
-          <NavigationProperty Name="Reviews" Relationship="Self.FK__Review__UserID__4BAC3F29" FromRole="Users" ToRole="Review" />
-          <NavigationProperty Name="Role" Relationship="Self.FK__Users__RoleID__3A81B327" FromRole="Users" ToRole="Role" />
-          <NavigationProperty Name="WishItems" Relationship="Self.FK__WishItem__UserID__5441852A" FromRole="Users" ToRole="WishItem" />
-          <NavigationProperty Name="User_Order" Relationship="StuffExchangeAppModel.FK__User_Orde__UserI__571DF1D5" FromRole="User" ToRole="User_Order" />
-          <NavigationProperty Name="Reviews1" Relationship="StuffExchangeAppModel.FK__Review__TargetUs__693CA210" FromRole="User" ToRole="Review" />
+          <NavigationProperty Name="Carts" Relationship="Self.FK__Cart__UserID__25518C17" FromRole="Users" ToRole="Cart" />
+          <NavigationProperty Name="Products" Relationship="Self.FK__Product__UserID__19DFD96B" FromRole="Users" ToRole="Product" />
+          <NavigationProperty Name="Reviews" Relationship="Self.FK__Review__TargetUs__2CF2ADDF" FromRole="Users" ToRole="Review" />
+          <NavigationProperty Name="Reviews1" Relationship="Self.FK__Review__UserID__2BFE89A6" FromRole="Users" ToRole="Review" />
+          <NavigationProperty Name="Role" Relationship="Self.FK__Users__RoleID__06CD04F7" FromRole="Users" ToRole="Role" />
+          <NavigationProperty Name="User_Order" Relationship="Self.FK__User_Orde__UserI__2FCF1A8A" FromRole="Users" ToRole="User_Order" />
+          <NavigationProperty Name="UserClickCategories" Relationship="Self.FK__UserClick__UserI__3B40CD36" FromRole="Users" ToRole="UserClickCategory" />
+          <NavigationProperty Name="WishItems" Relationship="Self.FK__WishItem__UserID__3864608B" FromRole="Users" ToRole="WishItem" />
         </EntityType>
         <EntityType Name="WishItem">
           <Key>
@@ -370,9 +550,33 @@
           <Property Name="ProductID" Type="Int32" />
           <Property Name="UserID" Type="Int32" />
           <NavigationProperty Name="Product" Relationship="Self.FK_CartDetail_ProductID" FromRole="WishItem" ToRole="Product" />
-          <NavigationProperty Name="User" Relationship="Self.FK__WishItem__UserID__5441852A" FromRole="WishItem" ToRole="Users" />
+          <NavigationProperty Name="User" Relationship="Self.FK__WishItem__UserID__3864608B" FromRole="WishItem" ToRole="Users" />
         </EntityType>
-        <Association Name="FK__Product__CatID__3F466844">
+        <Association Name="FK__Cart__ProductID__2645B050">
+          <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="Cart" Type="Self.Cart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="Cart">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Cart__UserID__25518C17">
+          <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Cart" Type="Self.Cart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Cart">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Product__CatID__18EBB532">
           <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
           <End Role="Product" Type="Self.Product" Multiplicity="*" />
           <ReferentialConstraint>
@@ -380,6 +584,18 @@
               <PropertyRef Name="CatID" />
             </Principal>
             <Dependent Role="Product">
+              <PropertyRef Name="CatID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserClick__CatID__3C34F16F">
+          <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
+          <End Role="UserClickCategory" Type="Self.UserClickCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="CatID" />
+            </Principal>
+            <Dependent Role="UserClickCategory">
               <PropertyRef Name="CatID" />
             </Dependent>
           </ReferentialConstraint>
@@ -396,7 +612,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Images__ProductI__48CFD27E">
+        <Association Name="FK__Images__ProductI__22751F6C">
           <End Role="Product" Type="Self.Product" Multiplicity="1" />
           <End Role="Images" Type="Self.Image" Multiplicity="*" />
           <ReferentialConstraint>
@@ -408,7 +624,31 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Product__UserID__403A8C7D">
+        <Association Name="FK__OrderDeta__Order__339FAB6E">
+          <End Role="User_Order" Type="Self.User_Order" Multiplicity="0..1" />
+          <End Role="OrderDetail" Type="Self.OrderDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User_Order">
+              <PropertyRef Name="OrderID" />
+            </Principal>
+            <Dependent Role="OrderDetail">
+              <PropertyRef Name="OrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderDeta__Produ__3493CFA7">
+          <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="OrderDetail" Type="Self.OrderDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="OrderDetail">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Product__UserID__19DFD96B">
           <End Role="Users" Type="Self.User" Multiplicity="0..1" />
           <End Role="Product" Type="Self.Product" Multiplicity="*" />
           <ReferentialConstraint>
@@ -417,6 +657,18 @@
             </Principal>
             <Dependent Role="Product">
               <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__User_Orde__Produ__30C33EC3">
+          <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="User_Order" Type="Self.User_Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="User_Order">
+              <PropertyRef Name="ProductID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -432,7 +684,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Review__UserID__4BAC3F29">
+        <Association Name="FK__Review__TargetUs__2CF2ADDF">
+          <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Review" Type="Self.Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Review">
+              <PropertyRef Name="TargetUserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Review__UserID__2BFE89A6">
           <End Role="Users" Type="Self.User" Multiplicity="0..1" />
           <End Role="Review" Type="Self.Review" Multiplicity="*" />
           <ReferentialConstraint>
@@ -444,7 +708,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Users__RoleID__3A81B327">
+        <Association Name="FK__Users__RoleID__06CD04F7">
           <End Role="Role" Type="Self.Role" Multiplicity="0..1" />
           <End Role="Users" Type="Self.User" Multiplicity="*" />
           <ReferentialConstraint>
@@ -456,7 +720,31 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__WishItem__UserID__5441852A">
+        <Association Name="FK__User_Orde__UserI__2FCF1A8A">
+          <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+          <End Role="User_Order" Type="Self.User_Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="User_Order">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserClick__UserI__3B40CD36">
+          <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+          <End Role="UserClickCategory" Type="Self.UserClickCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UserClickCategory">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__WishItem__UserID__3864608B">
           <End Role="Users" Type="Self.User" Multiplicity="0..1" />
           <End Role="WishItem" Type="Self.WishItem" Multiplicity="*" />
           <ReferentialConstraint>
@@ -469,114 +757,102 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="StuffExchangeAppEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Carts" EntityType="Self.Cart" />
           <EntitySet Name="Categories" EntityType="Self.Category" />
           <EntitySet Name="Images" EntityType="Self.Image" />
+          <EntitySet Name="OrderDetails" EntityType="Self.OrderDetail" />
           <EntitySet Name="Products" EntityType="Self.Product" />
           <EntitySet Name="Reviews" EntityType="Self.Review" />
           <EntitySet Name="Roles" EntityType="Self.Role" />
+          <EntitySet Name="User_Order" EntityType="Self.User_Order" />
+          <EntitySet Name="UserClickCategories" EntityType="Self.UserClickCategory" />
           <EntitySet Name="Users" EntityType="Self.User" />
           <EntitySet Name="WishItems" EntityType="Self.WishItem" />
-          <AssociationSet Name="FK__Product__CatID__3F466844" Association="Self.FK__Product__CatID__3F466844">
+          <AssociationSet Name="FK__Cart__ProductID__2645B050" Association="Self.FK__Cart__ProductID__2645B050">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="Cart" EntitySet="Carts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Cart__UserID__25518C17" Association="Self.FK__Cart__UserID__25518C17">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Cart" EntitySet="Carts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Product__CatID__18EBB532" Association="Self.FK__Product__CatID__18EBB532">
             <End Role="Category" EntitySet="Categories" />
             <End Role="Product" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserClick__CatID__3C34F16F" Association="Self.FK__UserClick__CatID__3C34F16F">
+            <End Role="Category" EntitySet="Categories" />
+            <End Role="UserClickCategory" EntitySet="UserClickCategories" />
           </AssociationSet>
           <AssociationSet Name="FK_Product_category" Association="Self.FK_Product_category">
             <End Role="Category" EntitySet="Categories" />
             <End Role="Product" EntitySet="Products" />
           </AssociationSet>
-          <AssociationSet Name="FK__Images__ProductI__48CFD27E" Association="Self.FK__Images__ProductI__48CFD27E">
+          <AssociationSet Name="FK__Images__ProductI__22751F6C" Association="Self.FK__Images__ProductI__22751F6C">
             <End Role="Product" EntitySet="Products" />
             <End Role="Images" EntitySet="Images" />
           </AssociationSet>
-          <AssociationSet Name="FK__Product__UserID__403A8C7D" Association="Self.FK__Product__UserID__403A8C7D">
+          <AssociationSet Name="FK__OrderDeta__Order__339FAB6E" Association="Self.FK__OrderDeta__Order__339FAB6E">
+            <End Role="User_Order" EntitySet="User_Order" />
+            <End Role="OrderDetail" EntitySet="OrderDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderDeta__Produ__3493CFA7" Association="Self.FK__OrderDeta__Produ__3493CFA7">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="OrderDetail" EntitySet="OrderDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Product__UserID__19DFD96B" Association="Self.FK__Product__UserID__19DFD96B">
             <End Role="Users" EntitySet="Users" />
             <End Role="Product" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK__User_Orde__Produ__30C33EC3" Association="Self.FK__User_Orde__Produ__30C33EC3">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="User_Order" EntitySet="User_Order" />
           </AssociationSet>
           <AssociationSet Name="FK_CartDetail_ProductID" Association="Self.FK_CartDetail_ProductID">
             <End Role="Product" EntitySet="Products" />
             <End Role="WishItem" EntitySet="WishItems" />
           </AssociationSet>
-          <AssociationSet Name="FK__Review__UserID__4BAC3F29" Association="Self.FK__Review__UserID__4BAC3F29">
+          <AssociationSet Name="FK__Review__TargetUs__2CF2ADDF" Association="Self.FK__Review__TargetUs__2CF2ADDF">
             <End Role="Users" EntitySet="Users" />
             <End Role="Review" EntitySet="Reviews" />
           </AssociationSet>
-          <AssociationSet Name="FK__Users__RoleID__3A81B327" Association="Self.FK__Users__RoleID__3A81B327">
+          <AssociationSet Name="FK__Review__UserID__2BFE89A6" Association="Self.FK__Review__UserID__2BFE89A6">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Review" EntitySet="Reviews" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Users__RoleID__06CD04F7" Association="Self.FK__Users__RoleID__06CD04F7">
             <End Role="Role" EntitySet="Roles" />
             <End Role="Users" EntitySet="Users" />
           </AssociationSet>
-          <AssociationSet Name="FK__WishItem__UserID__5441852A" Association="Self.FK__WishItem__UserID__5441852A">
+          <AssociationSet Name="FK__User_Orde__UserI__2FCF1A8A" Association="Self.FK__User_Orde__UserI__2FCF1A8A">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="User_Order" EntitySet="User_Order" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserClick__UserI__3B40CD36" Association="Self.FK__UserClick__UserI__3B40CD36">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserClickCategory" EntitySet="UserClickCategories" />
+          </AssociationSet>
+          <AssociationSet Name="FK__WishItem__UserID__3864608B" Association="Self.FK__WishItem__UserID__3864608B">
             <End Role="Users" EntitySet="Users" />
             <End Role="WishItem" EntitySet="WishItems" />
           </AssociationSet>
-          <EntitySet Name="User_Order" EntityType="StuffExchangeAppModel.User_Order" />
-          <AssociationSet Name="FK__User_Orde__Produ__5812160E" Association="StuffExchangeAppModel.FK__User_Orde__Produ__5812160E">
-            <End Role="Product" EntitySet="Products" />
-            <End Role="User_Order" EntitySet="User_Order" />
-          </AssociationSet>
-          <AssociationSet Name="FK__User_Orde__UserI__571DF1D5" Association="StuffExchangeAppModel.FK__User_Orde__UserI__571DF1D5">
-            <End Role="User" EntitySet="Users" />
-            <End Role="User_Order" EntitySet="User_Order" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Review__TargetUs__693CA210" Association="StuffExchangeAppModel.FK__Review__TargetUs__693CA210">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Review" EntitySet="Reviews" />
-          </AssociationSet>
-          </EntityContainer>
-        <EntityType Name="User_Order">
-          <Key>
-            <PropertyRef Name="OrderID" />
-          </Key>
-          <Property Name="OrderID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserID" Type="Int32" />
-          <Property Name="OrderDate" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="ProductID" Type="Int32" />
-          <Property Name="Quantity" Type="Int32" Nullable="false" />
-          <Property Name="OrderStatus" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Product" Relationship="StuffExchangeAppModel.FK__User_Orde__Produ__5812160E" FromRole="User_Order" ToRole="Product" />
-          <NavigationProperty Name="User" Relationship="StuffExchangeAppModel.FK__User_Orde__UserI__571DF1D5" FromRole="User_Order" ToRole="User" />
-        </EntityType>
-        <Association Name="FK__User_Orde__Produ__5812160E">
-          <End Type="StuffExchangeAppModel.Product" Role="Product" Multiplicity="0..1" />
-          <End Type="StuffExchangeAppModel.User_Order" Role="User_Order" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Product">
-              <PropertyRef Name="ProductID" />
-            </Principal>
-            <Dependent Role="User_Order">
-              <PropertyRef Name="ProductID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__User_Orde__UserI__571DF1D5">
-          <End Type="StuffExchangeAppModel.User" Role="User" Multiplicity="0..1" />
-          <End Type="StuffExchangeAppModel.User_Order" Role="User_Order" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="User_Order">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Review__TargetUs__693CA210">
-          <End Type="StuffExchangeAppModel.User" Role="User" Multiplicity="0..1" />
-          <End Type="StuffExchangeAppModel.Review" Role="Review" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Review">
-              <PropertyRef Name="TargetUserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        </Schema>
+        </EntityContainer>
+      </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="StuffExchangeAppModelStoreContainer" CdmEntityContainer="StuffExchangeAppEntities">
+          <EntitySetMapping Name="Carts">
+            <EntityTypeMapping TypeName="StuffExchangeAppModel.Cart">
+              <MappingFragment StoreEntitySet="Cart">
+                <ScalarProperty Name="CartID" ColumnName="CartID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Categories">
             <EntityTypeMapping TypeName="StuffExchangeAppModel.Category">
               <MappingFragment StoreEntitySet="Category">
@@ -594,9 +870,20 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="OrderDetails">
+            <EntityTypeMapping TypeName="StuffExchangeAppModel.OrderDetail">
+              <MappingFragment StoreEntitySet="OrderDetail">
+                <ScalarProperty Name="OrderDetailID" ColumnName="OrderDetailID" />
+                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Products">
             <EntityTypeMapping TypeName="StuffExchangeAppModel.Product">
               <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="IsVerified" ColumnName="IsVerified" />
                 <ScalarProperty Name="ProductID" ColumnName="ProductID" />
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />
                 <ScalarProperty Name="Info_des" ColumnName="Info_des" />
@@ -614,12 +901,12 @@
           <EntitySetMapping Name="Reviews">
             <EntityTypeMapping TypeName="StuffExchangeAppModel.Review">
               <MappingFragment StoreEntitySet="Review">
-                <ScalarProperty Name="TargetUserID" ColumnName="TargetUserID" />
-                <ScalarProperty Name="Quality" ColumnName="Quality" />
                 <ScalarProperty Name="ReviewID" ColumnName="ReviewID" />
                 <ScalarProperty Name="Rating" ColumnName="Rating" />
+                <ScalarProperty Name="Quality" ColumnName="Quality" />
                 <ScalarProperty Name="Comment" ColumnName="Comment" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="TargetUserID" ColumnName="TargetUserID" />
                 <ScalarProperty Name="ReviewDate" ColumnName="ReviewDate" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -629,6 +916,28 @@
               <MappingFragment StoreEntitySet="Role">
                 <ScalarProperty Name="RoleID" ColumnName="RoleID" />
                 <ScalarProperty Name="Rolename" ColumnName="Rolename" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="User_Order">
+            <EntityTypeMapping TypeName="StuffExchangeAppModel.User_Order">
+              <MappingFragment StoreEntitySet="User_Order">
+                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="TotalPrice" ColumnName="TotalPrice" />
+                <ScalarProperty Name="OrderStatus" ColumnName="OrderStatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserClickCategories">
+            <EntityTypeMapping TypeName="StuffExchangeAppModel.UserClickCategory">
+              <MappingFragment StoreEntitySet="UserClickCategory">
+                <ScalarProperty Name="UserClickCategoryID" ColumnName="UserClickCategoryID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="CatID" ColumnName="CatID" />
+                <ScalarProperty Name="ClickCount" ColumnName="ClickCount" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -654,18 +963,6 @@
                 <ScalarProperty Name="WishItemID" ColumnName="WishItemID" />
                 <ScalarProperty Name="ProductID" ColumnName="ProductID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="User_Order">
-            <EntityTypeMapping TypeName="StuffExchangeAppModel.User_Order">
-              <MappingFragment StoreEntitySet="User_Order">
-                <ScalarProperty Name="OrderStatus" ColumnName="OrderStatus" />
-                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
-                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
-                <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

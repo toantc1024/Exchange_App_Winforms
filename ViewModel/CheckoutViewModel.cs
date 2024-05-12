@@ -217,7 +217,7 @@ namespace Exchange_App.ViewModel
                       {
                           UserID = CurrentUser.UserID,
                           ProductID = SelectedProduct.ProductID,
-                          Quantity = OrderQuantity,
+                          //Quantity = OrderQuantity,
                           OrderDate = DateTime.Now,
                           OrderStatus = "Pending"
                       });

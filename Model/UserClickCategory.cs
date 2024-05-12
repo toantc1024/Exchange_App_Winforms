@@ -12,17 +12,14 @@ namespace Exchange_App.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class Review
+    public partial class UserClickCategory
     {
-        public int ReviewID { get; set; }
-        public double Rating { get; set; }
-        public double Quality { get; set; }
-        public string Comment { get; set; }
+        public int UserClickCategoryID { get; set; }
         public Nullable<int> UserID { get; set; }
-        public Nullable<int> TargetUserID { get; set; }
-        public System.DateTime ReviewDate { get; set; }
+        public Nullable<int> CatID { get; set; }
+        public int ClickCount { get; set; }
     
+        public virtual Category Category { get; set; }
         public virtual User User { get; set; }
-        public virtual User User1 { get; set; }
     }
 }

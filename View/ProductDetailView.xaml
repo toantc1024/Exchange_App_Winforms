@@ -20,6 +20,7 @@
     TextOptions.TextRenderingMode="Auto"
     mc:Ignorable="d">
     <Grid>
+
         <Grid.Resources>
             <tools:CurrencyToStringConverter x:Key="currencyConverter" />
             <tools:UploadedDateConveter x:Key="uploadedDateConverter" />
@@ -358,11 +359,14 @@
                                                 CommandParameter="minus">
                                                 -
                                             </Button>
+                                            <Separator Width="5" Visibility="Hidden" />
                                             <Border
                                                 MinWidth="50"
                                                 materialDesign:ElevationAssist.Elevation="Dp0"
                                                 BorderBrush="LightGray"
                                                 BorderThickness="0.5">
+
+
                                                 <TextBox
                                                     Width="50"
                                                     HorizontalAlignment="Center"
@@ -370,6 +374,7 @@
                                                     Text="{Binding Quantity}"
                                                     TextAlignment="Center" />
                                             </Border>
+                                            <Separator Width="5" Visibility="Hidden" />
                                             <Button
                                                 materialDesign:ElevationAssist.Elevation="Dp0"
                                                 Background="Transparent"

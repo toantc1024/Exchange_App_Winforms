@@ -49,7 +49,6 @@ namespace Exchange_App.ViewModel
 
         private bool _isAddedToWishList;
 
-
         public ObservableCollection<Product> RecommendProducts
         {
             get => _recommendProducts;
@@ -79,7 +78,7 @@ namespace Exchange_App.ViewModel
             set
             {
                 _selectedProduct = value;
-                Discount = 100*(value.Original_price - value.Sell_price) / value.Original_price;
+                Discount = 100 * (value.Original_price - value.Sell_price) / value.Original_price;
                 OnPropertyChanged("SelectedProduct");
             }
         }
@@ -95,7 +94,6 @@ namespace Exchange_App.ViewModel
                 OnPropertyChanged();
             }
         }
-
 
         public Model.User CurrentUser
         {
@@ -136,13 +134,12 @@ namespace Exchange_App.ViewModel
         }
         #endregion
 
-
         #region Commands
-
 
         public ICommand UpdateQuantityCommand
         {
-            get; set;
+            get;
+            set;
         }
 
         public ICommand ShowCheckoutCommand
@@ -195,20 +192,24 @@ namespace Exchange_App.ViewModel
 
         public ICommand SelectProductCommand
         {
-            get; set;
+            get;
+            set;
         }
 
         public bool IsAddedToWishList
         {
-            get => _isAddedToWishList; set
+            get => _isAddedToWishList;
+            set
             {
-                _isAddedToWishList=value; OnPropertyChanged();
+                _isAddedToWishList = value;
+                OnPropertyChanged();
             }
         }
 
         public int Quantity
         {
-            get => _quantity; set
+            get => _quantity;
+            set
             {
                 if (value <= 0 || value > SelectedProduct.Quantity)
                 {
@@ -216,54 +217,58 @@ namespace Exchange_App.ViewModel
                 }
                 else
                 {
-                    _quantity=value; OnPropertyChanged();
+                    _quantity = value;
+                    OnPropertyChanged();
                 }
             }
         }
 
         public double Discount
         {
-            get => _discount; set
+            get => _discount;
+            set
             {
-                _discount=value; OnPropertyChanged();
+                _discount = value;
+                OnPropertyChanged();
             }
         }
 
-        public ObservableCollection<Review> Reviews { get => _reviews; set {
-                _reviews=value; OnPropertyChanged();
-            } }
-
+        public ObservableCollection<Review> Reviews
+        {
+            get => _reviews;
+            set
+            {
+                _reviews = value;
+                OnPropertyChanged();
+            }
+        }
 
         #endregion
 
-
-
         public ProductDetailsViewModel(Model.Product product, Model.User user, ICommand showCheckoutCommand, ICommand selectProductCommand)
         {
+
             #region Initialize
             ShowCheckoutCommandMultiple = new RelayCommand<object>(
-                               (p) =>
-                               {
-                                   return true;
-                               },
-                                              (p) =>
-                                              {
-                                                  MultipleParams multipleParams = new MultipleParams();
-                                                  multipleParams.currentProduct = product;
-                                                  multipleParams.quantity = Quantity;
-                                                  showCheckoutCommand.Execute(multipleParams);
-                                              }
-                                                             );
+              (p) => {
+                  return true;
+              },
+              (p) => {
+                  MultipleParams multipleParams = new MultipleParams();
+                  multipleParams.currentProduct = product;
+                  multipleParams.quantity = Quantity;
+                  showCheckoutCommand.Execute(multipleParams);
+              }
+            );
             SelectedProduct = product;
             CurrentUser = user;
             SelectProductCommand = selectProductCommand;
             Reviews = new ObservableCollection<Review>(user.Reviews1.Take(5));
             TotalRecommendProducts = new ObservableCollection<Product>(DataProvider.Ins.DB.Products.Where(p => p.CatID == SelectedProduct.CatID && p.ProductID != SelectedProduct.ProductID).Take(20));
-            RecommendProducts = new ObservableCollection<Product>(DataProvider.Ins.DB.Products.Where(p => p.CatID == SelectedProduct.CatID  && p.ProductID != SelectedProduct.ProductID).Take(4));
+            RecommendProducts = new ObservableCollection<Product>(DataProvider.Ins.DB.Products.Where(p => p.CatID == SelectedProduct.CatID && p.ProductID != SelectedProduct.ProductID).Take(4));
 
             IsAddedToWishList = false;
-            DataProvider.Ins.DB.WishItems.ToList().ForEach(wishItem =>
-            {
+            DataProvider.Ins.DB.WishItems.ToList().ForEach(wishItem => {
                 if (wishItem.ProductID == SelectedProduct.ProductID && wishItem.UserID == CurrentUser.UserID)
                 {
                     IsAddedToWishList = true;
@@ -271,56 +276,52 @@ namespace Exchange_App.ViewModel
             });
 
             PreviousProductCommand = new RelayCommand<object>(
-        (p) =>
-        {
-            return true;
-        },
-        (p) => {
-            _recommendCurrentIndex--;
-            if (_recommendCurrentIndex < 0)
-            {
-                _recommendCurrentIndex = TotalRecommendProducts.Count - 1;
-            }
-            UpdateCarousel();
-            OnPropertyChanged("RecommendProducts");
-        }
-    );
-
-            NextProductCommand = new RelayCommand<object>(
-                (p) =>
-                {
-                    return true;
-                },
-                (p) => {
-                    _recommendCurrentIndex++;
-                    if (_recommendCurrentIndex >= TotalRecommendProducts.Count)
-                    {
-                        _recommendCurrentIndex = 0;
-                    }
-                    UpdateCarousel();
-                    OnPropertyChanged("RecommendProducts");
-                }
+              (p) => {
+                  return true;
+              },
+              (p) => {
+                  _recommendCurrentIndex--;
+                  if (_recommendCurrentIndex < 0)
+                  {
+                      _recommendCurrentIndex = TotalRecommendProducts.Count - 1;
+                  }
+                  UpdateCarousel();
+                  OnPropertyChanged("RecommendProducts");
+              }
             );
 
-            UpdateQuantityCommand = new RelayCommand<string>((p) =>
-            {
+            NextProductCommand = new RelayCommand<object>(
+              (p) => {
+                  return true;
+              },
+              (p) => {
+                  _recommendCurrentIndex++;
+                  if (_recommendCurrentIndex >= TotalRecommendProducts.Count)
+                  {
+                      _recommendCurrentIndex = 0;
+                  }
+                  UpdateCarousel();
+                  OnPropertyChanged("RecommendProducts");
+              }
+            );
+
+            UpdateQuantityCommand = new RelayCommand<string>((p) => {
                 if (p != null) return true;
                 return false;
 
             },
-            (p) =>
-            {
-                int delta = 0;
-                if (p == "plus")
-                {
-                    delta = 1;
-                }
-                else if (p == "minus")
-                {
-                    delta = -1;
-                }
-                Quantity += delta;
-            });
+              (p) => {
+                  int delta = 0;
+                  if (p == "plus")
+                  {
+                      delta = 1;
+                  }
+                  else if (p == "minus")
+                  {
+                      delta = -1;
+                  }
+                  Quantity += delta;
+              });
 
             AddToWishlistCommand = new RelayCommand<object>(
               (p) => {
@@ -329,7 +330,11 @@ namespace Exchange_App.ViewModel
               (p) => {
                   try
                   {
-                      DataProvider.Ins.DB.WishItems.Add(new WishItem() { ProductID = SelectedProduct.ProductID, UserID = CurrentUser.UserID });
+                      DataProvider.Ins.DB.WishItems.Add(new WishItem()
+                      {
+                          ProductID = SelectedProduct.ProductID,
+                          UserID = CurrentUser.UserID
+                      });
                       IsAddedToWishList = true;
                       DataProvider.Ins.DB.SaveChanges();
                       MessageBox.Show("Add to wishlist success");
@@ -337,7 +342,9 @@ namespace Exchange_App.ViewModel
                   catch (Exception ex)
                   {
                       // get only first line of error message
-                      var err = ex.InnerException.Message.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+                      var err = ex.InnerException.Message.Split(new[] {
+              Environment.NewLine
+                  }, StringSplitOptions.None);
                       MessageBox.Show(err.FirstOrDefault().ToString());
                   }
               }
@@ -362,7 +369,6 @@ namespace Exchange_App.ViewModel
                   OnPropertyChanged("CurrentImage");
               }
             );
-
 
             #endregion
         }

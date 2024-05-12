@@ -1,11 +1,13 @@
-﻿CREATE DATABASE StuffExchangeApp;
-USE StuffExchangeApp;
+﻿--CREATE DATABASE StuffExchangeApp;
+--USE StuffExchangeApp;
+
 
 
 create table Role(
     RoleID int IDENTITY(1,1) constraint PK_Role PRIMARY KEY,
     Rolename varchar(255),
 );
+
 
 create table Users(
     UserID int IDENTITY(1,1) constraint PK_User PRIMARY KEY,
@@ -27,6 +29,7 @@ CREATE TABLE Category(
 );
 
 
+
 create table Product(
     ProductID int IDENTITY(1,1) constraint PK_Product PRIMARY KEY,
     Quantity int not null,
@@ -36,6 +39,7 @@ create table Product(
     Sell_price float not null,
     UploadedDate date not null,
     ProductName varchar(255) not null,
+    IsVerified bit default 0 not null,
 	CatID int references Category(CatID),
     UserID int references Users(UserID),
      View_count int not null default 0,
@@ -48,13 +52,20 @@ create table Product(
 alter table Product WITH CHECK ADD CONSTRAINT [FK_Product_category] foreign key([CatID]) references Category ON DELETE SET NULL
 
 
+
+
 CREATE TABLE Images(
     ImageID INT IDENTITY(1,1) PRIMARY KEY,
     ProductID INT not null references Product(ProductID),
     ImageURL VARCHAR(255) not null
 );
 
-
+CREATE TABLE Cart(
+	CartID int IDENTITY(1,1) PRIMARY KEY,
+	UserID int REFERENCES Users(UserID),
+    ProductID int REFERENCES Product(ProductID),
+    Quantity int DEFAULT 0 NOT NULL
+);
 
 CREATE TABLE Review (
     ReviewID int IDENTITY(1,1) CONSTRAINT PK_Review PRIMARY KEY,
@@ -67,23 +78,21 @@ CREATE TABLE Review (
 );
 
 
-
-
-
 create table User_Order(
     OrderID int IDENTITY(1,1) constraint PK_User_Order PRIMARY KEY,
     UserID int references Users(UserID),
     OrderDate date not null,
     ProductID int references Product(ProductID),
-    Quantity int check (Quantity > 0) not null,  
+    TotalPrice float not null,
     OrderStatus varchar(255) not null,
    );
 
-   
-   INSERT INTO User_Order (
-   UserID, Status, OrderDate, ProductID, Quantity, OrderStatus
-   ) VALUES ( 1, 'Pending', '2021-12-12', 2, 2, 'Pending');
-
+CREATE table OrderDetail(
+	OrderDetailID int IDENTITY(1,1) PRIMARY KEY,
+	OrderID int REFERENCES User_Order(OrderID),
+	ProductID int REFERENCES Product(ProductID),
+	Quantity int not null,
+);
 
 Create Table WishItem (
 	WishItemID int identity(1,1) primary key,
@@ -95,8 +104,25 @@ INSERT INTO Role(Rolename) VALUES ('Admin');
 INSERT INTO Role(Rolename) VALUES ('User');
 -- VIEWS
 
+-- RECOMMENDATION IN THE FUTURE
+create table UserClickCategory(
+	UserClickCategoryID int IDENTITY(1,1) constraint PK_UserClickCategory PRIMARY KEY,
+	UserID int references Users(UserID),
+	CatID int references Category(CatID),
+	ClickCount int default 1 not null
+);
+
+DROP TABLE WishItem;
+DROP TABLE OrderDetail;
+DROP TABLE User_Order;
+DROP TABLE Review;
+DROP TABLE Cart;
+DROP TABLE Images;
+DROP TABLE UserClickCategory;
+DROP TABLE Category;
+DROP TABLE Product;
+DROP TABLE Users;
+DROP TABLE Role;
 
 
-    
-
-SELECT * FROM Review;
+SELECT * FROM Cart;

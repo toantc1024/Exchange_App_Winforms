@@ -64,8 +64,10 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -78,6 +80,12 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="ToastNotifications, Version=2.5.1.0, Culture=neutral, PublicKeyToken=e89d9d7314a7c797, processorArchitecture=MSIL">
+      <HintPath>packages\ToastNotifications.2.5.1\lib\net40\ToastNotifications.dll</HintPath>
+    </Reference>
+    <Reference Include="ToastNotifications.Messages, Version=2.5.1.0, Culture=neutral, PublicKeyToken=e89d9d7314a7c797, processorArchitecture=MSIL">
+      <HintPath>packages\ToastNotifications.Messages.2.5.1\lib\net40\ToastNotifications.Messages.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -89,6 +97,15 @@
     </ApplicationDefinition>
     <Compile Include="AuthWindow.xaml.cs">
       <DependentUpon>AuthWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CustomUserControls\UCWelcome.xaml.cs">
+      <DependentUpon>UCWelcome.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Cart.cs">
+      <DependentUpon>StuffExchangeApp.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Category.cs">
+      <DependentUpon>StuffExchangeApp.tt</DependentUpon>
     </Compile>
     <Compile Include="CustomUserControls\Loading.xaml.cs">
       <DependentUpon>Loading.xaml</DependentUpon>
@@ -108,21 +125,31 @@
     <Compile Include="CustomUserControls\UCFilter.xaml.cs">
       <DependentUpon>UCFilter.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CustomUserControls\UCOrder.xaml.cs">
+      <DependentUpon>UCOrder.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CustomUserControls\UCOrderDetail.xaml.cs">
       <DependentUpon>UCOrderDetail.xaml</DependentUpon>
     </Compile>
     <Compile Include="CustomUserControls\UCReview.xaml.cs">
       <DependentUpon>UCReview.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Model\Category.cs">
+    <Compile Include="Model\Image.cs">
       <DependentUpon>StuffExchangeApp.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\Image.cs">
+    <Compile Include="Model\OrderDetail.cs">
       <DependentUpon>StuffExchangeApp.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Product.cs">
       <DependentUpon>StuffExchangeApp.tt</DependentUpon>
     </Compile>
+    <Compile Include="Repositories\connectStr.cs" />
+    <Compile Include="Repositories\Implementations\BaseRepository.cs" />
+    <Compile Include="Repositories\Implementations\CategoryRepository.cs" />
+    <Compile Include="Repositories\Implementations\ImageRepository.cs" />
+    <Compile Include="Repositories\Implementations\ProductRepository.cs" />
+    <Compile Include="Repositories\Implementations\UserRepository.cs" />
+    <Compile Include="Repositories\Implementations\WishItemRepository.cs" />
     <Compile Include="Model\Review.cs">
       <DependentUpon>StuffExchangeApp.tt</DependentUpon>
     </Compile>
@@ -144,28 +171,22 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>StuffExchangeApp.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Tools\ControlConverter.cs" />
+    <Compile Include="Tools\CurrencyConverter.cs" />
+    <Compile Include="Tools\InformationConverter.cs" />
+    <Compile Include="Tools\Notify.cs" />
+    <Compile Include="Tools\OrderConverter.cs" />
+    <Compile Include="Tools\ProductConverter.cs" />
+    <Compile Include="Tools\WishlistConverter.cs" />
     <Compile Include="Model\User.cs">
+      <DependentUpon>StuffExchangeApp.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\UserClickCategory.cs">
       <DependentUpon>StuffExchangeApp.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\User_Order.cs">
       <DependentUpon>StuffExchangeApp.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\WishItem.cs">
-      <DependentUpon>StuffExchangeApp.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Repositories\connectStr.cs" />
-    <Compile Include="Repositories\Implementations\BaseRepository.cs" />
-    <Compile Include="Repositories\Implementations\CategoryRepository.cs" />
-    <Compile Include="Repositories\Implementations\ImageRepository.cs" />
-    <Compile Include="Repositories\Implementations\ProductRepository.cs" />
-    <Compile Include="Repositories\Implementations\UserRepository.cs" />
-    <Compile Include="Repositories\Implementations\WishItemRepository.cs" />
-    <Compile Include="Tools\ControlConverter.cs" />
-    <Compile Include="Tools\CurrencyConverter.cs" />
-    <Compile Include="Tools\InformationConverter.cs" />
-    <Compile Include="Tools\OrderConverter.cs" />
-    <Compile Include="Tools\ProductConverter.cs" />
-    <Compile Include="Tools\WishlistConverter.cs" />
     <Compile Include="ValidationRules\NotEmptyRule.cs" />
     <Compile Include="ViewModel\AddCategoryViewModel.cs" />
     <Compile Include="ViewModel\CategoryManagerViewModel.cs" />
@@ -225,6 +246,9 @@
     <Compile Include="View\UserInfoView.xaml.cs">
       <DependentUpon>UserInfoView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\WishItem.cs">
+      <DependentUpon>StuffExchangeApp.tt</DependentUpon>
+    </Compile>
     <Page Include="AuthWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -257,11 +281,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="CustomUserControls\UCOrder.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CustomUserControls\UCOrderDetail.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CustomUserControls\UCReview.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomUserControls\UCWelcome.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -355,9 +387,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Resource Include="Fonts\Poppins-Regular.ttf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
     <EntityDeploy Include="Model\StuffExchangeApp.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>StuffExchangeApp.Designer.cs</LastGenOutput>
@@ -365,6 +394,9 @@
     <None Include="Model\StuffExchangeApp.edmx.diagram">
       <DependentUpon>StuffExchangeApp.edmx</DependentUpon>
     </None>
+    <Resource Include="Fonts\Poppins-Regular.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

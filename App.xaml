@@ -41,6 +41,7 @@
             </DataTemplate>
 
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/ToastNotifications.Messages;component/Themes/Default.xaml" />
                 <materialDesign:BundledTheme
                     BaseTheme="Light"
                     PrimaryColor="DeepOrange"

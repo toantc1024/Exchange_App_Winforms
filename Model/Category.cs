@@ -18,6 +18,7 @@ namespace Exchange_App.Model
         public Category()
         {
             this.Products = new HashSet<Product>();
+            this.UserClickCategories = new HashSet<UserClickCategory>();
             this.Products1 = new HashSet<Product>();
         }
     
@@ -26,6 +27,8 @@ namespace Exchange_App.Model
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Product> Products { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserClickCategory> UserClickCategories { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Product> Products1 { get; set; }
     }

@@ -236,11 +236,11 @@ namespace Exchange_App.ViewModel
                           throw new Exception("Password and Confirm Password must be the same!");
                       };
 
-                      var role = 2;
-                      if (ModeArray[1])
-                      {
-                          role = 1;
-                      }
+                      var roles = DataProvider.Ins.DB.Roles;
+
+                      var selectedRole = (ModeArray[0]) ? "User" : "Admin";
+                      var roleID = roles.Where(x => x.Rolename == selectedRole).FirstOrDefault().RoleID;
+
 
                       User user = new User
                       {
@@ -250,7 +250,7 @@ namespace Exchange_App.ViewModel
                           Phone = Phone,
                           Address = "Chưa xác định",
                           Birthdate = BirthDate,
-                          RoleID = role,
+                          RoleID = roleID,
                           IsActive = true,
                       };
 

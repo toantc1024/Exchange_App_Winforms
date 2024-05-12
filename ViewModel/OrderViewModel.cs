@@ -149,7 +149,7 @@ namespace Exchange_App.ViewModel
                 return true;
             }, p =>
             {
-                Orders = Orders.OrderByDescending(x => x.Product.Sell_price*x.Quantity).ToList();
+                Orders = Orders.OrderByDescending(x => 0).ToList();
             });
 
             SortProductByDateCommand = new RelayCommand<object>(p =>

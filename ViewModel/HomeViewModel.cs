@@ -14,6 +14,10 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
+using ToastNotifications;
+using ToastNotifications.Lifetime;
+using ToastNotifications.Messages;
+using ToastNotifications.Position;
 
 namespace Exchange_App.ViewModel
 {
@@ -380,10 +384,10 @@ namespace Exchange_App.ViewModel
                 });
 
 
+    
 
 
-
-        ShowCheckoutCommand = new RelayCommand<MultipleParams>(
+            ShowCheckoutCommand = new RelayCommand<MultipleParams>(
                 
         (p) =>
         {
@@ -395,9 +399,35 @@ namespace Exchange_App.ViewModel
                 },
                        (p) =>
                        {
-                    IsShowCheckout = "Visible";
-                    Content = new CheckoutViewModel(currentUser, p.currentProduct, HideCheckoutCommand, p.quantity);
-                }
+                           Product product = p.currentProduct;
+                           int quantity = p.quantity;
+                           // Check if product is already in cart
+                           var cartProduct = DataProvider.Ins.DB.Carts.SingleOrDefault(x => x.ProductID == product.ProductID && x.UserID == CurrentUser.UserID);
+                           if (cartProduct != null)
+                           {
+                               // Check if Quantity is greater than 0 and less than product quantity
+                               if (cartProduct.Quantity + quantity > product.Quantity)
+                               {
+                                   Notify.ShowNotify("Quantity is greater than available quantity!", 4, Notify.Warning);
+                                   return;
+                               }
+                               else
+                               {
+                                   cartProduct.Quantity += quantity;
+                               }
+                           }
+                           else
+                           {
+                               Cart cart = new Cart();
+                               cart.UserID = CurrentUser.UserID;
+                               cart.ProductID = product.ProductID;
+                               cart.Quantity = quantity;
+                               DataProvider.Ins.DB.Carts.Add(cart);
+                           }
+
+                           DataProvider.Ins.DB.SaveChanges();
+                           Notify.ShowNotify("Added successfully to cart!", 4, Notify.Success);
+                       }
                        );
 
             HideCheckoutCommand = new RelayCommand<int>(

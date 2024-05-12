@@ -162,7 +162,7 @@
                 Grid.Row="1"
                 Panel.ZIndex="9999"
                 Background="White"
-                Visibility="{Binding IsShowOrderDetail}">
+                Visibility="Hidden">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
                     <RowDefinition />

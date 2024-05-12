@@ -25,13 +25,16 @@ namespace Exchange_App.Model
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<Cart> Carts { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Image> Images { get; set; }
+        public virtual DbSet<OrderDetail> OrderDetails { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Review> Reviews { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
+        public virtual DbSet<User_Order> User_Order { get; set; }
+        public virtual DbSet<UserClickCategory> UserClickCategories { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<WishItem> WishItems { get; set; }
-        public virtual DbSet<User_Order> User_Order { get; set; }
     }
 }

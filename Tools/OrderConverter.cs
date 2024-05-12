@@ -12,8 +12,8 @@ namespace Exchange_App.Tools
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            Model.User_Order p = value as Model.User_Order;
-            return p.Quantity * p.Product.Sell_price;
+            //Model.User_Order p = value as Model.User_Order;
+            return 0;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
