@@ -32,6 +32,10 @@
                 <view:UserInfoView />
             </DataTemplate>
 
+            <DataTemplate DataType="{x:Type viewmodel:CartViewModel}">
+                <view:CartView />
+            </DataTemplate>
+
             <DataTemplate DataType="{x:Type viewmodel:ProductManagerViewModel}">
                 <view:ProductManagerView />
             </DataTemplate>

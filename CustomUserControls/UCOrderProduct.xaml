@@ -1,0 +1,95 @@
+﻿<UserControl
+    x:Class="Exchange_App.CustomUserControls.UCOrderProduct"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:local="clr-namespace:Exchange_App.CustomUserControls"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:tools="clr-namespace:Exchange_App.Tools"
+    xmlns:view="clr-namespace:Exchange_App.View"
+    Background="White"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <tools:CartItemTotalConverter x:Key="cartItemTotalConverter" />
+        <tools:CurrencyToStringConverter x:Key="currencyToStringConverter" />
+        <tools:ProductPreviewImageConverter x:Key="productPreviewImageConverter" />
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="*" MaxWidth="300" />
+        </Grid.ColumnDefinitions>
+        <Border
+            Width="100"
+            Height="100"
+            HorizontalAlignment="Left"
+            BorderBrush="LightGray"
+            BorderThickness="0.2"
+            CornerRadius="5">
+            <Border.Background>
+                <ImageBrush ImageSource="{Binding Product.Images, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource productPreviewImageConverter}}" Stretch="UniformToFill" />
+            </Border.Background>
+        </Border>
+        <StackPanel Grid.Column="1" Margin="5">
+            <StackPanel>
+                <TextBlock Text="{Binding Product.ProductName}" TextWrapping="Wrap" />
+
+            </StackPanel>
+            <Separator Height="5" Visibility="Hidden" />
+            <StackPanel
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Orientation="Horizontal">
+                <TextBlock
+                    FontWeight="Bold"
+                    Foreground="Gray"
+                    TextDecorations="Strikethrough"
+                    TextWrapping="Wrap">
+                    <Run Text="{Binding Product.Original_price, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource currencyToStringConverter}}" />
+
+                </TextBlock>
+                <Separator Width="5" Visibility="Hidden" />
+                <TextBlock
+                    FontWeight="Bold"
+                    Foreground="DarkOrange"
+                    TextWrapping="Wrap">
+                    <Run Text="{Binding Product.Sell_price, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource currencyToStringConverter}}" />
+                </TextBlock>
+            </StackPanel>
+            <Separator Height="5" Visibility="Hidden" />
+            <StackPanel
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Orientation="Horizontal">
+                <StackPanel Orientation="Horizontal">
+                    <Border MinWidth="50" materialDesign:ElevationAssist.Elevation="Dp0">
+
+
+                        <TextBlock>
+                            <Run Text="Quantity: " />
+                            <Run Text="{Binding Quantity}" />
+                        </TextBlock>
+                    </Border>
+                </StackPanel>
+            </StackPanel>
+            <Separator Height="5" Visibility="Hidden" />
+            <StackPanel
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Orientation="Horizontal">
+                <TextBlock FontWeight="Bold" TextWrapping="Wrap">
+                    <Run Text="Total: " />
+                    <Run Foreground="DarkOrange" Text="{Binding ., Converter={StaticResource cartItemTotalConverter}, UpdateSourceTrigger=PropertyChanged}" />
+                </TextBlock>
+
+            </StackPanel>
+        </StackPanel>
+
+
+
+
+    </Grid>
+
+</UserControl>

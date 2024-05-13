@@ -1,4 +1,5 @@
 ﻿using Exchange_App.Model;
+using Exchange_App.Tools;
 using Exchange_App.View;
 using System;
 using System.Collections.Generic;
@@ -19,11 +20,12 @@ namespace Exchange_App.ViewModel
         private User _currentUser;
         private User_Order _currentOrder;
         private List<User_Order> _orders;
+        private bool _isShowConfirmCancelOrder;
 
         #endregion
 
         #region Properties
-        
+
 
 
         public string IsShowOrderDetail
@@ -45,6 +47,7 @@ namespace Exchange_App.ViewModel
             get { return _currentOrder; }
             set
             {
+                
                 _currentOrder = value;
                 OnPropertyChanged();
             }
@@ -73,6 +76,14 @@ namespace Exchange_App.ViewModel
         #endregion
 
         #region Commands
+
+        public ICommand ChangeGroupOrderCommand { get; set; }
+
+        public ICommand CancelOrderCommand { get; set; }
+        public ICommand ShowConfirmCancelOrder
+        {
+            get;set;
+        }
 
         public ICommand OnSearchCommand
         {
@@ -105,7 +116,23 @@ namespace Exchange_App.ViewModel
         {
             get;set;
         }
+        public bool IsShowConfirmCancelOrder { get => _isShowConfirmCancelOrder; set {
+                _isShowConfirmCancelOrder=value;
+                OnPropertyChanged();
+            } }
         #endregion
+
+        public void LoadOrders(string keyword)
+        {
+            if (CurrentUser.RoleID == 2)
+            {
+                Orders = DataProvider.Ins.DB.User_Order.Where(x => x.OrderDetails.Any(product => product.Product.ProductName.Contains(keyword))).ToList();
+            }
+            else
+            {
+                Orders = CurrentUser.User_Order.Where(x => x.OrderDetails.Any(product => product.Product.ProductName.Contains(keyword))).ToList();
+            }
+        }
 
 
         public OrderViewModel(User user)
@@ -114,6 +141,22 @@ namespace Exchange_App.ViewModel
 
             CurrentUser = user;
             Orders = DataProvider.Ins.DB.User_Order.Where(x => x.UserID == CurrentUser.UserID).ToList();
+            ChangeGroupOrderCommand = new RelayCommand<object>(p =>
+            {
+
+                if (p == null)
+                {
+                    return false;
+                }
+                return true;
+            }, p =>
+            {
+                string type = p.ToString();
+                var originalOrders = DataProvider.Ins.DB.User_Order.Where(x => x.UserID == CurrentUser.UserID).ToList();
+                Orders = originalOrders.Where(x => x.OrderStatus == type).ToList();
+            });
+
+            ChangeGroupOrderCommand.Execute(Constants.OrderConstants.PENDING);
 
             ShowReviewCommand = new RelayCommand<object>(
                 (p) =>
@@ -123,7 +166,7 @@ namespace Exchange_App.ViewModel
                 {
 
                     ReviewView reviewView = new ReviewView();
-                    reviewView.DataContext = new ReviewViewModel(CurrentUser, CurrentOrder.Product);
+                    //reviewView.DataContext = new ReviewViewModel(CurrentUser, CurrentOrder.Product);
                     reviewView.ShowDialog();
 
                 });
@@ -137,19 +180,21 @@ namespace Exchange_App.ViewModel
                 if(type ==0)
                 {
                     // sort desc
-                    Orders = Orders.OrderByDescending(x => x.Product.ProductName).ToList();
+                    Orders = Orders.OrderByDescending(x => x.OrderDetails.FirstOrDefault().Product.ProductName).ToList();
                 } else
                 {
-                    Orders = Orders.OrderBy(x => x.Product.ProductName).ToList();
+                    Orders = Orders.OrderBy(x => x.OrderDetails.FirstOrDefault().Product.ProductName).ToList();
                 }
             });
+
+          
 
             SortProductByPriceCommand = new RelayCommand<object>(p =>
             {
                 return true;
             }, p =>
             {
-                Orders = Orders.OrderByDescending(x => 0).ToList();
+                Orders = Orders.OrderByDescending(x => x.TotalPrice).ToList();
             });
 
             SortProductByDateCommand = new RelayCommand<object>(p =>
@@ -170,6 +215,7 @@ namespace Exchange_App.ViewModel
                 CurrentOrder = p;
                 IsShowOrderDetail = "Visible";
             }); 
+           
 
             OnSearchCommand = new RelayCommand<TextBox>(p =>
             {
@@ -181,15 +227,39 @@ namespace Exchange_App.ViewModel
             }, p =>
             {
                 string keyword = p.Text;
-                if (CurrentUser.RoleID == 2)
-                {
-                    Orders = DataProvider.Ins.DB.User_Order.Where(x => x.Product.ProductName.Contains(keyword)).ToList();
-                }
-                else
-                {
-                    Orders = CurrentUser.User_Order.Where(x => x.Product.ProductName.Contains(keyword)).ToList();
-                }
+                LoadOrders(keyword);
             });
+
+            CancelOrderCommand = new RelayCommand<object>(
+                (p) =>
+                {
+                    return true;
+                }, (p) =>
+                {
+                    if (CurrentOrder.OrderStatus == Constants.OrderConstants.PENDING)
+                    {
+                        var order = DataProvider.Ins.DB.User_Order.Where(x => x.OrderID == CurrentOrder.OrderID).FirstOrDefault().OrderStatus = Constants.OrderConstants.CANCELLED;
+                        IsShowOrderDetail = "Hidden";
+                        IsShowConfirmCancelOrder = false;
+                        DataProvider.Ins.DB.SaveChanges();
+                  
+                       LoadOrders("");
+                        Notify.ShowNotify("Order has been cancelled",  4, Notify.Success);
+                    }
+                    else
+                    {
+                        MessageBox.Show("You can't cancel this order");
+                    }
+                });
+
+            ShowConfirmCancelOrder = new RelayCommand<object>(
+                (p) =>
+                {
+                    return true;
+                }, (p) =>
+                {
+                    IsShowConfirmCancelOrder = true; 
+                });
 
             HideOrderDetail = new RelayCommand<object>(p =>
             {
@@ -204,3 +274,4 @@ namespace Exchange_App.ViewModel
 
     }
 }
+

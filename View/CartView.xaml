@@ -1,0 +1,374 @@
+﻿<UserControl
+    x:Class="Exchange_App.View.CartView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:UserControl="clr-namespace:Exchange_App.CustomUserControls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:emoji="clr-namespace:Emoji.Wpf;assembly=Emoji.Wpf"
+    xmlns:local="clr-namespace:Exchange_App.View"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:tools="clr-namespace:Exchange_App.Tools"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    Background="White"
+    FontFamily="{StaticResource PoppinsRegular}"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <tools:VisiblityCollectionConverter x:Key="visiblityCollectionConverter" />
+        <tools:CartTotalConverter x:Key="cartTotalConverter" />
+        <tools:ProductPreviewImageConverter x:Key="productPreviewImageConverter" />
+    </UserControl.Resources>
+
+
+    <Grid>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="auto" />
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.ColumnSpan="2" Panel.ZIndex="9999">
+            <materialDesign:DialogHost
+                Panel.ZIndex="9999"
+                DialogContentUniformCornerRadius="20"
+                DialogTheme="Inherit"
+                IsOpen="{Binding IsShowOrder}">
+                <materialDesign:DialogHost.DialogContent>
+                    <Border BorderBrush="LightGray" BorderThickness=".5">
+                        <UserControl:UCCheckoutSummary />
+                    </Border>
+                </materialDesign:DialogHost.DialogContent>
+
+            </materialDesign:DialogHost>
+        </Grid>
+
+        <materialDesign:DialogHost
+            Grid.Row="1"
+            Panel.ZIndex="999"
+            DialogContentUniformCornerRadius="20"
+            DialogTheme="Inherit"
+            IsOpen="{Binding IsOrderSuccess}">
+            <materialDesign:DialogHost.DialogContent>
+                <Grid Margin="16">
+                    <StackPanel Grid.Row="1" VerticalAlignment="Top">
+                        <StackPanel
+                            HorizontalAlignment="Center"
+                            AllowDrop="False"
+                            Orientation="Vertical">
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontSize="40"
+                                TextWrapping="Wrap">
+                                Your order is being delivered.
+                            </TextBlock>
+                            <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                                <emoji:TextBlock
+                                    VerticalAlignment="Center"
+                                    FontSize="36"
+                                    Text="❤" />
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    FontSize="40"
+                                    TextWrapping="Wrap">
+
+
+                                    <Run Text="Thank you for choosing us!" />
+                                </TextBlock>
+                            </StackPanel>
+                        </StackPanel>
+                        <Grid>
+
+                            <Button
+                                Width="200"
+                                materialDesign:ButtonAssist.CornerRadius="10"
+                                Command="{Binding CloseOrderSuccess}"
+                                Foreground="White">
+                                GREAT
+                            </Button>
+                        </Grid>
+                    </StackPanel>
+
+
+                </Grid>
+            </materialDesign:DialogHost.DialogContent>
+
+        </materialDesign:DialogHost>
+
+        <materialDesign:DialogHost
+            Grid.Row="1"
+            Panel.ZIndex="999"
+            DialogContentUniformCornerRadius="20"
+            DialogTheme="Inherit"
+            IsOpen="{Binding IsOpenRemoveDialog}">
+            <materialDesign:DialogHost.DialogContent>
+                <Grid Margin="16">
+
+                    <StackPanel>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock HorizontalAlignment="Center" Text="Do you want to remove this product from your cart?" />
+                            <Separator Height="5" Visibility="Hidden" />
+                            <StackPanel
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Orientation="Horizontal">
+                                <Border
+                                    Width="100"
+                                    Height="100"
+                                    HorizontalAlignment="Left"
+                                    BorderBrush="LightGray"
+                                    BorderThickness="0.2"
+                                    CornerRadius="5">
+                                    <Border.Background>
+                                        <ImageBrush ImageSource="{Binding SelectedCart.Product.Images, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource productPreviewImageConverter}}" Stretch="UniformToFill" />
+                                    </Border.Background>
+                                </Border>
+                                <Separator Width="5" Visibility="Hidden" />
+                                <TextBlock
+                                    Margin="0,8,0,0"
+                                    HorizontalAlignment="Center"
+                                    Text="{Binding SelectedCart.Product.ProductName}" />
+                            </StackPanel>
+                        </StackPanel>
+
+                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                            <Button
+                                Margin="0,8,8,0"
+                                materialDesign:ButtonAssist.CornerRadius="10"
+                                Command="{Binding ConfirmDeleteCommand}"
+                                Content="DELETE"
+                                IsDefault="True"
+                                Style="{StaticResource MaterialDesignFlatButton}" />
+                            <Button
+                                Margin="0,8,8,0"
+                                materialDesign:ButtonAssist.CornerRadius="10"
+                                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                                Content="CANCEL"
+                                IsCancel="True"
+                                Style="{StaticResource MaterialDesignFlatButton}">
+                                <Button.CommandParameter>
+                                    <system:Boolean xmlns:system="clr-namespace:System;assembly=mscorlib">
+                                        False
+                                    </system:Boolean>
+                                </Button.CommandParameter>
+                            </Button>
+                        </StackPanel>
+                    </StackPanel>
+
+
+                </Grid>
+            </materialDesign:DialogHost.DialogContent>
+
+        </materialDesign:DialogHost>
+
+
+        <Border
+            Margin="10"
+            materialDesign:ElevationAssist.Elevation="Dp2"
+            BorderBrush="LightGray"
+            BorderThickness="0.5"
+            CornerRadius="10">
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <StackPanel>
+                    <TextBlock
+                        Margin="10"
+                        FontSize="20"
+                        FontWeight="Bold"
+                        Foreground="Gray">
+                        Your cart
+                    </TextBlock>
+                </StackPanel>
+
+                <StackPanel
+                    Grid.Row="1"
+                    VerticalAlignment="Center"
+                    Visibility="{Binding CurrentCart, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource visiblityCollectionConverter}}">
+                    <StackPanel
+                        HorizontalAlignment="Center"
+                        AllowDrop="False"
+                        Orientation="Vertical">
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="40"
+                            TextWrapping="Wrap">
+                            Oops, your cart is empty.
+                        </TextBlock>
+                        <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                            <emoji:TextBlock
+                                VerticalAlignment="Center"
+                                FontSize="36"
+                                Text="😎" />
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontSize="40"
+                                TextWrapping="Wrap">
+
+
+                                <Run Text="Let's add " />
+                                <Run Foreground="Orange" Text="something" />
+                                <Run Text="!" />
+                            </TextBlock>
+                        </StackPanel>
+                    </StackPanel>
+                    <Grid>
+
+                        <Button
+                            Width="200"
+                            materialDesign:ButtonAssist.CornerRadius="10"
+                            Command="{Binding ChangeToHome}"
+                            Foreground="White">
+                            Discover more
+                        </Button>
+                    </Grid>
+                </StackPanel>
+
+                <ScrollViewer Grid.Row="1" Padding="5">
+                    <ItemsControl ItemsSource="{Binding CurrentCart}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <UserControl:UCCartItem />
+                                    <Separator Height="5" Visibility="Hidden" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+
+            </Grid>
+
+
+        </Border>
+
+
+        <StackPanel Grid.Column="1" Margin="0,10,10,10">
+            <Border
+                BorderBrush="LightGray"
+                BorderThickness=".5"
+                CornerRadius="10">
+                <StackPanel>
+                    <TextBlock
+                        Margin="5"
+                        FontSize="20"
+                        FontWeight="Bold"
+                        Foreground="Gray">
+                        Delivery to
+                    </TextBlock>
+                    <Separator
+                        Height="1"
+                        Margin="5"
+                        Background="LightGray" />
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock
+                            Margin="5"
+                            FontSize="16"
+                            FontWeight="Bold">
+                            <Run Text="{Binding CurrentUser.Name}" />
+                            <Run Text=" | " />
+                            <Run Text="{Binding CurrentUser.Phone}" />
+                        </TextBlock>
+                        <Separator Width="5" Visibility="Hidden" />
+                        <TextBlock
+                            Margin="5"
+                            FontSize="16"
+                            Text="{Binding CurrentUser.Address}"
+                            TextWrapping="Wrap" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+            <Separator Height="5" Visibility="Hidden" />
+            <Border
+                BorderBrush="LightGray"
+                BorderThickness=".5"
+                CornerRadius="10">
+                <StackPanel>
+                    <TextBlock
+                        Margin="5"
+                        FontSize="20"
+                        FontWeight="Bold"
+                        Foreground="Gray">
+                        Order summary
+                    </TextBlock>
+                    <Separator
+                        Height="1"
+                        Margin="5"
+                        Background="LightGray" />
+                    <StackPanel Orientation="Vertical">
+                        <StackPanel
+                            Grid.Row="0"
+                            Margin="10"
+                            Orientation="Vertical">
+                            <StackPanel.Resources>
+                                <Style TargetType="{x:Type Grid}">
+                                    <Setter Property="Margin" Value="0,5,0,0" />
+                                </Style>
+                            </StackPanel.Resources>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock FontWeight="ExtraLight" Foreground="Gray">
+                                    Product price
+                                </TextBlock>
+                                <TextBlock
+                                    Grid.Column="1"
+                                    FontSize="15"
+                                    FontWeight="Bold"
+                                    Foreground="Orange"
+                                    Text="{Binding CurrentCart, Converter={StaticResource cartTotalConverter}}"
+                                    TextAlignment="Right" />
+                            </Grid>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Foreground="Gray">
+                                    Shipping fee
+                                </TextBlock>
+                                <TextBlock Grid.Column="1" TextAlignment="Right">
+                                    0đ
+                                </TextBlock>
+                            </Grid>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Foreground="Gray">
+                                    Total payment
+                                </TextBlock>
+                                <TextBlock
+                                    Grid.Column="1"
+                                    FontSize="20"
+                                    FontWeight="Bold"
+                                    Foreground="Orange"
+                                    Text="{Binding CurrentCart, Converter={StaticResource cartTotalConverter}}"
+                                    TextAlignment="Right" />
+                            </Grid>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+
+            </Border>
+            <Separator Height="10" Visibility="Hidden" />
+            <Button
+                materialDesign:ButtonAssist.CornerRadius="10"
+                materialDesign:ElevationAssist.Elevation="Dp0"
+                Command="{Binding ShowOrderCommand}"
+                Foreground="White">
+                Order now
+            </Button>
+        </StackPanel>
+
+    </Grid>
+</UserControl>

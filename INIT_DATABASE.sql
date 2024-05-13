@@ -82,7 +82,6 @@ create table User_Order(
     OrderID int IDENTITY(1,1) constraint PK_User_Order PRIMARY KEY,
     UserID int references Users(UserID),
     OrderDate date not null,
-    ProductID int references Product(ProductID),
     TotalPrice float not null,
     OrderStatus varchar(255) not null,
    );
@@ -125,4 +124,6 @@ DROP TABLE Users;
 DROP TABLE Role;
 
 
-SELECT * FROM Cart;
+SELECT * FROM User_Order;
+
+

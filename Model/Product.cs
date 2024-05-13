@@ -20,7 +20,6 @@ namespace Exchange_App.Model
             this.Carts = new HashSet<Cart>();
             this.Images = new HashSet<Image>();
             this.OrderDetails = new HashSet<OrderDetail>();
-            this.User_Order = new HashSet<User_Order>();
             this.WishItems = new HashSet<WishItem>();
         }
     
@@ -32,10 +31,10 @@ namespace Exchange_App.Model
         public double Sell_price { get; set; }
         public System.DateTime UploadedDate { get; set; }
         public string ProductName { get; set; }
+        public bool IsVerified { get; set; }
         public Nullable<int> CatID { get; set; }
         public Nullable<int> UserID { get; set; }
         public int View_count { get; set; }
-        public bool IsVerified { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Cart> Carts { get; set; }
@@ -46,8 +45,6 @@ namespace Exchange_App.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
         public virtual User User { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<User_Order> User_Order { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<WishItem> WishItems { get; set; }
     }

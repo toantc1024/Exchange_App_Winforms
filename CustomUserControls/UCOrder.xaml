@@ -6,9 +6,27 @@
     xmlns:local="clr-namespace:Exchange_App.CustomUserControls"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:tools="clr-namespace:Exchange_App.Tools"
+    xmlns:view="clr-namespace:Exchange_App.View"
     d:Width="500"
     mc:Ignorable="d">
-    <Border Padding="10" Background="White">
+    <UserControl.Resources>
+        <tools:OrderStatusColorConverter x:Key="orderStatusColorConverter" />
+        <tools:OrderStatusConverter x:Key="orderStatusConverter" />
+        <tools:PreviewOrderDetails x:Key="previewOrderDetails" />
+        <tools:OrderDetailTotalConverter x:Key="orderDetailTotalConverter" />
+        <tools:CartItemTotalConverter x:Key="cartItemTotalConverter" />
+        <tools:CurrencyToStringConverter x:Key="currencyToStringConverter" />
+        <tools:ProductPreviewImageConverter x:Key="productPreviewImageConverter" />
+        <tools:ShowMoreVisibilityConverter x:Key="showMoreVisibilityConverter" />
+        <tools:ShowMoreConverter x:Key="showMoreConverter" />
+    </UserControl.Resources>
+    <Border
+        Padding="10"
+        Background="White"
+        BorderBrush="LightGray"
+        BorderThickness=".5"
+        CornerRadius="10">
         <StackPanel>
             <DockPanel>
                 <TextBlock VerticalAlignment="Center" FontWeight="Bold">
@@ -22,55 +40,108 @@
                         Margin="5"
                         VerticalAlignment="Center"
                         Orientation="Vertical">
-                        <materialDesign:PackIcon Foreground="MediumSeaGreen" Kind="DeliveryDining" />
+                        <materialDesign:PackIcon Foreground="{Binding ., UpdateSourceTrigger=PropertyChanged, Converter={StaticResource orderStatusColorConverter}}" Kind="DeliveryDining" />
                     </StackPanel>
-                    <TextBlock VerticalAlignment="Center" Foreground="MediumSeaGreen">
-                        Successfully delivered
-                    </TextBlock>
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        Foreground="{Binding ., UpdateSourceTrigger=PropertyChanged, Converter={StaticResource orderStatusColorConverter}}"
+                        Text="{Binding ., Converter={StaticResource orderStatusConverter}, UpdateSourceTrigger=PropertyChanged}" />
                     <Separator Width="5" Visibility="Hidden" />
-                    <TextBlock VerticalAlignment="Center" Foreground="Gray">
-                        PENDING
-                    </TextBlock>
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        Foreground="Gray"
+                        Text="{Binding OrderStatus}" />
                 </StackPanel>
             </DockPanel>
             <Separator
                 Height="1"
                 Margin="5"
                 Background="LightGray" />
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="auto" />
-                </Grid.ColumnDefinitions>
-                <Border
-                    Width="100"
-                    Height="100"
-                    HorizontalAlignment="Left"
-                    BorderBrush="LightGray"
-                    BorderThickness="0.2"
-                    CornerRadius="5">
-                    <Border.Background>
-                        <ImageBrush />
-                    </Border.Background>
-                </Border>
-                <StackPanel Grid.Column="1" Margin="5">
-                    <TextBlock TextWrapping="Wrap">Bình chai nước thủy tinh hình xương rồng 400ml - Cactus Love</TextBlock>
-                </StackPanel>
-                <StackPanel
-                    Grid.Column="2"
-                    VerticalAlignment="Center"
-                    Orientation="Horizontal">
-                    <TextBlock TextDecorations="Strikethrough" TextWrapping="Wrap">400.00</TextBlock>
-                    <Separator Width="5" Visibility="Hidden" />
-                    <TextBlock
-                        FontWeight="Bold"
-                        Foreground="DarkOrange"
-                        TextWrapping="Wrap">
-                        400.00
-                    </TextBlock>
-                </StackPanel>
-            </Grid>
+            <ItemsControl ItemsSource="{Binding ., UpdateSourceTrigger=PropertyChanged, Converter={StaticResource previewOrderDetails}}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100" />
+                                <ColumnDefinition Width="*" MaxWidth="300" />
+                            </Grid.ColumnDefinitions>
+                            <Border
+                                Width="100"
+                                Height="100"
+                                HorizontalAlignment="Left"
+                                BorderBrush="LightGray"
+                                BorderThickness="0.2"
+                                CornerRadius="5">
+                                <Border.Background>
+                                    <ImageBrush ImageSource="{Binding Product.Images, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource productPreviewImageConverter}}" Stretch="UniformToFill" />
+                                </Border.Background>
+                            </Border>
+                            <StackPanel Grid.Column="1" Margin="5">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Product.ProductName}" TextWrapping="Wrap" />
+
+                                </StackPanel>
+                                <Separator Height="5" Visibility="Hidden" />
+                                <StackPanel
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal">
+                                    <TextBlock
+                                        FontWeight="Bold"
+                                        Foreground="Gray"
+                                        TextDecorations="Strikethrough"
+                                        TextWrapping="Wrap">
+                                        <Run Text="{Binding Product.Original_price, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource currencyToStringConverter}}" />
+
+                                    </TextBlock>
+                                    <Separator Width="5" Visibility="Hidden" />
+                                    <TextBlock
+                                        FontWeight="Bold"
+                                        Foreground="DarkOrange"
+                                        TextWrapping="Wrap">
+                                        <Run Text="{Binding Product.Sell_price, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource currencyToStringConverter}}" />
+                                    </TextBlock>
+                                </StackPanel>
+                                <Separator Height="5" Visibility="Hidden" />
+                                <StackPanel
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Border MinWidth="50" materialDesign:ElevationAssist.Elevation="Dp0">
+
+
+                                            <TextBlock>
+                                                <Run Text="Quantity: " />
+                                                <Run Text="{Binding Quantity}" />
+                                            </TextBlock>
+                                        </Border>
+                                    </StackPanel>
+                                </StackPanel>
+                                <Separator Height="5" Visibility="Hidden" />
+                                <StackPanel
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal">
+                                    <TextBlock FontWeight="Bold" TextWrapping="Wrap">
+                                        <Run Text="Total: " />
+                                        <Run Foreground="DarkOrange" Text="{Binding ., Converter={StaticResource orderDetailTotalConverter}, UpdateSourceTrigger=PropertyChanged}" />
+                                    </TextBlock>
+
+                                </StackPanel>
+                            </StackPanel>
+
+
+                        </Grid>
+
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <TextBlock
+                Margin="5"
+                Text="{Binding ., UpdateSourceTrigger=PropertyChanged, Converter={StaticResource showMoreConverter}}"
+                Visibility="{Binding ., UpdateSourceTrigger=PropertyChanged, Converter={StaticResource showMoreVisibilityConverter}}" />
             <Separator
                 Height="1"
                 Margin="5"
@@ -82,17 +153,28 @@
                         FontSize="20"
                         FontWeight="Bold">
                         <Run Foreground="DarkOrange" Text="Total: " />
-                        <Run Foreground="DarkOrange" Text="100,000.00đ" />
+                        <Run Foreground="DarkOrange" Text="{Binding TotalPrice, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource currencyToStringConverter}}" />
                     </TextBlock>
                 </StackPanel>
             </DockPanel>
 
             <DockPanel>
                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                    <Button>Details</Button>
+                    <Button
+                        materialDesign:ButtonAssist.CornerRadius="10"
+                        materialDesign:ElevationAssist.Elevation="Dp0"
+                        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type view:OrderView}}, Path=DataContext.ShowOrderDetailsCommand}"
+                        CommandParameter="{Binding .}"
+                        Foreground="White">
+                        Details
+                    </Button>
                     <Separator Width="5" Visibility="Hidden" />
-                    <Separator Width="5" Visibility="Hidden" />
-                    <materialDesign:Card>
+                    <materialDesign:Card
+                        materialDesign:ButtonAssist.CornerRadius="10"
+                        materialDesign:ElevationAssist.Elevation="Dp0"
+                        BorderBrush="LightGray"
+                        BorderThickness=".5"
+                        UniformCornerRadius="10">
                         <Menu materialDesign:MenuAssist.TopLevelMenuItemHeight="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type materialDesign:Card}}, Path=ActualHeight}">
 
                             <MenuItem Header="More">

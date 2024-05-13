@@ -88,7 +88,7 @@
                     Background="Orange"
                     BorderBrush="Transparent"
                     Command="{Binding UpdateViewCommand}"
-                    CommandParameter="Order"
+                    CommandParameter="Cart"
                     Foreground="White">
                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                         <materialDesign:PackIcon HorizontalAlignment="Center" Kind="Cart" />

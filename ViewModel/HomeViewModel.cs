@@ -430,6 +430,8 @@ namespace Exchange_App.ViewModel
                        }
                        );
 
+            
+
             HideCheckoutCommand = new RelayCommand<int>(
                 (p) =>
                 {

@@ -37,6 +37,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Emoji.Wpf, Version=0.3.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Emoji.Wpf.0.3.4\lib\net40\Emoji.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -61,12 +64,18 @@
     <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.Xaml.Behaviors.Wpf.1.1.39\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
     </Reference>
+    <Reference Include="Stfu, Version=0.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Stfu.0.1.1\lib\net40\Stfu.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\System.Windows.Interactivity.dll</HintPath>
@@ -86,6 +95,12 @@
     <Reference Include="ToastNotifications.Messages, Version=2.5.1.0, Culture=neutral, PublicKeyToken=e89d9d7314a7c797, processorArchitecture=MSIL">
       <HintPath>packages\ToastNotifications.Messages.2.5.1\lib\net40\ToastNotifications.Messages.dll</HintPath>
     </Reference>
+    <Reference Include="Typography.GlyphLayout, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Emoji.Wpf.0.3.4\lib\net40\Typography.GlyphLayout.dll</HintPath>
+    </Reference>
+    <Reference Include="Typography.OpenFont, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Emoji.Wpf.0.3.4\lib\net40\Typography.OpenFont.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -98,14 +113,18 @@
     <Compile Include="AuthWindow.xaml.cs">
       <DependentUpon>AuthWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Constants\OrderConstants.cs" />
+    <Compile Include="CustomUserControls\UCCartItem.xaml.cs">
+      <DependentUpon>UCCartItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CustomUserControls\UCCheckoutSummary.xaml.cs">
+      <DependentUpon>UCCheckoutSummary.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CustomUserControls\UCOrderProduct.xaml.cs">
+      <DependentUpon>UCOrderProduct.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CustomUserControls\UCWelcome.xaml.cs">
       <DependentUpon>UCWelcome.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Model\Cart.cs">
-      <DependentUpon>StuffExchangeApp.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\Category.cs">
-      <DependentUpon>StuffExchangeApp.tt</DependentUpon>
     </Compile>
     <Compile Include="CustomUserControls\Loading.xaml.cs">
       <DependentUpon>Loading.xaml</DependentUpon>
@@ -134,6 +153,12 @@
     <Compile Include="CustomUserControls\UCReview.xaml.cs">
       <DependentUpon>UCReview.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\Cart.cs">
+      <DependentUpon>StuffExchangeApp.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Category.cs">
+      <DependentUpon>StuffExchangeApp.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\Image.cs">
       <DependentUpon>StuffExchangeApp.tt</DependentUpon>
     </Compile>
@@ -143,13 +168,6 @@
     <Compile Include="Model\Product.cs">
       <DependentUpon>StuffExchangeApp.tt</DependentUpon>
     </Compile>
-    <Compile Include="Repositories\connectStr.cs" />
-    <Compile Include="Repositories\Implementations\BaseRepository.cs" />
-    <Compile Include="Repositories\Implementations\CategoryRepository.cs" />
-    <Compile Include="Repositories\Implementations\ImageRepository.cs" />
-    <Compile Include="Repositories\Implementations\ProductRepository.cs" />
-    <Compile Include="Repositories\Implementations\UserRepository.cs" />
-    <Compile Include="Repositories\Implementations\WishItemRepository.cs" />
     <Compile Include="Model\Review.cs">
       <DependentUpon>StuffExchangeApp.tt</DependentUpon>
     </Compile>
@@ -171,13 +189,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>StuffExchangeApp.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Tools\ControlConverter.cs" />
-    <Compile Include="Tools\CurrencyConverter.cs" />
-    <Compile Include="Tools\InformationConverter.cs" />
-    <Compile Include="Tools\Notify.cs" />
-    <Compile Include="Tools\OrderConverter.cs" />
-    <Compile Include="Tools\ProductConverter.cs" />
-    <Compile Include="Tools\WishlistConverter.cs" />
     <Compile Include="Model\User.cs">
       <DependentUpon>StuffExchangeApp.tt</DependentUpon>
     </Compile>
@@ -187,8 +198,27 @@
     <Compile Include="Model\User_Order.cs">
       <DependentUpon>StuffExchangeApp.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\WishItem.cs">
+      <DependentUpon>StuffExchangeApp.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repositories\connectStr.cs" />
+    <Compile Include="Repositories\Implementations\BaseRepository.cs" />
+    <Compile Include="Repositories\Implementations\CategoryRepository.cs" />
+    <Compile Include="Repositories\Implementations\ImageRepository.cs" />
+    <Compile Include="Repositories\Implementations\ProductRepository.cs" />
+    <Compile Include="Repositories\Implementations\UserRepository.cs" />
+    <Compile Include="Repositories\Implementations\WishItemRepository.cs" />
+    <Compile Include="Tools\CartConverter.cs" />
+    <Compile Include="Tools\ControlConverter.cs" />
+    <Compile Include="Tools\CurrencyConverter.cs" />
+    <Compile Include="Tools\InformationConverter.cs" />
+    <Compile Include="Tools\Notify.cs" />
+    <Compile Include="Tools\OrderConverter.cs" />
+    <Compile Include="Tools\ProductConverter.cs" />
+    <Compile Include="Tools\WishlistConverter.cs" />
     <Compile Include="ValidationRules\NotEmptyRule.cs" />
     <Compile Include="ViewModel\AddCategoryViewModel.cs" />
+    <Compile Include="ViewModel\CartViewModel.cs" />
     <Compile Include="ViewModel\CategoryManagerViewModel.cs" />
     <Compile Include="ViewModel\CheckoutViewModel.cs" />
     <Compile Include="ViewModel\HomeViewModel.cs" />
@@ -212,6 +242,9 @@
     <Compile Include="ViewModel\UserInfoViewModel.cs" />
     <Compile Include="View\AddCategoryView.xaml.cs">
       <DependentUpon>AddCategoryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\CartView.xaml.cs">
+      <DependentUpon>CartView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\CategoriesManagerView.xaml.cs">
       <DependentUpon>CategoriesManagerView.xaml</DependentUpon>
@@ -246,9 +279,6 @@
     <Compile Include="View\UserInfoView.xaml.cs">
       <DependentUpon>UserInfoView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Model\WishItem.cs">
-      <DependentUpon>StuffExchangeApp.tt</DependentUpon>
-    </Compile>
     <Page Include="AuthWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -273,6 +303,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="CustomUserControls\UCCartItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomUserControls\UCCheckoutSummary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CustomUserControls\UCDataList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -286,6 +324,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CustomUserControls\UCOrderDetail.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomUserControls\UCOrderProduct.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -321,6 +363,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\AddCategoryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\CartView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -387,6 +433,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Resource Include="Fonts\Poppins-Regular.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <EntityDeploy Include="Model\StuffExchangeApp.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>StuffExchangeApp.Designer.cs</LastGenOutput>
@@ -394,9 +443,6 @@
     <None Include="Model\StuffExchangeApp.edmx.diagram">
       <DependentUpon>StuffExchangeApp.edmx</DependentUpon>
     </None>
-    <Resource Include="Fonts\Poppins-Regular.ttf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -432,5 +478,7 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('packages\MaterialDesignThemes.4.9.0\build\MaterialDesignThemes.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\MaterialDesignThemes.4.9.0\build\MaterialDesignThemes.targets'))" />
+    <Error Condition="!Exists('packages\JeremyAnsel.HLSL.Targets.1.0.13\build\JeremyAnsel.HLSL.Targets.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\JeremyAnsel.HLSL.Targets.1.0.13\build\JeremyAnsel.HLSL.Targets.targets'))" />
   </Target>
+  <Import Project="packages\JeremyAnsel.HLSL.Targets.1.0.13\build\JeremyAnsel.HLSL.Targets.targets" Condition="Exists('packages\JeremyAnsel.HLSL.Targets.1.0.13\build\JeremyAnsel.HLSL.Targets.targets')" />
 </Project>

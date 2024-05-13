@@ -810,21 +810,21 @@ namespace Exchange_App.ViewModel
                         // delete product
 
                         // remove all images by product id
-                        DataProvider.Ins.DB.Images.RemoveRange(DataProvider.Ins.DB.Images.Where(x => x.ProductID == p.ProductID));
+                        //DataProvider.Ins.DB.Images.RemoveRange(DataProvider.Ins.DB.Images.Where(x => x.ProductID == p.ProductID));
 
 
-                        var wishItems = DataProvider.Ins.DB.WishItems.Where(x => x.ProductID == p.ProductID).ToList();
-                        if (wishItems.Count > 0)
-                        {
-                            throw new Exception("Product is in wishlist, cannot delete!");
-                        }
+                        //var wishItems = DataProvider.Ins.DB.WishItems.Where(x => x.ProductID == p.ProductID).ToList();
+                        //if (wishItems.Count > 0)
+                        //{
+                        //    throw new Exception("Product is in wishlist, cannot delete!");
+                        //}
 
-                        var User_Orders = DataProvider.Ins.DB.User_Order.Where(x => x.ProductID == p.ProductID).ToList();
+                        //var User_Orders = DataProvider.Ins.DB.User_Order.Where(x => x.ProductID == p.ProductID).ToList();
 
-                        if (User_Orders.Count > 0)
-                        {
-                            throw new Exception("Product is in order, cannot delete!");
-                        }
+                        //if (User_Orders.Count > 0)
+                        //{
+                        //    throw new Exception("Product is in order, cannot delete!");
+                        //}
 
                         DataProvider.Ins.DB.Products.Remove(p);
                         DataProvider.Ins.DB.SaveChanges();

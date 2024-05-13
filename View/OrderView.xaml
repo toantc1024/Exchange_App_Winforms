@@ -13,6 +13,10 @@
     d:DesignWidth="761.6"
     mc:Ignorable="d">
     <UserControl.Resources>
+        <tool:PendingConverter x:Key="pendingConverter" />
+        <tool:SuccessConverter x:Key="successConverter" />
+        <tool:CancelledConverter x:Key="cancelledConverter" />
+        <tool:DeliveringConverter x:Key="deliveringConverter" />
         <tool:WriteReviewUserOrderConverter x:Key="writeReviewUserOrderConverter" />
         <tool:CancelUserOrderConverter x:Key="cancelUserOrderConverter" />
         <tool:ProductPreviewImageConverter x:Key="productPreviewImageConverter" />
@@ -112,14 +116,45 @@
 
                     </Grid>
                     <uc:UCFilter />
-
+                    <StackPanel Margin="4" Orientation="Horizontal">
+                        <RadioButton
+                            Margin="4"
+                            Background="White"
+                            BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                            Command="{Binding ChangeGroupOrderCommand}"
+                            CommandParameter="PENDING"
+                            Content="PENDING"
+                            IsChecked="True"
+                            Style="{StaticResource MaterialDesignTabRadioButtonBottom}" />
+                        <RadioButton
+                            Margin="4"
+                            BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                            Command="{Binding ChangeGroupOrderCommand}"
+                            CommandParameter="DELIVERING"
+                            Content="DELIVERING"
+                            IsChecked="False"
+                            Style="{StaticResource MaterialDesignTabRadioButtonBottom}" />
+                        <RadioButton
+                            Margin="4"
+                            BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                            Command="{Binding ChangeGroupOrderCommand}"
+                            CommandParameter="SUCCESS"
+                            Content="SUCCESS"
+                            IsChecked="False"
+                            Style="{StaticResource MaterialDesignTabRadioButtonBottom}" />
+                        <RadioButton
+                            Margin="4"
+                            BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                            Command="{Binding ChangeGroupOrderCommand}"
+                            CommandParameter="CANCELLED"
+                            Content="CANCELLED"
+                            IsChecked="False"
+                            Style="{StaticResource MaterialDesignTabRadioButtonBottom}" />
+                    </StackPanel>
                 </StackPanel>
 
 
-
-
-
-                <ScrollViewer Grid.Row="2" Background="White">
+                <ScrollViewer Grid.Row="1" Background="White">
                     <ItemsControl Grid.IsSharedSizeScope="True" ItemsSource="{Binding Orders}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
@@ -131,19 +166,11 @@
                                     Cursor="Hand">
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="MouseLeftButtonDown">
-                                            <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:OrderView}}, Path=DataContext.ShowOrderDetailsCommand}" CommandParameter="{Binding}" />
+                                            <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:OrderView}}, Path=DataContext.ShowOrderDetailsCommand}" CommandParameter="{Binding .}" />
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
                                     <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel Margin="8,0,0,0">
-                                            <TextBlock FontWeight="Bold" Text="{Binding Product.ProductName}" />
-                                            <TextBlock Text="{Binding OrderDate}" />
-                                            <TextBlock Foreground="DarkOrange" Text="{Binding Total, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource currencyConverter}}" />
-                                        </StackPanel>
+                                        <uc:UCOrder />
                                     </Grid>
                                 </Border>
                                 <DataTemplate.Triggers>
@@ -162,248 +189,8 @@
                 Grid.Row="1"
                 Panel.ZIndex="9999"
                 Background="White"
-                Visibility="Hidden">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-
-
-
-
-                <ScrollViewer Grid.Row="1" Margin="10">
-                    <Border
-                        Grid.Row="1"
-                        materialDesign:ElevationAssist.Elevation="Dp0"
-                        BorderBrush="Gray"
-                        BorderThickness=".1"
-                        CornerRadius="10">
-                        <StackPanel Grid.Row="1" Margin="5">
-
-                            <Border
-                                Padding="5"
-                                Background="Orange"
-                                CornerRadius="5">
-                                <StackPanel>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock
-                                            Margin="5"
-                                            FontSize="20"
-                                            FontWeight="Bold"
-                                            Foreground="White">
-                                            <Run Text="Status: " />
-                                            <Run Text="{Binding CurrentOrder.OrderStatus}" />
-                                        </TextBlock>
-                                    </StackPanel>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Border
-                                            Width="128"
-                                            Height="128"
-                                            Margin="5"
-                                            BorderBrush="LightGray"
-                                            BorderThickness="0.5"
-                                            CornerRadius="5">
-                                            <Border.Background>
-                                                <ImageBrush ImageSource="{Binding CurrentOrder.Product.Images, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource productPreviewImageConverter}}" Stretch="UniformToFill" />
-                                            </Border.Background>
-                                        </Border>
-                                        <StackPanel Margin="5" Orientation="Vertical">
-                                            <TextBlock Foreground="White">
-                                                <Run Text="Product name: " />
-                                                <Run FontWeight="Bold" Text="{Binding CurrentOrder.Product.ProductName}" />
-
-                                            </TextBlock>
-
-
-                                            <Separator Height="5" Visibility="Hidden" />
-                                            <StackPanel Width="auto" Orientation="Horizontal">
-                                                <TextBlock Foreground="White">
-                                                    <Run Text="Quantity: " />
-                                                </TextBlock>
-                                                <Separator Width="5" Visibility="Hidden" />
-
-                                                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition />
-                                                        <ColumnDefinition Width="40" />
-                                                        <ColumnDefinition />
-                                                    </Grid.ColumnDefinitions>
-
-                                                    <TextBlock
-                                                        Grid.Column="1"
-                                                        HorizontalAlignment="Center"
-                                                        VerticalAlignment="Center"
-                                                        Foreground="White"
-                                                        Text="{Binding CurrentOrder.Quantity}" />
-
-                                                </Grid>
-                                            </StackPanel>
-
-                                            <Separator Height="5" Visibility="Hidden" />
-                                            <Border Background="White" CornerRadius="10">
-                                                <TextBlock Padding="10">
-                                                    <Run FontWeight="Bold" Text="Price: " />
-                                                    <Run
-                                                        FontWeight="Bold"
-                                                        Foreground="DarkOrange"
-                                                        Text="{Binding CurrentOrder.Total, Converter={StaticResource currencyConverter}}" />
-                                                </TextBlock>
-                                            </Border>
-                                        </StackPanel>
-                                    </StackPanel>
-
-
-                                </StackPanel>
-                            </Border>
-
-                            <Border
-                                Grid.Column="1"
-                                Padding="5"
-                                CornerRadius="10">
-                                <StackPanel Grid.Column="1">
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock
-                                            Margin="5"
-                                            FontSize="20"
-                                            FontWeight="UltraBold"
-                                            Foreground="DarkOrange">
-                                            Billing information
-                                        </TextBlock>
-                                    </StackPanel>
-                                    <StackPanel Margin="10" Orientation="Vertical">
-                                        <StackPanel>
-                                            <TextBlock
-                                                FontSize="12"
-                                                FontWeight="Bold"
-                                                Foreground="DarkOrange">
-                                                Please choose receiving method
-                                            </TextBlock>
-                                            <Separator Height="5" Visibility="Hidden" />
-
-                                            <TextBlock Text="{Binding CurrentUser.Address}" />
-                                        </StackPanel>
-
-                                        <Separator Height="5" Visibility="Hidden" />
-
-
-                                    </StackPanel>
-                                    <Border Margin="5">
-                                        <StackPanel>
-                                            <Grid>
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition />
-                                                    <RowDefinition />
-                                                    <RowDefinition />
-                                                </Grid.RowDefinitions>
-                                                <StackPanel
-                                                    Grid.Row="0"
-                                                    Margin="10"
-                                                    Orientation="Vertical">
-                                                    <StackPanel.Resources>
-                                                        <Style TargetType="{x:Type Grid}">
-                                                            <Setter Property="Margin" Value="0,5,0,0" />
-                                                        </Style>
-                                                    </StackPanel.Resources>
-                                                    <Grid>
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition />
-                                                            <ColumnDefinition />
-                                                        </Grid.ColumnDefinitions>
-                                                        <TextBlock>
-                                                            Product price
-                                                        </TextBlock>
-                                                        <TextBlock
-                                                            Grid.Column="1"
-                                                            Text="{Binding CurrentOrder.Product.Sell_price, Converter={StaticResource currencyConverter}}"
-                                                            TextAlignment="Right" />
-                                                    </Grid>
-                                                    <Grid>
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition />
-                                                            <ColumnDefinition />
-                                                        </Grid.ColumnDefinitions>
-                                                        <TextBlock>
-                                                            Shipping fee
-                                                        </TextBlock>
-                                                        <TextBlock Grid.Column="1" TextAlignment="Right">
-                                                            0
-                                                        </TextBlock>
-                                                    </Grid>
-                                                    <Grid>
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition />
-                                                            <ColumnDefinition />
-                                                        </Grid.ColumnDefinitions>
-                                                        <TextBlock FontSize="15" FontWeight="Bold">
-                                                            Total payment
-                                                        </TextBlock>
-                                                        <TextBlock
-                                                            Grid.Column="1"
-                                                            FontSize="15"
-                                                            FontWeight="Bold"
-                                                            Foreground="Orange"
-                                                            Text="{Binding CurrentOrder.Total, Converter={StaticResource currencyConverter}}"
-                                                            TextAlignment="Right" />
-                                                    </Grid>
-                                                </StackPanel>
-                                            </Grid>
-                                        </StackPanel>
-
-                                    </Border>
-
-                                    <StackPanel Orientation="Horizontal">
-                                        <Button
-                                            HorizontalAlignment="Left"
-                                            materialDesign:ButtonAssist.CornerRadius="10"
-                                            materialDesign:ElevationAssist.Elevation="Dp0"
-                                            Background="Red"
-                                            BorderBrush="Red"
-                                            CommandParameter="{Binding CurrentOrder.Product.ProductID}"
-                                            Foreground="White"
-                                            Visibility="{Binding CurrentOrder, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource cancelUserOrderConverter}}">
-                                            <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-                                                <TextBlock
-                                                    VerticalAlignment="Center"
-                                                    FontWeight="Bold"
-                                                    Foreground="White">
-                                                    Cancel
-                                                </TextBlock>
-                                                <Separator Width="5" Visibility="Hidden" />
-                                                <materialDesign:PackIcon VerticalAlignment="Center" Kind="Cancel" />
-                                            </StackPanel>
-
-                                        </Button>
-                                        <Separator Width="5" Visibility="Hidden" />
-                                        <Button
-                                            HorizontalAlignment="Left"
-                                            materialDesign:ButtonAssist.CornerRadius="10"
-                                            materialDesign:ElevationAssist.Elevation="Dp0"
-                                            Background="DarkOrange"
-                                            BorderBrush="DarkOrange"
-                                            Command="{Binding ShowReviewCommand}"
-                                            Foreground="White"
-                                            Visibility="{Binding CurrentOrder, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource writeReviewUserOrderConverter}}">
-                                            <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-                                                <TextBlock
-                                                    VerticalAlignment="Center"
-                                                    FontWeight="Bold"
-                                                    Foreground="White">
-                                                    Review
-                                                </TextBlock>
-                                                <Separator Width="5" Visibility="Hidden" />
-                                                <materialDesign:PackIcon VerticalAlignment="Center" Kind="Star" />
-                                            </StackPanel>
-
-                                        </Button>
-                                    </StackPanel>
-                                </StackPanel>
-
-                            </Border>
-                        </StackPanel>
-
-                    </Border>
-                </ScrollViewer>
-
+                Visibility="{Binding IsShowOrderDetail}">
+                <uc:UCOrderDetail />
             </Grid>
 
         </Grid>

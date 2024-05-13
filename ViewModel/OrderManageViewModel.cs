@@ -49,13 +49,13 @@ namespace Exchange_App.ViewModel
 
         private void GetOrdersOfUser()
         {
-            var products = CurrentUser.Products;
-            var orders = new List<User_Order>();
-            foreach (Product product in products)
-            {
-                product.User_Order.ToList().ForEach(order => orders.Add(order));
-            }
-            Orders = orders;
+            //var products = CurrentUser.Products;
+            //var orders = new List<User_Order>();
+            //foreach (Product product in products)
+            //{
+            //    product.User_Order.ToList().ForEach(order => orders.Add(order));
+            //}
+            //Orders = orders;
 
         }
 

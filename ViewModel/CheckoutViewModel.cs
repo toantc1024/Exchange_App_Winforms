@@ -208,24 +208,24 @@ namespace Exchange_App.ViewModel
                   // check if the product is still available
                   try
                   {
-                      // check if UserID == Product.UserID
-                      if (CurrentUser.UserID == SelectedProduct.UserID)
-                      {
-                          throw new Exception("You can't order your own product");
-                      }
-                      DataProvider.Ins.DB.User_Order.Add(new User_Order
-                      {
-                          UserID = CurrentUser.UserID,
-                          ProductID = SelectedProduct.ProductID,
-                          //Quantity = OrderQuantity,
-                          OrderDate = DateTime.Now,
-                          OrderStatus = "Pending"
-                      });
-                      DataProvider.Ins.DB.Products.Where(x => x.ProductID == SelectedProduct.ProductID).FirstOrDefault().Quantity -= OrderQuantity;
+                      //// check if UserID == Product.UserID
+                      //if (CurrentUser.UserID == SelectedProduct.UserID)
+                      //{
+                      //    throw new Exception("You can't order your own product");
+                      //}
+                      //DataProvider.Ins.DB.User_Order.Add(new User_Order
+                      //{
+                      //    UserID = CurrentUser.UserID,
+                      //    ProductID = SelectedProduct.ProductID,
+                      //    //Quantity = OrderQuantity,
+                      //    OrderDate = DateTime.Now,
+                      //    OrderStatus = "Pending"
+                      //});
+                      //DataProvider.Ins.DB.Products.Where(x => x.ProductID == SelectedProduct.ProductID).FirstOrDefault().Quantity -= OrderQuantity;
 
-                      DataProvider.Ins.DB.SaveChanges();
-                      MessageBox.Show("Order successfully!");
-                      HideCheckoutCommand.Execute(SelectedProduct.ProductID);
+                      //DataProvider.Ins.DB.SaveChanges();
+                      //MessageBox.Show("Order successfully!");
+                      //HideCheckoutCommand.Execute(SelectedProduct.ProductID);
 
                   } catch (Exception ex)
                   {

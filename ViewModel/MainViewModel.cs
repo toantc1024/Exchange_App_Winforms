@@ -28,6 +28,7 @@ namespace Exchange_App.ViewModel
         }
 
     
+        public ICommand ChangeToHomeView { get; set; }
         public int count = 0;
 
 
@@ -83,7 +84,16 @@ namespace Exchange_App.ViewModel
                 MessageBox.Show(count.ToString());
             });
 
-         
+
+            ChangeToHomeView = new RelayCommand<object>(
+                (p) =>
+                {
+                    return true;
+                }, (p) =>
+                {
+                    SelectedViewModel = new HomeViewModel(CurrentUser);
+
+                });
 
             UpdateViewCommand = new RelayCommand<object>(o =>
             {
@@ -103,6 +113,9 @@ namespace Exchange_App.ViewModel
                     } else if ((string)o == "User")
                     {
                         SelectedViewModel = new UserInfoViewModel(CurrentUser);
+                    } else if ((string)o == "Cart")
+                    {
+                        SelectedViewModel = new CartViewModel(CurrentUser, ChangeToHomeView);
                     }
                 }
 
