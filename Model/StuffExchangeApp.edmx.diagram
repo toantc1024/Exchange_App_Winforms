@@ -4,26 +4,26 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="4107626300894325b41f231184455c00" Name="Diagram1" ZoomLevel="44">
-        <EntityTypeShape EntityType="StuffExchangeAppModel.Cart" Width="1.5" PointX="5.25" PointY="10.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="StuffExchangeAppModel.Category" Width="1.5" PointX="3" PointY="6.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="StuffExchangeAppModel.Image" Width="1.5" PointX="10.5" PointY="10.875" IsExpanded="true" />
+      <Diagram DiagramId="1e00dca4cc8843ad95646c57222a8550" Name="Diagram1" ZoomLevel="47">
+        <EntityTypeShape EntityType="StuffExchangeAppModel.Cart" Width="1.5" PointX="5.25" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="StuffExchangeAppModel.Category" Width="1.5" PointX="3" PointY="6.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="StuffExchangeAppModel.Image" Width="1.5" PointX="10.5" PointY="11" IsExpanded="true" />
         <EntityTypeShape EntityType="StuffExchangeAppModel.OrderDetail" Width="1.5" PointX="10.5" PointY="15.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="StuffExchangeAppModel.Product" Width="1.5" PointX="8.25" PointY="9.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="StuffExchangeAppModel.Review" Width="1.5" PointX="5.25" PointY="17.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="StuffExchangeAppModel.Role" Width="1.5" PointX="0.75" PointY="11" IsExpanded="true" />
-        <EntityTypeShape EntityType="StuffExchangeAppModel.User_Order" Width="1.5" PointX="5.25" PointY="20.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="StuffExchangeAppModel.UserClickCategory" Width="1.5" PointX="5.25" PointY="7.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="StuffExchangeAppModel.User" Width="1.5" PointX="3" PointY="9.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="StuffExchangeAppModel.WishItem" Width="1.5" PointX="10.5" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="StuffExchangeAppModel.Product" Width="1.5" PointX="8.25" PointY="9.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="StuffExchangeAppModel.Review" Width="1.5" PointX="5.25" PointY="17.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="StuffExchangeAppModel.Role" Width="1.5" PointX="0.75" PointY="11.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="StuffExchangeAppModel.User_Order" Width="1.5" PointX="5.25" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="StuffExchangeAppModel.UserClickCategory" Width="1.5" PointX="5.25" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="StuffExchangeAppModel.User" Width="1.5" PointX="3" PointY="9.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="StuffExchangeAppModel.WishItem" Width="1.5" PointX="10.5" PointY="7.875" IsExpanded="true" />
         <AssociationConnector Association="StuffExchangeAppModel.FK__Cart__ProductID__57DD0BE4" ManuallyRouted="false" />
         <AssociationConnector Association="StuffExchangeAppModel.FK__Cart__UserID__56E8E7AB" ManuallyRouted="false" />
         <AssociationConnector Association="StuffExchangeAppModel.FK__Product__CatID__4A8310C6" ManuallyRouted="false" />
         <AssociationConnector Association="StuffExchangeAppModel.FK__UserClick__CatID__6DCC4D03" ManuallyRouted="false" />
         <AssociationConnector Association="StuffExchangeAppModel.FK_Product_category" ManuallyRouted="false" />
         <AssociationConnector Association="StuffExchangeAppModel.FK__Images__ProductI__540C7B00" ManuallyRouted="false" />
-        <AssociationConnector Association="StuffExchangeAppModel.FK__OrderDeta__Order__7B264821" ManuallyRouted="false" />
-        <AssociationConnector Association="StuffExchangeAppModel.FK__OrderDeta__Produ__7C1A6C5A" ManuallyRouted="false" />
+        <AssociationConnector Association="StuffExchangeAppModel.FK__OrderDeta__Order__0880433F" ManuallyRouted="false" />
+        <AssociationConnector Association="StuffExchangeAppModel.FK__OrderDeta__Produ__09746778" ManuallyRouted="false" />
         <AssociationConnector Association="StuffExchangeAppModel.FK__Product__UserID__4B7734FF" ManuallyRouted="false" />
         <AssociationConnector Association="StuffExchangeAppModel.FK_CartDetail_ProductID" ManuallyRouted="false" />
         <AssociationConnector Association="StuffExchangeAppModel.FK__Review__TargetUs__5E8A0973" ManuallyRouted="false" />

@@ -153,10 +153,11 @@ namespace Exchange_App.ViewModel
         #endregion
 
 
-        public CartViewModel(User user, ICommand ChangeToHome)
+        public CartViewModel(User user, ICommand changeToHome)
         {
             CurrentUser = user;
             Initialize();
+            ChangeToHome = changeToHome;    
 
             #region Implementations
 

@@ -120,6 +120,12 @@
     <Compile Include="CustomUserControls\UCCheckoutSummary.xaml.cs">
       <DependentUpon>UCCheckoutSummary.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CustomUserControls\UCManageOrderProduct.xaml.cs">
+      <DependentUpon>UCManageOrderProduct.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CustomUserControls\UCOrderItemManage.xaml.cs">
+      <DependentUpon>UCOrderItemManage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CustomUserControls\UCOrderProduct.xaml.cs">
       <DependentUpon>UCOrderProduct.xaml</DependentUpon>
     </Compile>
@@ -319,11 +325,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="CustomUserControls\UCManageOrderProduct.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CustomUserControls\UCOrder.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CustomUserControls\UCOrderDetail.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomUserControls\UCOrderItemManage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

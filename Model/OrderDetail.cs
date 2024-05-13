@@ -18,6 +18,7 @@ namespace Exchange_App.Model
         public Nullable<int> OrderID { get; set; }
         public Nullable<int> ProductID { get; set; }
         public int Quantity { get; set; }
+        public bool IsConfirmed { get; set; }
     
         public virtual User_Order User_Order { get; set; }
         public virtual Product Product { get; set; }

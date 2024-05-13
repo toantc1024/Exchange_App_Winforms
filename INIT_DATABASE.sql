@@ -91,6 +91,7 @@ CREATE table OrderDetail(
 	OrderID int REFERENCES User_Order(OrderID),
 	ProductID int REFERENCES Product(ProductID),
 	Quantity int not null,
+    IsConfirmed bit default 0 not null
 );
 
 Create Table WishItem (
@@ -125,5 +126,4 @@ DROP TABLE Role;
 
 
 SELECT * FROM User_Order;
-
 

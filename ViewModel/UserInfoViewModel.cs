@@ -182,12 +182,12 @@ namespace Exchange_App.ViewModel
                         CurrentUser.Password = PasswordEncryption.MD5Hash(PasswordEncryption.Base64Encode(Password));
                     }
                     DataProvider.Ins.DB.SaveChanges();
-                    MessageBox.Show("Save successfully");
+                    Notify.ShowNotify("Update successfully", 4, Notify.Success);
                     DisableEditCommand.Execute(null);
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    Notify.ShowNotify(ex.Message, 4, Notify.Error);
                 }
             });
 

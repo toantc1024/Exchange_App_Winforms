@@ -414,7 +414,7 @@
                                         Foreground="White">
                                         <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
                                             <TextBlock VerticalAlignment="Center">
-                                                Buy now
+                                                Add to cart
                                             </TextBlock>
                                             <Separator Width="5" Visibility="Hidden" />
                                             <materialDesign:PackIcon VerticalAlignment="Center" Kind="Cart" />

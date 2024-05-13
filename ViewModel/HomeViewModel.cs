@@ -403,6 +403,14 @@ namespace Exchange_App.ViewModel
                            int quantity = p.quantity;
                            // Check if product is already in cart
                            var cartProduct = DataProvider.Ins.DB.Carts.SingleOrDefault(x => x.ProductID == product.ProductID && x.UserID == CurrentUser.UserID);
+
+                           // check if product is owner 
+                           if (product.UserID == CurrentUser.UserID)
+                           {
+                               Notify.ShowNotify("You can't buy your own product!", 4, Notify.Warning);
+                               return;
+                           }
+
                            if (cartProduct != null)
                            {
                                // Check if Quantity is greater than 0 and less than product quantity
@@ -418,6 +426,17 @@ namespace Exchange_App.ViewModel
                            }
                            else
                            {
+                               // check if product is available
+                               if (quantity > product.Quantity)
+                               {
+                                   Notify.ShowNotify("Quantity is greater than available quantity!", 4, Notify.Warning);
+                                   return;
+                               }
+                               else if (product.Quantity <= 0)
+                               {
+                                   Notify.ShowNotify("Out of stock!", 4, Notify.Warning);
+                                   return;
+                               }
                                Cart cart = new Cart();
                                cart.UserID = CurrentUser.UserID;
                                cart.ProductID = product.ProductID;

@@ -223,7 +223,7 @@
                         <Button
                             Width="200"
                             materialDesign:ButtonAssist.CornerRadius="10"
-                            Command="{Binding ChangeToHome}"
+                            Command="{Binding ChangeToHome, UpdateSourceTrigger=PropertyChanged}"
                             Foreground="White">
                             Discover more
                         </Button>
