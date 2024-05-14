@@ -134,3 +134,6 @@ CREATE TABLE UserViewProduct(
 	ProductID int references Product(ProductID),
     ViewDate date not null
 );
+
+SELECT * FROM UserViewProduct;
+

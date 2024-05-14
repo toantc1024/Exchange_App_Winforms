@@ -81,7 +81,7 @@
                                 Width="5"
                                 Foreground="White"
                                 Visibility="Hidden" />
-                            <TextBlock Text="{Binding TotalIncome, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource currencyConverter}}" />
+                            <TextBlock Text="{Binding TotalView}" />
                         </StackPanel>
                     </Border>
 

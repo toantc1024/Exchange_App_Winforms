@@ -4,6 +4,7 @@ using Exchange_App.View;
 
 //using Exchange_App.View;
 using Exchange_App.ViewModel;
+using Microsoft.ML;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Core;
@@ -46,7 +47,7 @@ namespace Exchange_App.ViewModel
 
         public MainViewModel(User user)
         {
-            if(user.RoleID == 2)
+            if (user.RoleID == 2)
             {
                 IsAdminRole = "Hidden";
             } else
@@ -120,6 +121,8 @@ namespace Exchange_App.ViewModel
                 }
 
             );
+
+                    
         }
     }
 }

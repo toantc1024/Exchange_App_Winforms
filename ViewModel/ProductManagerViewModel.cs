@@ -753,7 +753,8 @@ namespace Exchange_App.ViewModel
                           Status_des = Status_des,
                           UserID = CurrentUser.UserID,
                           CatID = SelectedCategory.CatID,
-                          View_count = 0
+                          View_count = 0,
+                          IsVerified = true
                       });
 
                       foreach (var path in Pathes)

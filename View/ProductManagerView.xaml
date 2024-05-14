@@ -510,15 +510,15 @@
                         <Button
                             materialDesign:ButtonAssist.CornerRadius="10"
                             materialDesign:ElevationAssist.Elevation="Dp0"
-                            Background="DarkCyan"
-                            BorderBrush="DarkCyan"
+                            Background="Red"
+                            BorderBrush="Red"
+                            Command="{Binding HideProductCommand}"
                             Foreground="White">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock VerticalAlignment="Center">
                                     Close
                                 </TextBlock>
-                                <Separator Width="5" Visibility="Hidden" />
-                                <materialDesign:PackIcon VerticalAlignment="Center" Kind="Eye" />
+
                             </StackPanel>
                         </Button>
                         <Separator Width="5" Visibility="Hidden" />

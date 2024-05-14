@@ -10,13 +10,14 @@ using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
 using LiveChartsCore.SkiaSharpView.Painting.Effects;
 using SkiaSharp;
+using System.Windows.Controls.Primitives;
 namespace Exchange_App.ViewModel
 {
     public class StatisticViewModel :BaseViewModel
     {
         public ISeries[] Series { get; set; }
         private double _totalIncome;
-
+        private int _totalView;
         public ISeries[] BudgetSeries { get; set; }
 
 
@@ -44,10 +45,15 @@ namespace Exchange_App.ViewModel
                 OnPropertyChanged();
             } }
 
+        public int TotalView { get => _totalView; set {
+                _totalView=value;
+                OnPropertyChanged();
+            } }
+
         public void Initlize()
         {
             TotalIncome = 0;
-            
+            TotalView = 0;
             UserReceivedReviews = CurrentUser.Reviews.ToList();
             // Get total view by date 
             var products = CurrentUser.Products;
@@ -55,6 +61,7 @@ namespace Exchange_App.ViewModel
             foreach (var item in products)
             {
                 item.OrderDetails.ToList().ForEach(x => TotalIncome += x.Quantity * x.Product.Sell_price);
+                TotalView += item.View_count;
             }
 
 

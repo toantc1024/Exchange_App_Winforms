@@ -229,7 +229,7 @@
                                                 Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type view:OrderView}}, Path=DataContext.ShowReviewCommand}"
                                                 CommandParameter="{Binding Product}"
                                                 Foreground="White"
-                                                Visibility="{Binding CurrentOrder, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource showReviewConverter}}">
+                                                Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type view:OrderView}}, Path=DataContext.CurrentOrder, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource showReviewConverter}}">
                                                 Review
                                             </Button>
                                         </StackPanel>

@@ -134,7 +134,7 @@ namespace Exchange_App.ViewModel
                 }
                 else
                 {
-                    if (p.Quantity > p.Product.Quantity)
+                    if (p.Quantity >= p.Product.Quantity)
                     {
                         Notify.ShowNotify("Quantity is exceed the limit", 4, Notify.Error);
                         return;
