@@ -506,32 +506,9 @@
                                         <ScrollViewer>
                                             <StackPanel>
                                                 <ItemsControl ItemsSource="{Binding Reviews}">
-                                                    <ItemsControl.ItemsPanel>
-                                                        <ItemsPanelTemplate>
-                                                            <WrapPanel />
-                                                        </ItemsPanelTemplate>
-                                                    </ItemsControl.ItemsPanel>
-
                                                     <ItemsControl.ItemTemplate>
-                                                        <!--  Define DataTemplate for Product  -->
                                                         <DataTemplate>
-                                                            <materialDesign:Card>
-                                                                <StackPanel Margin="5">
-                                                                    <DockPanel VerticalAlignment="Center">
-                                                                        <StackPanel VerticalAlignment="Center">
-                                                                            <TextBlock Text="{Binding User.Name}" />
-                                                                        </StackPanel>
-                                                                        <materialDesign:RatingBar
-                                                                            x:Name="ReadOnlyRatingBar"
-                                                                            HorizontalAlignment="Right"
-                                                                            IsReadOnly="True"
-                                                                            Value="{Binding Rating}" />
-                                                                    </DockPanel>
-                                                                    <StackPanel>
-                                                                        <TextBlock Foreground="Gray" Text="{Binding Comment}" />
-                                                                    </StackPanel>
-                                                                </StackPanel>
-                                                            </materialDesign:Card>
+                                                            <uc:UCReview />
                                                         </DataTemplate>
                                                     </ItemsControl.ItemTemplate>
                                                 </ItemsControl>

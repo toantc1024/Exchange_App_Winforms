@@ -14,6 +14,7 @@ namespace Exchange_App.ViewModel
 
         private ProductManagerViewModel _productManagerViewModel;
         private OrderManageViewModel _orderManageViewModel;
+        private StatisticViewModel _statisticViewModel;
 
         public User CurrentUser { get => _currentUser; set {
                 _currentUser=value;
@@ -36,11 +37,18 @@ namespace Exchange_App.ViewModel
             }
         }
 
+        public StatisticViewModel StatisticManagerContent
+        { get => _statisticViewModel; set {
+                _statisticViewModel=value;
+                OnPropertyChanged();
+            } }
+
         public ManageViewModel(User user)
         {
             CurrentUser = user;
             ProductManagerContent = new ProductManagerViewModel(CurrentUser);
             OrderManagerContent = new OrderManageViewModel(CurrentUser);
+            StatisticManagerContent = new StatisticViewModel(CurrentUser);
         }
     }
 }

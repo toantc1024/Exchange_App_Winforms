@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Exchange_App.ViewModel
@@ -91,7 +92,7 @@ namespace Exchange_App.ViewModel
                 }
             );
 
-            SubmitReviewCommand = new RelayCommand<object>(
+            SubmitReviewCommand = new RelayCommand<Window>(
                 (p) =>
                 {
                     return true;
@@ -110,6 +111,9 @@ namespace Exchange_App.ViewModel
 
                     DataProvider.Ins.DB.Reviews.Add(review);
                     DataProvider.Ins.DB.SaveChanges();
+
+                    p.Close();
+
                 });
         }
 

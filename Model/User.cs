@@ -24,6 +24,7 @@ namespace Exchange_App.Model
             this.User_Order = new HashSet<User_Order>();
             this.UserClickCategories = new HashSet<UserClickCategory>();
             this.WishItems = new HashSet<WishItem>();
+            this.UserViewProducts = new HashSet<UserViewProduct>();
         }
     
         public int UserID { get; set; }
@@ -52,5 +53,7 @@ namespace Exchange_App.Model
         public virtual ICollection<UserClickCategory> UserClickCategories { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<WishItem> WishItems { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserViewProduct> UserViewProducts { get; set; }
     }
 }

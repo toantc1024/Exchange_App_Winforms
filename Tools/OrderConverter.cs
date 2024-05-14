@@ -24,6 +24,8 @@ namespace Exchange_App.Tools
         }
     }
 
+
+
     // converter visiblity of how many other items
     public class ShowMoreConverter : IValueConverter
     {
@@ -85,6 +87,29 @@ namespace Exchange_App.Tools
     }
 
 
+
+    // converter get first 3 items from User_Order
+    public class ShowReviewConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            Model.User_Order p = value as Model.User_Order;
+            if (p == null)
+            {
+                return System.Windows.Visibility.Hidden;
+            }
+            if (p.OrderStatus == Constants.OrderConstants.SUCCESS)
+            {
+                return System.Windows.Visibility.Visible;
+            }
+            return System.Windows.Visibility.Hidden;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return null;
+        }
+    }
 
     // converter get first 3 items from User_Order
     public class ShowCancelConverter : IValueConverter

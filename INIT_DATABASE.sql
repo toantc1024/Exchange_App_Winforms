@@ -127,3 +127,10 @@ DROP TABLE Role;
 
 SELECT * FROM User_Order;
 
+
+CREATE TABLE UserViewProduct(
+	UserViewProductID int IDENTITY(1,1) constraint PK_UserViewProduct PRIMARY KEY,
+	UserID int references Users(UserID),
+	ProductID int references Product(ProductID),
+    ViewDate date not null
+);

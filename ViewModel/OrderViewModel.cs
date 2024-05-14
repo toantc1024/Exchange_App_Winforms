@@ -77,6 +77,8 @@ namespace Exchange_App.ViewModel
 
         #region Commands
 
+        public ICommand ShowReviewCommand { get; set; }
+
         public ICommand ChangeGroupOrderCommand { get; set; }
 
         public ICommand CancelOrderCommand { get; set; }
@@ -90,12 +92,6 @@ namespace Exchange_App.ViewModel
             get;
             set;
         }
-
-        public ICommand ShowReviewCommand
-        {
-            get;set;
-        }
-
         public ICommand ShowOrderDetailsCommand
         {
             get;
@@ -158,7 +154,7 @@ namespace Exchange_App.ViewModel
 
             ChangeGroupOrderCommand.Execute(Constants.OrderConstants.PENDING);
 
-            ShowReviewCommand = new RelayCommand<object>(
+            ShowReviewCommand = new RelayCommand<Product>(
                 (p) =>
                 {
                     return true;
@@ -166,8 +162,11 @@ namespace Exchange_App.ViewModel
                 {
 
                     ReviewView reviewView = new ReviewView();
-                    //reviewView.DataContext = new ReviewViewModel(CurrentUser, CurrentOrder.Product);
+                    reviewView.DataContext = new ReviewViewModel(CurrentUser, p);
                     reviewView.ShowDialog();
+
+                    // show notification
+                    Notify.ShowNotify("Review has been submitted", 4, Notify.Success);
 
                 });
 

@@ -56,7 +56,9 @@
                     <TabItem Header="Orders">
                         <ContentControl Content="{Binding OrderManagerContent}" />
                     </TabItem>
-                    <TabItem Header="Stats" />
+                    <TabItem Header="Stats">
+                        <ContentControl Content="{Binding StatisticManagerContent}" />
+                    </TabItem>
 
                 </TabControl>
             </materialDesign:Card>

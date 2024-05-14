@@ -36,5 +36,6 @@ namespace Exchange_App.Model
         public virtual DbSet<UserClickCategory> UserClickCategories { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<WishItem> WishItems { get; set; }
+        public virtual DbSet<UserViewProduct> UserViewProducts { get; set; }
     }
 }

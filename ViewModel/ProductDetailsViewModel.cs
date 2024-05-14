@@ -263,7 +263,7 @@ namespace Exchange_App.ViewModel
             SelectedProduct = product;
             CurrentUser = user;
             SelectProductCommand = selectProductCommand;
-            Reviews = new ObservableCollection<Review>(user.Reviews1.Take(5));
+            Reviews = new ObservableCollection<Review>(product.User.Reviews.Take(5));
             TotalRecommendProducts = new ObservableCollection<Product>(DataProvider.Ins.DB.Products.Where(p => p.CatID == SelectedProduct.CatID && p.ProductID != SelectedProduct.ProductID).Take(20));
             RecommendProducts = new ObservableCollection<Product>(DataProvider.Ins.DB.Products.Where(p => p.CatID == SelectedProduct.CatID && p.ProductID != SelectedProduct.ProductID).Take(4));
 

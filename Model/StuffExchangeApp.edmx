@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="StuffExchangeAppModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="StuffExchangeAppModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Cart">
           <Key>
             <PropertyRef Name="CartID" />
@@ -108,6 +108,15 @@
           <Property Name="Birthdate" Type="date" Nullable="false" />
           <Property Name="RoleID" Type="int" />
           <Property Name="Location" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="UserViewProduct">
+          <Key>
+            <PropertyRef Name="UserViewProductID" />
+          </Key>
+          <Property Name="UserViewProductID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" />
+          <Property Name="ProductID" Type="int" />
+          <Property Name="ViewDate" Type="date" Nullable="false" />
         </EntityType>
         <EntityType Name="WishItem">
           <Key>
@@ -273,6 +282,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__UserViewP__Produ__0E391C95">
+          <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="UserViewProduct" Type="Self.UserViewProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="UserViewProduct">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserViewP__UserI__0D44F85C">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="UserViewProduct" Type="Self.UserViewProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UserViewProduct">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__WishItem__UserID__69FBBC1F">
           <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
           <End Role="WishItem" Type="Self.WishItem" Multiplicity="*" />
@@ -320,6 +353,7 @@
           <EntitySet Name="User_Order" EntityType="Self.User_Order" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserClickCategory" EntityType="Self.UserClickCategory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserViewProduct" EntityType="Self.UserViewProduct" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WishItem" EntityType="Self.WishItem" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK__Cart__ProductID__57DD0BE4" Association="Self.FK__Cart__ProductID__57DD0BE4">
             <End Role="Product" EntitySet="Product" />
@@ -373,6 +407,14 @@
             <End Role="Role" EntitySet="Role" />
             <End Role="Users" EntitySet="Users" />
           </AssociationSet>
+          <AssociationSet Name="FK__UserViewP__Produ__0E391C95" Association="Self.FK__UserViewP__Produ__0E391C95">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="UserViewProduct" EntitySet="UserViewProduct" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserViewP__UserI__0D44F85C" Association="Self.FK__UserViewP__UserI__0D44F85C">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserViewProduct" EntitySet="UserViewProduct" />
+          </AssociationSet>
           <AssociationSet Name="FK__WishItem__UserID__69FBBC1F" Association="Self.FK__WishItem__UserID__69FBBC1F">
             <End Role="Users" EntitySet="Users" />
             <End Role="WishItem" EntitySet="WishItem" />
@@ -386,8 +428,7 @@
             <End Role="Product" EntitySet="Product" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="StuffExchangeAppModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -456,6 +497,7 @@
           <NavigationProperty Name="OrderDetails" Relationship="Self.FK__OrderDeta__Produ__09746778" FromRole="Product" ToRole="OrderDetail" />
           <NavigationProperty Name="User" Relationship="Self.FK__Product__UserID__4B7734FF" FromRole="Product" ToRole="Users" />
           <NavigationProperty Name="WishItems" Relationship="Self.FK_CartDetail_ProductID" FromRole="Product" ToRole="WishItem" />
+          <NavigationProperty Name="UserViewProducts" Relationship="StuffExchangeAppModel.FK__UserViewP__Produ__0E391C95" FromRole="Product" ToRole="UserViewProduct" />
         </EntityType>
         <EntityType Name="Review">
           <Key>
@@ -524,6 +566,7 @@
           <NavigationProperty Name="User_Order" Relationship="Self.FK__User_Orde__UserI__7849DB76" FromRole="Users" ToRole="User_Order" />
           <NavigationProperty Name="UserClickCategories" Relationship="Self.FK__UserClick__UserI__6CD828CA" FromRole="Users" ToRole="UserClickCategory" />
           <NavigationProperty Name="WishItems" Relationship="Self.FK__WishItem__UserID__69FBBC1F" FromRole="Users" ToRole="WishItem" />
+          <NavigationProperty Name="UserViewProducts" Relationship="StuffExchangeAppModel.FK__UserViewP__UserI__0D44F85C" FromRole="User" ToRole="UserViewProduct" />
         </EntityType>
         <EntityType Name="WishItem">
           <Key>
@@ -803,7 +846,51 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="WishItem" EntitySet="WishItems" />
           </AssociationSet>
+          <EntitySet Name="UserViewProducts" EntityType="StuffExchangeAppModel.UserViewProduct" />
+          <AssociationSet Name="FK__UserViewP__Produ__0E391C95" Association="StuffExchangeAppModel.FK__UserViewP__Produ__0E391C95">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="UserViewProduct" EntitySet="UserViewProducts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserViewP__UserI__0D44F85C" Association="StuffExchangeAppModel.FK__UserViewP__UserI__0D44F85C">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UserViewProduct" EntitySet="UserViewProducts" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="UserViewProduct">
+          <Key>
+            <PropertyRef Name="UserViewProductID" />
+          </Key>
+          <Property Name="UserViewProductID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="ProductID" Type="Int32" />
+          <Property Name="ViewDate" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Product" Relationship="StuffExchangeAppModel.FK__UserViewP__Produ__0E391C95" FromRole="UserViewProduct" ToRole="Product" />
+          <NavigationProperty Name="User" Relationship="StuffExchangeAppModel.FK__UserViewP__UserI__0D44F85C" FromRole="UserViewProduct" ToRole="User" />
+        </EntityType>
+        <Association Name="FK__UserViewP__Produ__0E391C95">
+          <End Type="StuffExchangeAppModel.Product" Role="Product" Multiplicity="0..1" />
+          <End Type="StuffExchangeAppModel.UserViewProduct" Role="UserViewProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="UserViewProduct">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserViewP__UserI__0D44F85C">
+          <End Type="StuffExchangeAppModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="StuffExchangeAppModel.UserViewProduct" Role="UserViewProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UserViewProduct">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -930,6 +1017,16 @@
                 <ScalarProperty Name="WishItemID" ColumnName="WishItemID" />
                 <ScalarProperty Name="ProductID" ColumnName="ProductID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserViewProducts">
+            <EntityTypeMapping TypeName="StuffExchangeAppModel.UserViewProduct">
+              <MappingFragment StoreEntitySet="UserViewProduct">
+                <ScalarProperty Name="ViewDate" ColumnName="ViewDate" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="UserViewProductID" ColumnName="UserViewProductID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

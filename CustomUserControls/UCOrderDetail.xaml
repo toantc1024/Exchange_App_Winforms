@@ -7,11 +7,13 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:tools="clr-namespace:Exchange_App.Tools"
+    xmlns:view="clr-namespace:Exchange_App.View"
     d:DesignHeight="450"
     d:DesignWidth="800"
     Background="White"
     mc:Ignorable="d">
     <UserControl.Resources>
+        <tools:ShowReviewConverter x:Key="showReviewConverter" />
         <tools:OrderStatusConverter x:Key="orderStatusConverter" />
         <tools:OrderStatusColorConverter x:Key="orderStatusColorConverter" />
         <tools:OrderDetailTotalConverter x:Key="orderDetailTotalConverter" />
@@ -118,12 +120,17 @@
 
                         <Button
                             Margin="5"
+                            materialDesign:ButtonAssist.CornerRadius="10"
+                            materialDesign:ElevationAssist.Elevation="Dp0"
                             Command="{Binding ShowConfirmCancelOrder}"
                             Foreground="White"
                             Visibility="{Binding CurrentOrder, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource showCancelConverter}}">
                             Cancel
                         </Button>
+
+
                     </StackPanel>
+
                     <StackPanel Margin="5" Orientation="Horizontal">
                         <TextBlock
                             Margin="5"
@@ -213,6 +220,18 @@
                                                 </TextBlock>
 
                                             </StackPanel>
+                                            <Button
+                                                Margin="5"
+                                                materialDesign:ButtonAssist.CornerRadius="10"
+                                                materialDesign:ElevationAssist.Elevation="Dp0"
+                                                Background="DodgerBlue"
+                                                BorderBrush="Transparent"
+                                                Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type view:OrderView}}, Path=DataContext.ShowReviewCommand}"
+                                                CommandParameter="{Binding Product}"
+                                                Foreground="White"
+                                                Visibility="{Binding CurrentOrder, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource showReviewConverter}}">
+                                                Review
+                                            </Button>
                                         </StackPanel>
 
 

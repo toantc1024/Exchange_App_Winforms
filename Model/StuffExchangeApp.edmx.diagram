@@ -32,6 +32,9 @@
         <AssociationConnector Association="StuffExchangeAppModel.FK__User_Orde__UserI__7849DB76" ManuallyRouted="false" />
         <AssociationConnector Association="StuffExchangeAppModel.FK__UserClick__UserI__6CD828CA" ManuallyRouted="false" />
         <AssociationConnector Association="StuffExchangeAppModel.FK__WishItem__UserID__69FBBC1F" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="StuffExchangeAppModel.UserViewProduct" Width="1.5" PointX="0.5" PointY="15.5" />
+        <AssociationConnector Association="StuffExchangeAppModel.FK__UserViewP__Produ__0E391C95" />
+        <AssociationConnector Association="StuffExchangeAppModel.FK__UserViewP__UserI__0D44F85C" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

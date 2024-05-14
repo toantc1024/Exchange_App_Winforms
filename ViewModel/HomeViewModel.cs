@@ -482,6 +482,14 @@ namespace Exchange_App.ViewModel
                       var result = DataProvider.Ins.DB.Products.SingleOrDefault(b => b.ProductID == p.ProductID);
                       // increase view_coutn
                       result.View_count += 1;
+
+                      // add to history UserViewProduct table
+                      UserViewProduct userViewProduct = new UserViewProduct();
+                      userViewProduct.UserID = CurrentUser.UserID;
+                      userViewProduct.ProductID = p.ProductID;
+                      userViewProduct.ViewDate = DateTime.Now;
+                      DataProvider.Ins.DB.UserViewProducts.Add(userViewProduct);
+
                       DataProvider.Ins.DB.SaveChanges();
                       SelectedProduct =  result;
 
